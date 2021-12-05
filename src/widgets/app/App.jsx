@@ -38,7 +38,6 @@ export default class App extends Component {
   };
 
   render() {
-    console.log('menuList', menuList);
     return (
       <Layout className="main-container">
         <Router>
@@ -87,11 +86,10 @@ export default class App extends Component {
               className="site-layout-background"
               style={{
                 margin: '24px 16px',
-                padding: 24,
+                padding: '24px 0px',
                 minHeight: 280,
               }}
             >
-              Content
               <Switch>
                 <Route exact path="/" component={Home}></Route>
                 <Route exact path="/advertising-management" component={AdvertisingManagement}></Route>
