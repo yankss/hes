@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
-class App extends Component {
+class index extends Component {
   render() {
     return (
       <div>
-        
+        系统管理
       </div>
     );
   }
 }
 
-export default App;
+export default index;
