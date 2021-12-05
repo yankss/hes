@@ -3,11 +3,16 @@ import { inject, observer } from 'mobx-react';
 import menuList from '../../config/menu'
 import './index.css'
 import homeStore from './home-store';
+import ball1 from '../../assets/imgs/balls/ball01.png';
+import ball2 from '../../assets/imgs/balls/ball02.png';
+import ball3 from '../../assets/imgs/balls/ball03.png';
+import ball4 from '../../assets/imgs/balls/ball04.png';
+import ball5 from '../../assets/imgs/balls/ball05.png';
 
 
 @inject('homeStore')
 @observer
-export default class Home extends Component {
+ class index extends Component {
   // eslint-disable-next-line no-useless-constructor
   constructor(props) {
     super(props);
@@ -35,14 +40,21 @@ export default class Home extends Component {
       });
     });
 
-    const cardImgs = require.context('./imgs', true, /-card\.jpg$/);
-    console.log(cardImgs.keys());
+    // const cardImgs = require.context('./imgs', true, /-card\.jpg$/);
+    // console.log(cardImgs.keys());
   }
 
   render() {
     console.log(this.props);
     return (
       <div className="home-container">
+        <div className="placeholder" id="homeShow">
+          <img src={ball1} alt="ball" />
+          <img src={ball2} alt="ball" />
+          <img src={ball3} alt="ball" />
+          <img src={ball4} alt="ball" />
+          <img src={ball5} alt="ball" />
+        </div>
         <ul>
           {
             menuList.map(menuItem => {
@@ -75,3 +87,5 @@ export default class Home extends Component {
     )
   }
 }
+
+export default index;

@@ -87,7 +87,7 @@
   margin: 10px;
   background-color: #F8F6F2;
   border-radius: 16px;
-  background-image: url('../../assets/img/首页.jpg');
+  background-image: url('../../assets/imgs/首页.jpg');
   background-size: 100% 100%;
   transition: 0.25s ease-in-out;
 }
