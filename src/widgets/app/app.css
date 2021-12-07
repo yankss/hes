@@ -18,9 +18,31 @@
 
 .site-layout .site-layout-background {
   background: #fff;
+  /* width: 100%; */
+}
+
+.site-layout-background {
+  margin: 0;
 }
 
 .main-container {
   width: 100%;
   height: 100%;
+}
+
+
+.my-menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background: radial-gradient(#5FA1DB, transparent)  !important;
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  width: 100%;
+}
+
+.ant-menu-dark .ant-menu-sub, .ant-menu.ant-menu-dark, .ant-menu.ant-menu-dark .ant-menu-sub {
+  background: radial-gradient(#5FA1DB, transparent)  !important;
+  border-radius: 10px;
 }

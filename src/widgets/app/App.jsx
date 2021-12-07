@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
 import { HashRouter as Router, Link,Switch, Route,  } from 'react-router-dom'
 import { Layout, Menu } from 'antd';
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
 import menuList from '../../config/menu'
 import './app.css'
 import Home from '../../pages/Home';
@@ -17,8 +12,10 @@ import HouseManagement from '../../pages/HousingResourceManagement/HouseManageme
 import PriceDetails from '../../pages/PriceDetails';
 import RentDetails from '../../pages/RentDetails';
 import SystemManagement from '../../pages/SystemManagement'
+import ChetMessage  from '../../pages/ChetMessage'
+// import ErrorPage from '../../pages/Error'
 
-const { Header, Sider, Content } = Layout;
+const { Header, Content } = Layout;
 const { SubMenu } = Menu;
 const MenuItem = Menu.Item;
 
@@ -27,70 +24,64 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      collapsed: false,
+      current: ['0'],
     }
   }
 
-  toggle = () => {
-    this.setState({
-      collapsed: !this.state.collapsed,
-    });
-  };
+  handleClick = e => {
+    console.log(e);
+    this.setState({current: e.key})
+  }
 
   render() {
+    let { current } = this.state;
     return (
       <Layout className="main-container">
         <Router>
-          <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
-            <div className="logo" />
-            <Menu theme="dark" mode="inline" defaultSelectedKeys={['0']}>
-              {
-                menuList.map((item, index1) => {
-                  if(item.children) {
-                    return (
-                      <SubMenu key="sub1" icon={<UserOutlined />} title={item.label}>
-                        {
-                          item.children.map((cItem, index2) => {
-                            return (
-                                <MenuItem icon={<UserOutlined />} key={cItem.value}>
-                                  <Link to={`${cItem.path}`}>
-                                    {cItem.label}
-                                  </Link>
-                                </MenuItem>
-                            )
-                          })
-                        }
-                      </SubMenu>
-                    )
-                  }else {
-                    return (
-                      <MenuItem icon={<UserOutlined />} key={item.value}>
-                        <Link to={`${item.path}`}>
-                          {item.label}
-                        </Link>
-                      </MenuItem>
-                    )
-                  }
-                })
-              }
-            </Menu>
-          </Sider>
           <Layout className="site-layout">
             <Header className="site-layout-background" style={{ padding: 0 }}>
-              {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-                className: 'trigger',
-                onClick: this.toggle,
-              })}
+              <Menu onClick={this.handleClick} className="my-menu" theme="dark"  mode="horizontal" defaultSelectedKeys={current} >
+                {
+                  menuList.map((item, index1) => {
+                    if(item.children) {
+                      return (
+                        <SubMenu key={item.value} icon={<item.icon/>} title={item.label} popupClassName="children-menu">
+                          {
+                            item.children.map((cItem, index2) => {
+                              return (
+                                  <MenuItem icon={<cItem.icon/>}  key={cItem.value}>
+                                    <Link to={`${cItem.path}`}>
+                                      {cItem.label}
+                                    </Link>
+                                  </MenuItem>
+                              )
+                            })
+                          }
+                        </SubMenu>
+                      )
+                    }else {
+                      return (
+                        
+                        <MenuItem icon={<item.icon/>} key={item.value}  >
+                          <Link to={`${item.path}`}>
+                          {item.label}
+                          </Link>
+                        </MenuItem>
+                      )
+                    }
+                  })
+                }
+              </Menu>
             </Header>
             <Content
               className="site-layout-background"
               style={{
-                margin: '24px 16px',
-                padding: '24px 0px',
+                padding: '24px 2px',
                 minHeight: 280,
               }}
             >
               <Switch>
+                {/* <Route exact path="*" component={ErrorPage}></Route> */}
                 <Route exact path="/" component={Home}></Route>
                 <Route exact path="/advertising-management" component={AdvertisingManagement}></Route>
                 <Route exact path="/certification-center" component={CertificationCenter}></Route>
@@ -100,6 +91,7 @@ export default class App extends Component {
                 <Route exact path="/price-details" component={PriceDetails}></Route>
                 <Route exact path="/rent-details" component={RentDetails}></Route>
                 <Route exact path="/system-management" component={SystemManagement}></Route>
+                <Route exact path="/chet-message" component={ChetMessage}></Route>
               </Switch>
             </Content>
           </Layout>

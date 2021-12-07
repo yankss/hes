@@ -33,19 +33,15 @@ import ball5 from '../../assets/imgs/balls/ball05.png';
       let moveY = 0;
       moveX = ((clientW / 2) - mouseX) / 90;
       moveY = ((clientH / 2) - mouseY) / 90;
-      // console.log(moveX, moveY);
-      imgs.map((imgBall) => {
+      imgs.map((imgBall, index) => {
         imgBall.style.setProperty('--moveX', moveX);
         imgBall.style.setProperty('--moveY', moveY);
+        return imgBall;
       });
-    });
-
-    // const cardImgs = require.context('./imgs', true, /-card\.jpg$/);
-    // console.log(cardImgs.keys());
+    }, { passive: true });
   }
 
   render() {
-    console.log(this.props);
     return (
       <div className="home-container">
         <div className="placeholder" id="homeShow">
@@ -57,9 +53,9 @@ import ball5 from '../../assets/imgs/balls/ball05.png';
         </div>
         <ul>
           {
-            menuList.map(menuItem => {
+            menuList.map((menuItem, index1) => {
               return menuItem.path ? (
-                <li className="container">
+                <li className="container" key={index1}>
                   <div className="mainContainer">
                     <a href={`#${menuItem.path}`}>
                       {menuItem.label}
@@ -69,8 +65,8 @@ import ball5 from '../../assets/imgs/balls/ball05.png';
                 </li>
               )
               : (
-                menuItem.children.map((itemChild) => (
-                  <li className="container">
+                menuItem.children.map((itemChild, index2) => (
+                  <li className="container" key={index2}>
                     <div className="mainContainer">
                       <a href={`#${itemChild.path}`}>
                         {itemChild.label}

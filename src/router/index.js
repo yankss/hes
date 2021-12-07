@@ -6,6 +6,8 @@ import dataAnalysis from './data-analysis';
 import priceDetails from './price-details';
 import rentDetails from './rent-details';
 import systemManagement from './system-management';
+import chetMessage from "./chet-message";
+import errorPage from  "./error"
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [
@@ -20,5 +22,7 @@ export default [
   ...dataAnalysis,
   ...priceDetails,
   ...rentDetails,
-  ...systemManagement
+  ...chetMessage,
+  ...systemManagement,
+  ...errorPage
 ]
