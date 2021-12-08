@@ -51,7 +51,30 @@ import ball5 from '../../assets/imgs/balls/ball05.png';
           <img src={ball4} alt="ball" />
           <img src={ball5} alt="ball" />
         </div>
-        <ul>
+        <div className="home-main-container">
+          {
+            menuList.map((menuItem, index1) => {
+              return menuItem.path ? (
+                <div className="item-container" key={index1}>
+                  <a href={`#${menuItem.path}`} >
+                    {menuItem.label}
+                  </a>
+                </div>
+              )
+              : (
+                menuItem.children.map((itemChild, index2) => (
+                  <div className="item-container" key={index2}>
+                    <a href={`#${itemChild.path}`} >
+                      {itemChild.label}
+                    </a>
+                  </div>
+                ))
+              )
+            })
+          }
+        </div>
+        
+        {/* <ul>
           {
             menuList.map((menuItem, index1) => {
               return menuItem.path ? (
@@ -78,7 +101,7 @@ import ball5 from '../../assets/imgs/balls/ball05.png';
               )
             })
           }
-        </ul>
+        </ul> */}
       </div>
     )
   }

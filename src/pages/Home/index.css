@@ -5,9 +5,6 @@
   padding: 0;
   margin: 0;
 }
-.mainContainer:hover {
-  cursor: pointer;
-}
 .placeholder img:nth-child(1) {
     width: 500px;
     height: 500px;
@@ -71,14 +68,31 @@
   transform: scale(calc(0.1 + (0.9 * var(--progress)))) translateY(calc(60px * (1 - var(--progress)) ));
   transition: .1s transform ease-in-out;
 }
-.mainContainer {
-  width: 30%;
-  height: 80%;
+.home-main-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: center;
+  width: 80%;
+  margin: auto;
+  padding-top: 20px;
+}
+
+.item-container {
+  width: 200px;
+  height: 200px;
   margin: 10px;
   border-radius: 16px;
+  border: #c5cbcb 1px solid;
+  /* animation: 1s infinite; */
+  transition: all 0.3s;
 }
-.mainContainer:hover {
+.item-container:hover {
   box-shadow: 0 0 7px .5px #ddd;
+  cursor: pointer;
+  transform: scale(1.05);
 }
 
 .containerIntroduce {
@@ -87,7 +101,6 @@
   margin: 10px;
   background-color: #F8F6F2;
   border-radius: 16px;
-  background-image: url('../../assets/imgs/首页.jpg');
   background-size: 100% 100%;
   transition: 0.25s ease-in-out;
 }
