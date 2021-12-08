@@ -1,0 +1,19 @@
+.listPage-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+}
+.listPage-pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.my-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+}

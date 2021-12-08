@@ -76,7 +76,7 @@ export default class App extends Component {
             <Content
               className="site-layout-background"
               style={{
-                padding: '24px 2px',
+                padding: '2px 2px',
                 minHeight: 280,
               }}
             >
