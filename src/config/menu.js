@@ -56,7 +56,7 @@ const menuArr = [
     value: '7',
     icon: FundTwoTone
   },
-  { label: '聊天信息 ', 
+  { label: '留言板', 
     path: '/chet-message', 
     value: '8',
     icon: MessageTwoTone 

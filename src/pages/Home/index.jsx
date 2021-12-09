@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react';
 import menuList from '../../config/menu'
+import { Card, Button } from 'antd';
 import './index.css'
 import homeStore from './home-store';
 import ball1 from '../../assets/imgs/balls/ball01.png';
@@ -9,6 +10,8 @@ import ball3 from '../../assets/imgs/balls/ball03.png';
 import ball4 from '../../assets/imgs/balls/ball04.png';
 import ball5 from '../../assets/imgs/balls/ball05.png';
 
+const { Meta } = Card;
+
 
 @inject('homeStore')
 @observer
@@ -16,6 +19,9 @@ import ball5 from '../../assets/imgs/balls/ball05.png';
   // eslint-disable-next-line no-useless-constructor
   constructor(props) {
     super(props);
+    this.state = {
+      loading : true,
+    }
   }
 
   componentDidMount() {
@@ -39,9 +45,17 @@ import ball5 from '../../assets/imgs/balls/ball05.png';
         return imgBall;
       });
     }, { passive: true });
+    setTimeout(() => {
+      this.setState({ loading: false});
+    }, 2000);
   }
 
+  componentWillUnmount() {
+    clearTimeout();
+    
+  }
   render() {
+    const { loading } = this.state;
     return (
       <div className="home-container">
         <div className="placeholder" id="homeShow">
@@ -55,19 +69,41 @@ import ball5 from '../../assets/imgs/balls/ball05.png';
           {
             menuList.map((menuItem, index1) => {
               return menuItem.path ? (
-                <div className="item-container" key={index1}>
-                  <a href={`#${menuItem.path}`} >
-                    {menuItem.label}
-                  </a>
-                </div>
+                <a href={`#${menuItem.path}`} key={index1}>
+                  <Card
+                    hoverable
+                    style={{ width: 240 }}
+                    className="item-container"
+                    loading={loading}
+                  >
+                    <Button type="link">{menuItem.label}</Button>
+                    <Meta title="Europe Street beat" description="www.instagram.com" />
+                  </Card>
+                </a>
+                // <div className="item-container" key={index1}>
+                //   <a href={`#${menuItem.path}`} >
+                //     {menuItem.label}
+                //   </a>
+                // </div>
               )
               : (
                 menuItem.children.map((itemChild, index2) => (
-                  <div className="item-container" key={index2}>
-                    <a href={`#${itemChild.path}`} >
-                      {itemChild.label}
-                    </a>
-                  </div>
+                  <a href={`#${itemChild.path}`} key={index2}>
+                  <Card
+                    hoverable
+                    style={{ width: 240 }}
+                    className="item-container"
+                    loading={loading}
+                  >
+                    <Button type="link">{itemChild.label}</Button>
+                    <Meta title="Europe Street beat" description="www.instagram.com" />
+                  </Card>
+                  </a>
+                  // <div className="item-container" key={index2}>
+                  //   <a href={`#${itemChild.path}`} >
+                  //     {itemChild.label}
+                  //   </a>
+                  // </div>
                 ))
               )
             })

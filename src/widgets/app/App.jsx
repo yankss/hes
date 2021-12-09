@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { HashRouter as Router, Link,Switch, Route,  } from 'react-router-dom'
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Badge } from 'antd';
 import menuList from '../../config/menu'
 import './app.css'
 import Home from '../../pages/Home';
@@ -25,16 +25,16 @@ export default class App extends Component {
     super(props);
     this.state = {
       current: ['0'],
+      count: 10,
     }
   }
 
   handleClick = e => {
-    console.log(e);
     this.setState({current: e.key})
   }
 
   render() {
-    let { current } = this.state;
+    let { current, count } = this.state;
     return (
       <Layout className="main-container">
         <Router>
@@ -60,14 +60,30 @@ export default class App extends Component {
                         </SubMenu>
                       )
                     }else {
-                      return (
-                        
-                        <MenuItem icon={<item.icon/>} key={item.value}  >
-                          <Link to={`${item.path}`}>
-                          {item.label}
-                          </Link>
-                        </MenuItem>
-                      )
+                      if(item.value === '8') {
+                        return (
+                          <MenuItem icon={<item.icon/>} key={item.value} >
+                            <Link to={`${item.path}`}>
+                              { count !== 0 
+                                ? <Badge count={count} color="cyan" style={{marginTop: '16px', marginRight: '-5px'}}>
+                                    {item.label}
+                                  </Badge>
+                                :
+                                item.label
+                              }
+                              
+                            </Link>
+                          </MenuItem>
+                        )
+                      }else {
+                        return (
+                          <MenuItem icon={<item.icon/>} key={item.value} >
+                            <Link to={`${item.path}`}>
+                            {item.label}
+                            </Link>
+                          </MenuItem>
+                        )
+                      }
                     }
                   })
                 }

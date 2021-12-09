@@ -81,19 +81,20 @@
 }
 
 .item-container {
-  width: 200px;
+  margin: 5px;
+  border-radius: 10px;
+  /* width: 200px;
   height: 200px;
   margin: 10px;
   border-radius: 16px;
   border: #c5cbcb 1px solid;
-  /* animation: 1s infinite; */
-  transition: all 0.3s;
+  transition: all 0.3s; */
 }
-.item-container:hover {
+/* .item-container:hover {
   box-shadow: 0 0 7px .5px #ddd;
   cursor: pointer;
   transform: scale(1.05);
-}
+} */
 
 .containerIntroduce {
   width: 50%;

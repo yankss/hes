@@ -28,26 +28,6 @@ export default class index extends Component {
           dataIndex: 'address',
           key: 'address',
         },
-        // {
-        //   title: 'Tags',
-        //   key: 'tags',
-        //   dataIndex: 'tags',
-        //   render: tags => (
-        //     <>
-        //       {tags.map(tag => {
-        //         let color = tag.length > 5 ? 'geekblue' : 'green';
-        //         if (tag === 'loser') {
-        //           color = 'volcano';
-        //         }
-        //         return (
-        //           <Tag color={color} key={tag}>
-        //             {tag.toUpperCase()}
-        //           </Tag>
-        //         );
-        //       })}
-        //     </>
-        //   ),
-        // },
         {
           title: 'Tags',
           key: 'tags',
@@ -68,16 +48,6 @@ export default class index extends Component {
             </>
           ),
         },
-        // {
-        //   title: 'Action',
-        //   key: 'action',
-        //   render: (text, record) => (
-        //     <Space size="middle">
-        //       <Button type="link">Invite {record.name}</Button>
-        //       <Button type="link">Delete</Button>
-        //     </Space>
-        //   ),
-        // },
         {
           title: 'Action',
           key: 'action',
@@ -206,11 +176,13 @@ export default class index extends Component {
           ]
         },
       ],
+      selectedRow: ''
     };
     this.showFundTwoTone = this.showFundTwoTone.bind(this);
     this.showDeleteTwoTone = this.showDeleteTwoTone.bind(this);
     this.showBulbTwoTone = this.showBulbTwoTone.bind(this);
-    this.onSelect = this.onSelect.bind(this);
+    this.selectRow = this.selectRow.bind(this);
+    this.onClickSelectRow = this.onClickSelectRow.bind(this);
   
   }
 
@@ -227,22 +199,20 @@ export default class index extends Component {
     console.log('bulb');
     console.log('text', text);
   }
-  onSelect(record, selected, selectedRows, nativeEvent) {
-    console.log('record', record);
-    console.log('selected', selected);
-    console.log('selectedRows', selectedRows);
-    console.log('nativeEvent', nativeEvent);
+  selectRow(changeableRowKeys) {
+    console.log('changeableRowKeys', changeableRowKeys);
+  }
+  onClickSelectRow() {
+
   }
 
   render() {
-
     const IconLink = ({ src, text }) => (
       <a className="example-link" href="/">
         <img className="example-link-icon" src={src} alt={text} />
         {text}
       </a>
     );
-    
     const content = (
       <>
         <Paragraph>
@@ -270,14 +240,13 @@ export default class index extends Component {
         </div>
       </>
     );
-    
     const Content = ({ children, extraContent }) => (
       <Row>
         <div style={{ flex: 1 }}>{children}</div>
         <div className="image">{extraContent}</div>
       </Row>
     );
-    const { columns, data } = this.state;
+    const { columns, data,  } = this.state;
     return (
       <div className="my-content">
         <PageHeader
@@ -301,8 +270,21 @@ export default class index extends Component {
           dataSource={data} 
           pagination={false}
           scroll={{ y: 460 }}
-          rowSelection={{}}
-          onSelect={() => this.onSelect()}
+          // rowSelection={{
+          //   type: 'radio',
+          //   selectedRowKeys: [selectedRow],
+          //   onChange: (_, selectedRows) => {
+          //     this.setState({ selectedRow:selectedRows[0].key })
+          //     }
+            
+          // }}
+          // onRow={record => {
+          //   return {
+          //     onClick: event => {
+          //       this.setState({ selectedRow: record.key })
+          //     }
+          //   }
+          // }}
         />
         <Pagination
           total={data.length}

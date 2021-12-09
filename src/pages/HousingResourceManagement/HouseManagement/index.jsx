@@ -179,7 +179,7 @@ export default class index extends Component {
         },
       ],
       title: '房屋管理',
-      tableHeight: 460
+      tableHeight: 460,
     };
     
     this.showFundTwoTone = this.showFundTwoTone.bind(this);
@@ -203,6 +203,7 @@ export default class index extends Component {
 
   render() {
     const { columns, data, title, tableHeight } = this.state;
+    
     return (
       <div className="my-content">
         <ListPage 
