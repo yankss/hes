@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { List, Avatar, Button, PageHeader, Tag } from 'antd';
+import { List, Avatar, Button, PageHeader, Tag, Drawer, Space } from 'antd';
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 import './index.css'
 
@@ -8,7 +8,12 @@ export default class index extends Component {
     super(props);
     this.state = {
       listData: [],
-    }
+      MessageBoardVisible: false,
+    };
+  }
+  showMessageBoard(flag) {
+    console.log(flag);
+    this.setState({ MessageBoardVisible: flag})
   }
 
   componentDidMount() {
@@ -26,15 +31,25 @@ export default class index extends Component {
     }
     this.setState({listData: data});
   }
+  
 
   render() {
-    const { listData, initLoading, loading } = this.state;
+    const { listData, initLoading, loading, MessageBoardVisible } = this.state;
     
     const IconText = ({ icon, text }) => (
-      <Button style={{ borderRadius: '10px'}}>
-        {React.createElement(icon)}
-        {text}
-      </Button>
+      icon === MessageOutlined ? 
+      (
+        <Button 
+          style={{ borderRadius: '10px'}} 
+          onClick={() => this.showMessageBoard(true)}>
+            {React.createElement(icon)}
+            {text}
+        </Button>
+      ) :
+        <Button style={{ borderRadius: '10px'}} >
+          {React.createElement(icon)}
+          {text}
+        </Button>
     );
 
     const loadMore =
@@ -87,6 +102,27 @@ export default class index extends Component {
                 />
               }
             >
+              <Drawer
+                title={`aaa Drawer`}
+                placement="right"
+                size={'large'}
+                onClose={() => this.showMessageBoard(false)}
+                visible={MessageBoardVisible}
+                closable={false}
+                destroyOnClose={true}
+                mask={false}
+                // getContainer={false}
+                extra={
+                  <Space>
+                    <Button onClick={() => this.showMessageBoard(false)}>Cancel</Button>
+                    <Button type="primary" onClick={() => this.showMessageBoard(false)}>
+                      OK
+                    </Button>
+                  </Space>
+                }
+              >
+                <p>Some contents...</p>
+              </Drawer>
               <List.Item.Meta
                 avatar={<Avatar src={item.avatar} />}
                 title={<a href={item.href}>{item.title}</a>}

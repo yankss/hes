@@ -13,6 +13,7 @@ import PriceDetails from '../../pages/PriceDetails';
 import RentDetails from '../../pages/RentDetails';
 import SystemManagement from '../../pages/SystemManagement'
 import ChetMessage  from '../../pages/ChetMessage'
+// import MessageDetail from '../../pages/ChetMessage/MessageDetail'
 // import ErrorPage from '../../pages/Error'
 
 const { Header, Content } = Layout;
@@ -108,6 +109,7 @@ export default class App extends Component {
                 <Route exact path="/rent-details" component={RentDetails}></Route>
                 <Route exact path="/system-management" component={SystemManagement}></Route>
                 <Route exact path="/chet-message" component={ChetMessage}></Route>
+                {/* <Route exact path="/chet-message/message-detail" component={MessageDetail}></Route> */}
               </Switch>
             </Content>
           </Layout>
