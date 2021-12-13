@@ -58,7 +58,6 @@ export default class index extends Component {
                   return (
                     <Button
                       key={index}
-                      style={{ borderRadius: '10px' }}
                       onClick={() => record.actionMethod[index](text)}
                     >
                       {item}

@@ -1,0 +1,10 @@
+.ant-list-vertical .ant-list-item-extra {
+  width: 250px !important;
+}
+
+.interactive-bar  {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}

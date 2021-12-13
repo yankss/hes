@@ -8,11 +8,11 @@ import stores from './stores'
 
 
 ReactDOM.render(
-  <ConfigProvider csp={{ nonce: 'YourNonceCode' }}>
+  (<ConfigProvider csp={{ nonce: 'YourNonceCode' }}>
     <Provider {...stores}>
         <App/>
       </Provider>
-  </ConfigProvider>,
+  </ConfigProvider>),
   document.getElementById('root')
 );
 

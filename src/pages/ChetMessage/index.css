@@ -12,3 +12,17 @@
 /* .ant-drawer-content-wrapper {
   width: 100% !important;
 } */
+.footer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.fiter-bar{
+  width: 80%;
+  margin-right: 25px;
+  display: flex;
+  float: right;
+  align-items: flex-end;
+  justify-content: flex-end;
+}

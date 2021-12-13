@@ -49,3 +49,6 @@ body {
   background: radial-gradient(#5FA1DB, transparent)  !important;
   border-radius: 10px;
 }
+.ant-btn {
+  border-radius: 10px;
+}
