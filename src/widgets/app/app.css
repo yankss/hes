@@ -52,3 +52,15 @@ body {
 .ant-btn {
   border-radius: 10px;
 }
+.ant-typography {
+  color: #e0e0e0;
+}
+.ant-typography h1, h1.ant-typography {
+  color: #e0e0e0;
+}
+.ant-typography h2, h2.ant-typography {
+  color: #e0e0e0;
+}
+.ant-typography p, div.ant-typography {
+  font-size: 20px !important;
+}

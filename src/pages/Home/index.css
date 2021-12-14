@@ -8,27 +8,31 @@
 .placeholder img:nth-child(1) {
     width: 500px;
     height: 500px;
-    top: 100px;
+    top: 50px;
     left: -50px;
 }
 .placeholder img:nt-child(2) {
   width: 500px;
   height: 500px;
+  top: 0px;
   
 }
 .placeholder img:nth-child(3) {
   width: 500px;
   height: 500px;
-  top: 150px;
+  top: 100px;
+  left: -30px;
 }
 .placeholder img:nth-child(4) {
   width: 600px;
   height: 600px;
   left: 50px;
+  top: -50px;
 }
 .placeholder img:nth-child(5) {
   width: 600px;
   height: 600px;
+  top: -30px;
 }
 
 .placeholder {
@@ -38,6 +42,8 @@
   position: relative;
   border-radius: 16px;
   box-shadow: 0 0 7px .5px #ddd;
+  background-size: cover;
+  background-image: url('../../assets/imgs/cityBg5.jpg');
 }
 .placeholder img {
   --moveX: 20;
@@ -114,4 +120,14 @@
   width: 100%;
   height: 100%;
   padding: 0;
+}
+
+.description {
+  width: 50%;
+  float: right;
+  top: 60px;
+  position: relative;
+  right: 50px;
+  color: #c5cbcb !important;
+  /* background-color: rgba(0, 0, 0, 0.4); */
 }
