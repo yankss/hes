@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import * as echarts from 'echarts';
 import ListPage from '../../../widgets/list-page';
-import { Tag, Space, Button, Tooltip, Popconfirm, message, Modal } from 'antd';
-import { FundTwoTone, DeleteTwoTone, BulbTwoTone } from '@ant-design/icons';
+import { Tag, Space, Button, Tooltip, Popconfirm, message, Modal, notification } from 'antd';
+import { FundTwoTone, DeleteTwoTone, BulbTwoTone, SmileOutlined  } from '@ant-design/icons';
 import {
   TitleComponent,
   ToolboxComponent,
@@ -83,16 +83,12 @@ export default class index extends Component {
                       <Popconfirm
                         key={index}
                         title="Are you sure to show this task?"
-                        onConfirm={this.confirm}
+                        onConfirm={(e) => this.confirm(e, 'showFundTwoTone', record)}
                         onCancel={this.cancel}
                         okText="Yes"
                         cancelText="No"
                       >
-                        <Button
-                          onClick={() => record.actionMethod[index](record)}
-                        >
-                          {item}
-                        </Button>
+                        <Button>{item}</Button>
                       </Popconfirm>
                       
                     )
@@ -102,16 +98,12 @@ export default class index extends Component {
                       <Popconfirm
                         key={index}
                         title="Are you sure to delete this task?"
-                        onConfirm={this.confirm}
+                        onConfirm={(e) => this.confirm(e, 'showDeleteTwoTone', record)}
                         onCancel={this.cancel}
                         okText="Yes"
                         cancelText="No"
                       >
-                        <Button
-                          onClick={() => record.actionMethod[index](record)}
-                        >
-                          {item}
-                        </Button>
+                        <Button>{item}</Button>
                       </Popconfirm>
                     )
                   }
@@ -120,16 +112,12 @@ export default class index extends Component {
                       <Popconfirm
                         key={index}
                         title="Are you sure to notice this task?"
-                        onConfirm={this.confirm}
+                        onConfirm={(e) => this.confirm(e, 'showBulbTwoTone',record)}
                         onCancel={this.cancel}
                         okText="Yes"
                         cancelText="No"
                       >
-                        <Button
-                          onClick={() => record.actionMethod[index](record)}
-                        >
-                          {item}
-                        </Button>
+                        <Button>{item}</Button>
                       </Popconfirm>
                     )
                   }else {
@@ -149,11 +137,6 @@ export default class index extends Component {
           address: 'New York No. 1 Lake Park',
           tags: ['nice', 'developer'],
           actionImg: [<FundTwoTone />, <DeleteTwoTone />, <BulbTwoTone />],
-          actionMethod: [
-            this.showFundTwoTone,
-            this.showDeleteTwoTone,
-            this.showBulbTwoTone
-          ]
         },
         {
           key: '2',
@@ -162,11 +145,6 @@ export default class index extends Component {
           address: 'London No. 1 Lake Park',
           tags: ['loser', 'houseManagement'],
           actionImg: [<FundTwoTone />, <DeleteTwoTone />, <BulbTwoTone />],
-          actionMethod: [
-            this.showFundTwoTone,
-            this.showDeleteTwoTone,
-            this.showBulbTwoTone
-          ]
         },
         {
           key: '3',
@@ -175,11 +153,6 @@ export default class index extends Component {
           address: 'Sidney No. 1 Lake Park',
           tags: ['cool', 'teacher'],
           actionImg: [<FundTwoTone />, <DeleteTwoTone />, <BulbTwoTone />],
-          actionMethod: [
-            this.showFundTwoTone,
-            this.showDeleteTwoTone,
-            this.showBulbTwoTone
-          ]
         },
         {
           key: '4',
@@ -188,11 +161,6 @@ export default class index extends Component {
           address: '钟落潭广新路388号',
           tags: ['cool', 'teacher', '稳重'],
           actionImg: [<FundTwoTone />, <DeleteTwoTone />, <BulbTwoTone />],
-          actionMethod: [
-            this.showFundTwoTone,
-            this.showDeleteTwoTone,
-            this.showBulbTwoTone
-          ]
         },
         {
           key: '5',
@@ -201,11 +169,6 @@ export default class index extends Component {
           address: '钟落潭广新路388号',
           tags: ['cool', 'teacher', '稳重'],
           actionImg: [<FundTwoTone />, <DeleteTwoTone />, <BulbTwoTone />],
-          actionMethod: [
-            this.showFundTwoTone,
-            this.showDeleteTwoTone,
-            this.showBulbTwoTone
-          ]
         },
         {
           key: '6',
@@ -214,11 +177,6 @@ export default class index extends Component {
           address: '钟落潭广新路388号',
           tags: ['cool', 'teacher', '稳重'],
           actionImg: [<FundTwoTone />, <DeleteTwoTone />, <BulbTwoTone />],
-          actionMethod: [
-            this.showFundTwoTone,
-            this.showDeleteTwoTone,
-            this.showBulbTwoTone
-          ]
         },
         {
           key: '7',
@@ -227,11 +185,6 @@ export default class index extends Component {
           address: '钟落潭广新路388号',
           tags: ['cool', 'teacher', '稳重'],
           actionImg: [<FundTwoTone />, <DeleteTwoTone />, <BulbTwoTone />],
-          actionMethod: [
-            this.showFundTwoTone,
-            this.showDeleteTwoTone,
-            this.showBulbTwoTone
-          ]
         },
         {
           key: '8',
@@ -240,22 +193,16 @@ export default class index extends Component {
           address: '钟落潭广新路388号',
           tags: ['cool', 'teacher', '稳重'],
           actionImg: [<FundTwoTone />, <DeleteTwoTone />, <BulbTwoTone />],
-          actionMethod: [
-            this.showFundTwoTone,
-            this.showDeleteTwoTone,
-            this.showBulbTwoTone
-          ]
         },
       ],
       title: '房屋管理',
       tableHeight: 460,
       chartVisible: false,
       chartOptions: {},
+      chartTitle: '',
+      address: '',
     };
     
-    this.showFundTwoTone = this.showFundTwoTone.bind(this);
-    this.showDeleteTwoTone = this.showDeleteTwoTone.bind(this);
-    this.showBulbTwoTone = this.showBulbTwoTone.bind(this);
     this.confirm = this.confirm.bind(this);
     this.cancel = this.cancel.bind(this);
     this.closeChartVisible = this.closeChartVisible.bind(this);
@@ -263,105 +210,115 @@ export default class index extends Component {
   
 
 
-  confirm(e) {
+  confirm(e, type, record) {
     message.success('Click on Yes');
-    this.setState({ chartVisible: true })
-    setTimeout(() => {
-      if(this.state.chartVisible === true) {
-        var chartDom = document.querySelector('#main')
-        var myChart = echarts.init(chartDom);
-        var option;
+    switch (type) {
+      case 'showFundTwoTone':
+        console.log(record);
+        this.setState({ chartTitle: record.name })
+        this.setState({ address: record.address });
+        this.setState({ chartVisible: true })
+        setTimeout(() => {
+          var chartDom = document.querySelector('#main')
+          var myChart = echarts.init(chartDom);
+          var option;
+    
+          option = {
+            title: {
+              text: 'Stacked Line'
+            },
+            tooltip: {
+              trigger: 'axis'
+            },
+            legend: {
+              data: ['Email', 'Union Ads', 'Video Ads', 'Direct', 'Search Engine']
+            },
+            grid: {
+              left: '3%',
+              right: '4%',
+              bottom: '3%',
+              containLabel: true
+            },
+            toolbox: {
+              feature: {
+                saveAsImage: {}
+              }
+            },
+            xAxis: {
+              type: 'category',
+              boundaryGap: false,
+              data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            },
+            yAxis: {
+              type: 'value'
+            },
+            series: [
+              {
+                name: 'Email',
+                type: 'line',
+                stack: 'Total',
+                data: [120, 132, 101, 134, 90, 230, 210]
+              },
+              {
+                name: 'Union Ads',
+                type: 'line',
+                stack: 'Total',
+                data: [220, 182, 191, 234, 290, 330, 310]
+              },
+              {
+                name: 'Video Ads',
+                type: 'line',
+                stack: 'Total',
+                data: [150, 232, 201, 154, 190, 330, 410]
+              },
+              {
+                name: 'Direct',
+                type: 'line',
+                stack: 'Total',
+                data: [320, 332, 301, 334, 390, 330, 320]
+              },
+              {
+                name: 'Search Engine',
+                type: 'line',
+                stack: 'Total',
+                data: [820, 932, 901, 934, 1290, 1330, 1320]
+              }
+            ]
+          };
+    
+          option && myChart.setOption(option);
+          this.setState({ chartOptions: option});
+        
+        }, 0);
+      break;
 
-        option = {
-          title: {
-            text: 'Stacked Line'
-          },
-          tooltip: {
-            trigger: 'axis'
-          },
-          legend: {
-            data: ['Email', 'Union Ads', 'Video Ads', 'Direct', 'Search Engine']
-          },
-          grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-          },
-          toolbox: {
-            feature: {
-              saveAsImage: {}
-            }
-          },
-          xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-          },
-          yAxis: {
-            type: 'value'
-          },
-          series: [
-            {
-              name: 'Email',
-              type: 'line',
-              stack: 'Total',
-              data: [120, 132, 101, 134, 90, 230, 210]
-            },
-            {
-              name: 'Union Ads',
-              type: 'line',
-              stack: 'Total',
-              data: [220, 182, 191, 234, 290, 330, 310]
-            },
-            {
-              name: 'Video Ads',
-              type: 'line',
-              stack: 'Total',
-              data: [150, 232, 201, 154, 190, 330, 410]
-            },
-            {
-              name: 'Direct',
-              type: 'line',
-              stack: 'Total',
-              data: [320, 332, 301, 334, 390, 330, 320]
-            },
-            {
-              name: 'Search Engine',
-              type: 'line',
-              stack: 'Total',
-              data: [820, 932, 901, 934, 1290, 1330, 1320]
-            }
-          ]
-        };
+      case 'showDeleteTwoTone':
+      
+      break;
 
-        option && myChart.setOption(option);
-        this.setState({ chartOptions: option});
-      }
-    }, 0);
+      case 'showBulbTwoTone':
+        notification.open({
+          message: 'Notification Title',
+          description:
+            'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+          icon: <SmileOutlined style={{ color: '#108ee9' }} />,
+        });
+      break;
+    
+      default:
+        break;
+    }
   }
+  
   cancel(e) {
     message.error('Click on No');
-  }
-  showFundTwoTone(text) {
-    console.log('show');
-    console.log('text', text);
-  }
-  showDeleteTwoTone(text) {
-    console.log('delete');
-    console.log('text', text);
-  }
-  showBulbTwoTone(text) {
-    console.log('bulb');
-    console.log('text', text);
   }
   closeChartVisible() {
     this.setState({ chartVisible: false });
   }
 
-
   render() {
-    const { columns, data, title, tableHeight, chartVisible } = this.state;
+    const { columns, data, title, tableHeight, chartVisible, chartTitle, address } = this.state;
 
     return (
       <div className="my-content">
@@ -374,13 +331,13 @@ export default class index extends Component {
         </ListPage>
         {/* 图标弹框 */}
         <Modal
-          title="Modal 400px width"
+          title={`${chartTitle}位于${address}房子近几个月的租金曲线图 :`}
           centered
           onCancel={this.closeChartVisible}
           visible={chartVisible}
           width={1100}
         >
-          <div id='main' style={{width: '1000px', height: '700px'}}></div>
+          <div id='main' style={{width: '1000px', height: '600px'}}></div>
         </Modal>
       </div>
     )

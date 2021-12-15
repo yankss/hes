@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react';
 import menuList from '../../config/menu'
-import { Card, Button, Typography } from 'antd';
+import { Card, Button, Typography, Statistic, Row, Col } from 'antd';
+import { LikeOutlined, ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import './index.css'
 import homeStore from './home-store';
 import ball1 from '../../assets/imgs/balls/ball01.png';
@@ -148,35 +149,55 @@ const { Title, Paragraph, Text, Link } = Typography;
             })
           }
         </div>
-        
-        {/* <ul>
-          {
-            menuList.map((menuItem, index1) => {
-              return menuItem.path ? (
-                <li className="container" key={index1}>
-                  <div className="mainContainer">
-                    <a href={`#${menuItem.path}`}>
-                      {menuItem.label}
-                    </a>
-                  </div>
-                  <div className="containerIntroduce" />
-                </li>
-              )
-              : (
-                menuItem.children.map((itemChild, index2) => (
-                  <li className="container" key={index2}>
-                    <div className="mainContainer">
-                      <a href={`#${itemChild.path}`}>
-                        {itemChild.label}
-                      </a>
-                    </div>
-                    <div className="containerIntroduce" />
-                  </li>
-                ))
-              )
-            })
-          }
-        </ul> */}
+        <div className='main-statistic'>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Statistic title="Feedback" value={1128} prefix={<LikeOutlined />} />
+            </Col>
+            <Col span={12}>
+              <Statistic title="Unmerged" value={93} suffix="/ 100" />
+            </Col>
+          </Row>
+          <div className="site-statistic-demo-card">
+            <Row gutter={16}>
+              <Col span={12}>
+                <Card>
+                  <Statistic
+                    title="Active"
+                    value={11.28}
+                    precision={2}
+                    valueStyle={{ color: '#3f8600' }}
+                    prefix={<ArrowUpOutlined />}
+                    suffix="%"
+                  />
+                </Card>
+              </Col>
+              <Col span={12}>
+                <Card>
+                  <Statistic
+                    title="Idle"
+                    value={9.3}
+                    precision={2}
+                    valueStyle={{ color: '#cf1322' }}
+                    prefix={<ArrowDownOutlined />}
+                    suffix="%"
+                  />
+                </Card>
+              </Col>
+            </Row>
+          </div>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Statistic title="Active Users" value={112893} />
+            </Col>
+            <Col span={12}>
+              <Statistic title="Account Balance (CNY)" value={112893} precision={2} />
+            </Col>
+          </Row>
+        </div>
+        <div style={{width: '100%', height: '400px'}}>
+
+        </div>
       </div>
     )
   }

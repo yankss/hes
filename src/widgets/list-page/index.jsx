@@ -56,7 +56,7 @@ export default class componentName extends Component {
       </Row>
     );
 
-    const { columns, data, title, tableHeight } = this.props;
+    const { columns, data, title, tableHeight, tableExpand } = this.props;
     // const { selectedRow } = this.state;
     return (
       <div className="my-content">
@@ -80,26 +80,7 @@ export default class componentName extends Component {
           dataSource={data} 
           pagination={false}
           scroll={{ y: tableHeight }}
-          // rowSelection={{
-            // type: 'radio',
-            // selectedRowKeys: selectedRow,
-            // onChange: (_, selectedRows) => {
-            //   this.setState({ selectedRow:selectedRows[0].key })
-            // },
-            // onSelect: (record, selected, selectedRows, nativeEvent) => {
-            //   console.log('selected', selected);
-            //   console.log('selectedRows', selectedRows);
-            //   // console.log('nativeEvent', nativeEvent);
-            // }
-          // }}
-          // onRow={record => {
-          //   return {
-          //     onClick: event => {
-
-          //       this.setState({ selectedRow: [selectedRow, record.key] });
-          //     }
-          //   }
-          // }}
+          expandable={tableExpand}
         >
           {
             columns.map((item,index) => {

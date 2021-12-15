@@ -85,22 +85,22 @@
   margin: auto;
   padding-top: 20px;
 }
+.main-statistic {
+  width: 90%;
+  border: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 7px .5px #ddd;
+}
 
 .item-container {
   margin: 8px;
   border-radius: 10px;
-  /* width: 200px;
-  height: 200px;
-  margin: 10px;
-  border-radius: 16px;
-  border: #c5cbcb 1px solid;
-  transition: all 0.3s; */
 }
-/* .item-container:hover {
-  box-shadow: 0 0 7px .5px #ddd;
-  cursor: pointer;
-  transform: scale(1.05);
-} */
 
 .containerIntroduce {
   width: 50%;
