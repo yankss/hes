@@ -41,7 +41,14 @@ export default class App extends Component {
         <Router>
           <Layout className="site-layout">
             <Header className="site-layout-background" style={{ padding: 0 }}>
-              <Menu onClick={this.handleClick} className="my-menu" theme="dark"  mode="horizontal" defaultSelectedKeys={current} >
+              <Menu 
+                onClick={this.handleClick} 
+                className="my-menu"
+                selectedKeys={[current]}
+                theme="dark"  
+                mode="horizontal" 
+                defaultSelectedKeys={current} 
+              >
                 {
                   menuList.map((item, index1) => {
                     if(item.children) {
@@ -66,7 +73,7 @@ export default class App extends Component {
                           <MenuItem icon={<item.icon/>} key={item.value} >
                             <Link to={`${item.path}`}>
                               { count !== 0 
-                                ? <Badge count={count} color="cyan" style={{marginTop: '16px', marginRight: '-5px'}}>
+                                ? <Badge count={count} color="cyan" style={{marginTop: '16px', marginRight: '-5px', }}>
                                     {item.label}
                                   </Badge>
                                 :

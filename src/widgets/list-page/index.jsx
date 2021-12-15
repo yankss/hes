@@ -23,11 +23,11 @@ export default class componentName extends Component {
     
     const content = (
       <>
-        <Paragraph>
+        <Paragraph className='page-header-description'>
           Ant Design interprets the color system into two levels: a system-level color system and a
           product-level color system.
         </Paragraph>
-        <Paragraph>
+        <Paragraph className='page-header-description'>
           Ant Design&#x27;s design team preferred to design with the HSB color model, which makes it
           easier for designers to have a clear psychological expectation of color when adjusting colors,
           as well as facilitate communication in teams.
@@ -108,7 +108,7 @@ export default class componentName extends Component {
                 key={index}
                 title={item.title}
                 dataIndex={item.key}
-                align={item.align || 'center'}
+                align={item.align || 'left'}
                 render={item.render}
               >
               </Column>

@@ -21,6 +21,9 @@ img  {
 .site-page-header {
   padding: 4px 24px 0 24px;
 }
+.page-header-description {
+  color: black !important;
+}
 /* .image {
   display: flex;
   align-items: center;
