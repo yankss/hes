@@ -77,3 +77,9 @@ body {
 .ant-card-bordered {
   border: 0px;
 }
+.ant-table-expanded-row ant-table-expanded-row-level-1 {
+  transition-duration: 1s;
+}
+.ant-page-header-content {
+  padding-top: 0px;
+}

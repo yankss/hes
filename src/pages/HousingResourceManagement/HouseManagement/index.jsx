@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import * as echarts from 'echarts';
 import ListPage from '../../../widgets/list-page';
-import { Tag, Space, Button, Tooltip, Popconfirm, message, Modal, notification } from 'antd';
-import { FundTwoTone, DeleteTwoTone, BulbTwoTone, SmileOutlined  } from '@ant-design/icons';
+import { Tag, Space, Button, Tooltip, Popconfirm, message, Modal, notification, Col, Input, Row, Select, Drawer } from 'antd';
+import { FundTwoTone, EditTwoTone, BulbTwoTone, SmileOutlined  } from '@ant-design/icons';
 import {
   TitleComponent,
   ToolboxComponent,
@@ -13,6 +13,8 @@ import {
 import { LineChart } from 'echarts/charts';
 import { UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
+import NewHouse  from '../../../widgets/NewHouse'
+import './index.css'
 
 echarts.use([
   TitleComponent,
@@ -24,22 +26,36 @@ echarts.use([
   CanvasRenderer,
   UniversalTransition
 ]);
+
+
 export default class index extends Component {
   constructor(props) {
     super(props);
     this.state = {
       columns : [
         {
-          title: 'Name',
-          dataIndex: 'name',
-          key: 'name',
+          title: 'RenterName',
+          dataIndex: 'renterName',
+          key: 'renterName',
           render: text => <Button type="link">{text}</Button>,
-          align: 'center'
         },
         {
-          title: 'Age',
-          dataIndex: 'age',
-          key: 'age',
+          title: 'RenterPhone',
+          dataIndex: 'renterPhone',
+          key: 'renterPhone',
+          render: text => <Button type="link">{text}</Button>,
+        },
+        {
+          title: 'LandlordName',
+          dataIndex: 'landlordName',
+          key: 'landlordName',
+          render: text => <Button type="link">{text}</Button>,
+        },
+        {
+          title: 'LandlordPhone',
+          dataIndex: 'landlordPhone',
+          key: 'landlordPhone',
+          render: text => <Button type="link">{text}</Button>,
         },
         {
           title: 'Address',
@@ -52,9 +68,24 @@ export default class index extends Component {
           )
         },
         {
+          title: 'LeaseState',
+          key: 'leaseState',
+          dataIndex: 'leaseState',
+          render: leaseState => (
+            <>
+              {
+                leaseState === '已出租' ? 
+                (<Tag color='blue'>{leaseState}</Tag>) : 
+                (<Tag color='yellow'>{leaseState}</Tag>)
+              }
+            </>
+          ),
+        },
+        {
           title: 'Tags',
           key: 'tags',
           dataIndex: 'tags',
+          width: '300px',
           render: tags => (
             <>
               {tags.map(tag => {
@@ -72,8 +103,41 @@ export default class index extends Component {
           ),
         },
         {
+          title: 'Rent',
+          dataIndex: 'rent',
+          key: 'rent',
+          width: 100,
+          fixed: 'right',
+        },
+        {
+          title: 'WaterRate',
+          dataIndex: 'waterRate',
+          key: 'waterRate',
+          width: 100,
+          fixed: 'right',
+        },
+        {
+          title: 'ElectricityRate',
+          dataIndex: 'electricityRate',
+          key: 'electricityRate',
+          width: 100,
+          fixed: 'right',
+        },
+        {
+          title: 'TotalAmount',
+          dataIndex: 'totalAmount',
+          key: 'totalAmount',
+          width: 100,
+          fixed: 'right',
+          defaultSortOrder: 'descend',
+          sorter: (a, b) => a.totalAmount - b.totalAmount,
+          render: (text, record) => <Button type='link'>{text}</Button>
+        },
+        {
           title: 'Action',
           key: 'action',
+          fixed: 'right',
+          // width: 300,
           render: (text, record) => (
             <Space size="middle">
               {
@@ -128,87 +192,153 @@ export default class index extends Component {
             </Space>
           ),
         },
+        
       ],
       data : [
         {
           key: '1',
-          name: 'John Brown',
+          rent: 500,
+          totalAmount: 0,
+          waterRate: 10.2,
+          electricityRate: 50.1,
+          renterName: 'John Brown',
           age: 32,
           address: 'New York No. 1 Lake Park',
           tags: ['nice', 'developer'],
-          actionImg: [<FundTwoTone />, <DeleteTwoTone />, <BulbTwoTone />],
+          leaseState: '已出租',
+          actionImg: [<FundTwoTone />, <EditTwoTone />, <BulbTwoTone />],
         },
         {
           key: '2',
-          name: 'Jim Green',
+          rent: 400,
+          totalAmount: 0,
+          waterRate: 17.2,
+          electricityRate: 170.1,
+          renterName: 'Jim Green',
           age: 42,
           address: 'London No. 1 Lake Park',
           tags: ['loser', 'houseManagement'],
-          actionImg: [<FundTwoTone />, <DeleteTwoTone />, <BulbTwoTone />],
+          leaseState: '已出租',
+          actionImg: [<FundTwoTone />, <EditTwoTone />, <BulbTwoTone />],
         },
         {
           key: '3',
-          name: 'Joe Black',
+          rent: 800,
+          totalAmount: 0,
+          waterRate: 10.2,
+          electricityRate: 200.1,
+          renterName: 'Joe Black',
           age: 32,
           address: 'Sidney No. 1 Lake Park',
           tags: ['cool', 'teacher'],
-          actionImg: [<FundTwoTone />, <DeleteTwoTone />, <BulbTwoTone />],
+          leaseState: '未出租',
+          actionImg: [<FundTwoTone />, <EditTwoTone />, <BulbTwoTone />],
         },
         {
           key: '4',
-          name: '小成',
+          totalAmount: 0,
+          rent: 750,
+          waterRate: 40.2,
+          electricityRate: 150.1,
+          renterName: '小成',
           age: 32,
           address: '钟落潭广新路388号',
           tags: ['cool', 'teacher', '稳重'],
-          actionImg: [<FundTwoTone />, <DeleteTwoTone />, <BulbTwoTone />],
+          leaseState: '未出租',
+          actionImg: [<FundTwoTone />, <EditTwoTone />, <BulbTwoTone />],
         },
         {
           key: '5',
-          name: '小成',
+          totalAmount: 0,
+          rent: 1050,
+          waterRate: 43.2,
+          electricityRate: 350.1,
+          renterName: '小成',
           age: 32,
           address: '钟落潭广新路388号',
           tags: ['cool', 'teacher', '稳重'],
-          actionImg: [<FundTwoTone />, <DeleteTwoTone />, <BulbTwoTone />],
+          leaseState: '已出租',
+          actionImg: [<FundTwoTone />, <EditTwoTone />, <BulbTwoTone />],
         },
         {
           key: '6',
-          name: '小成',
+          totalAmount: 0,
+          rent: 400,
+          waterRate: 10.2,
+          electricityRate: 50.1,
+          renterName: '小成',
           age: 32,
           address: '钟落潭广新路388号',
           tags: ['cool', 'teacher', '稳重'],
-          actionImg: [<FundTwoTone />, <DeleteTwoTone />, <BulbTwoTone />],
+          leaseState: '已出租',
+          actionImg: [<FundTwoTone />, <EditTwoTone />, <BulbTwoTone />],
         },
         {
           key: '7',
-          name: '小成',
+          totalAmount: 0,
+          rent: 400,
+          waterRate: 10.2,
+          electricityRate: 50.1,
+          renterName: '小成',
           age: 32,
           address: '钟落潭广新路388号',
           tags: ['cool', 'teacher', '稳重'],
-          actionImg: [<FundTwoTone />, <DeleteTwoTone />, <BulbTwoTone />],
+          leaseState: '未出租',
+          actionImg: [<FundTwoTone />, <EditTwoTone />, <BulbTwoTone />],
         },
         {
           key: '8',
-          name: '小成',
+          totalAmount: 0,
+          rent: 400,
+          waterRate: 10.2,
+          electricityRate: 50.1,
+          renterName: '小成',
           age: 32,
           address: '钟落潭广新路388号',
           tags: ['cool', 'teacher', '稳重'],
-          actionImg: [<FundTwoTone />, <DeleteTwoTone />, <BulbTwoTone />],
+          leaseState: '已出租',
+          actionImg: [<FundTwoTone />, <EditTwoTone />, <BulbTwoTone />],
         },
       ],
       title: '房屋管理',
-      tableHeight: 460,
+      tableHeight: 500,
+      tableWidth: '150%',
       chartVisible: false,
       chartOptions: {},
       chartTitle: '',
       address: '',
+      tagChildren: [
+        { value: 'gold' },
+        { value: 'lime' },
+        { value: 'green' }, 
+        { value: 'cyan' },
+        { value: 'blue'}
+      ],
+      leaseStateTag: [
+        { value: 'blue' },
+        { value: 'yellow' },
+      ],
+      newHouseVisible: false
+      
     };
     
     this.confirm = this.confirm.bind(this);
     this.cancel = this.cancel.bind(this);
     this.closeChartVisible = this.closeChartVisible.bind(this);
+    this.showNewHouseBoard = this.showNewHouseBoard.bind(this);
   }
   
 
+  componentDidMount() {
+    let data = this.state.data;
+    data.map(item => {
+      item.totalAmount = item.rent  + item.electricityRate + item.waterRate;
+      item.totalAmount = (item.totalAmount+'').slice(0,(item.totalAmount+'').indexOf('.')+3)
+      return item;
+    })
+
+    this.setState({ data });
+  }
 
   confirm(e, type, record) {
     message.success('Click on Yes');
@@ -316,10 +446,84 @@ export default class index extends Component {
   closeChartVisible() {
     this.setState({ chartVisible: false });
   }
+  showNewHouseBoard(flag) {
+    console.log(1111111111111);
+    this.setState({ newHouseVisible: flag})
+  }
 
   render() {
-    const { columns, data, title, tableHeight, chartVisible, chartTitle, address } = this.state;
+    const { columns, data, title, tableHeight, tableWidth, chartVisible, chartTitle, address, tagChildren, leaseStateTag, newHouseVisible } = this.state;
+    
+    const headerButtonArray =  [
+      <Button key="1" type="primary" onClick={() => this.showNewHouseBoard(true)}>NewHouse</Button>,
+      <Button key="3" type="primary">Reset</Button>,
+      <Button key="2" type="primary">Search</Button>,
+      
+    ]
 
+    function tagRender(props) {
+      console.log('props', props);
+      const { value, closable, onClose } = props;
+      const onPreventMouseDown = event => {
+        event.preventDefault();
+        event.stopPropagation();
+      };
+      return (
+        <Tag
+          color={value}
+          onMouseDown={onPreventMouseDown}
+          closable={closable}
+          onClose={onClose}
+          style={{ marginRight: 3 }}
+        >
+          {
+            value === 'gold' ? '热血' 
+            : value === 'lime' ? '搞笑' 
+            : value === 'green' ? '无聊' 
+            : value === 'cyan' ? '美食' 
+            : value === 'blue' ? '已出租' 
+            : value === 'yellow' ? '未出租' 
+            : '运动 '
+          }
+        </Tag>
+      );
+    }
+
+    const filterBar = (
+      <>
+        <Row className='filter-bar'>
+          <Col style={{margin: '0 10px'}} span={3}><Input placeholder="请输入租客姓名 :" allowClear={true}/></Col>
+          <Col style={{margin: '0 10px'}} span={3}><Input placeholder="请输入屋主姓名 :" allowClear={true}/></Col>
+          <Col style={{margin: '0 10px'}} span={6}><Input placeholder="请输入地址 :" allowClear={true}/></Col>
+          <Col style={{margin: '0 10px'}} span={3}>
+            <Select
+              mode="multiple"
+              showArrow
+              style={{float:  'left', marginRight: '20px', width: '100%'}}
+              allowClear={true}
+              placeholder="请输入租赁状态 :"
+              tagRender={tagRender}
+              onChange={this.tagChange}
+              options={leaseStateTag}
+            >
+            </Select>
+          </Col>
+          <Col style={{margin: '0 10px'}} span={6}>
+            <Select
+              mode="multiple"
+              showArrow
+              style={{float:  'left', marginRight: '20px', width: '100%'}}
+              allowClear={true}
+              placeholder="请输入标签 ："
+              tagRender={tagRender}
+              onChange={this.tagChange}
+              options={tagChildren}
+            >
+            </Select>
+          </Col>
+        </Row>
+      </>
+    )
     return (
       <div className="my-content">
         <ListPage 
@@ -327,6 +531,9 @@ export default class index extends Component {
           data={data} 
           title={title}
           tableHeight={tableHeight}
+          headerButtonArray={headerButtonArray}
+          filterBar={filterBar}
+          tableWidth={tableWidth}
         >
         </ListPage>
         {/* 图标弹框 */}
@@ -339,6 +546,23 @@ export default class index extends Component {
         >
           <div id='main' style={{width: '1000px', height: '600px'}}></div>
         </Modal>
+        <Drawer
+          title="Create a new house"
+          width={720}
+          onClose={() => this.showNewHouseBoard(false)}
+          visible={newHouseVisible}
+          bodyStyle={{ paddingBottom: 80 }}
+          extra={
+            <Space>
+              <Button onClick={() => this.showNewHouseBoard(false)}>Cancel</Button>
+              <Button onClick={() => this.showNewHouseBoard(false)} type="primary">
+                Submit
+              </Button>
+            </Space>
+          }
+        >
+          <NewHouse/>
+        </Drawer>
       </div>
     )
   }

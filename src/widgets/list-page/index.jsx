@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Pagination, Button, Tag, PageHeader, Row, Typography } from 'antd';
+import { Table, Pagination, Tag, PageHeader, Row, Typography, } from 'antd';
 import './index.css'
 
 const { Column } = Table;
@@ -10,16 +10,14 @@ export default class componentName extends Component {
     super(props);
     this.state = {
       selectedRow: '',
+      expandedArr: [],
+      
     }
   }
   render() {
 
-    const IconLink = ({ src, text }) => (
-      <a className="example-link" href="/">
-        <img className="example-link-icon" src={src} alt={text} />
-        {text}
-      </a>
-    );
+    const { columns, data, title, tableHeight, tableExpand, headerButtonArray, filterBar, tableWidth } = this.props;
+    const { expandedArr, } = this.state;
     
     const content = (
       <>
@@ -27,25 +25,9 @@ export default class componentName extends Component {
           Ant Design interprets the color system into two levels: a system-level color system and a
           product-level color system.
         </Paragraph>
-        <Paragraph className='page-header-description'>
-          Ant Design&#x27;s design team preferred to design with the HSB color model, which makes it
-          easier for designers to have a clear psychological expectation of color when adjusting colors,
-          as well as facilitate communication in teams.
-        </Paragraph>
-        <div>
-          <IconLink
-            src="https://gw.alipayobjects.com/zos/rmsportal/MjEImQtenlyueSmVEfUD.svg"
-            text="Quick Start"
-          />
-          <IconLink
-            src="https://gw.alipayobjects.com/zos/rmsportal/NbuDUAuBlIApFuDvWiND.svg"
-            text=" Product Info"
-          />
-          <IconLink
-            src="https://gw.alipayobjects.com/zos/rmsportal/ohOEPSYdDTNnyMbGuyLb.svg"
-            text="Product Doc"
-          />
-        </div>
+        {
+          filterBar
+        }
       </>
     );
 
@@ -56,31 +38,42 @@ export default class componentName extends Component {
       </Row>
     );
 
-    const { columns, data, title, tableHeight, tableExpand } = this.props;
-    // const { selectedRow } = this.state;
+    
     return (
       <div className="my-content">
         <PageHeader
           title={title}
           className="site-page-header"
           tags={<Tag color="blue">Running</Tag>}
-          extra={[
-            <Button key="3">Operation</Button>,
-            <Button key="2">Operation</Button>,
-            <Button key="1" type="primary">
-              Primary
-            </Button>,
-          ]}
+          extra={headerButtonArray}
         >
           <Content>
             {content}
           </Content>
         </PageHeader>
         <Table 
+          row={(record =>  {
+            return `${record.key}`
+          })}
           dataSource={data} 
           pagination={false}
-          scroll={{ y: tableHeight }}
+          scroll={{ y: tableHeight, x: tableWidth }}
           expandable={tableExpand}
+          expandedRowKeys={expandedArr}
+          // defaultExpandedRowKeys={[2]}
+          onRow={(record, index) => {
+            return {
+              onClick: event => {
+                if(expandedArr.length === 0) {
+                  this.setState({ expandedArr: [record.key]})
+                }else if(expandedArr[0] !== record.key){
+                  this.setState({ expandedArr: [record.key]})
+                }else {
+                  this.setState({ expandedArr: []})
+                }
+              },
+            }
+          }}
         >
           {
             columns.map((item,index) => {

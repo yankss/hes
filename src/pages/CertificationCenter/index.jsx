@@ -1,11 +1,17 @@
 import React, { Component } from 'react'
-import { Button, Row, Col, Tag } from 'antd';
+import { Button, Row, Col, Tag, Space } from 'antd';
+import { PlusCircleTwoTone, MinusCircleTwoTone } from "@ant-design/icons";
 import ListPage from  '../../widgets/list-page'
 
 export default class index extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      headerButtonArray: [
+        <Button key="1" type="primary">
+          Primary
+        </Button>,
+      ],
       columns: [
         { title: 'Name', dataIndex: 'name', key: 'name' },
         { title: 'Age', dataIndex: 'age', key: 'age' },
@@ -28,10 +34,10 @@ export default class index extends Component {
           title: 'Action',
           dataIndex: '',
           key: 'x',
-          render: () => <div>
+          render: (text, record) => <Space>
             <Button>Allow</Button>
-            <Button style={{ marginLeft: '10px'}}>NoPass</Button>
-          </div>,
+            <Button >NoPass</Button>
+          </Space>,
         },
       ],
       data: [
@@ -72,22 +78,34 @@ export default class index extends Component {
 
   }
   render() {
-    const { columns, data, title, tableHeight } = this.state;
+    const { columns, data, title, tableHeight, headerButtonArray } = this.state;
     const tableExpand = {
       expandedRowRender: record => <div>
         <Row>
           {
             columns.map((item, index) => {
-              return (
-                <Col span={5} key={item.key} style={{marginTop: '10px'}}>
-                    <Tag color='blue'>{item.title}</Tag> : { record[`${item.key}`]} 
-                </Col>
-              )
+              if(item.title !== 'Action') {
+                return (
+                  <Col span={5} key={item.key} style={{marginTop: '10px'}}>
+                      <Tag color='blue'>{item.title}</Tag> : { record[`${item.key}`]} 
+                  </Col>
+                )
+              }else {
+                return null;
+              }
+              
             })
           }
         </Row>
       </div>,
       rowExpandable: record => record.name !== 'Not Expandable',
+      expandIcon: ({ expanded, onExpand, record }) =>
+        expanded ? (
+          <MinusCircleTwoTone onClick={e => onExpand(record, e)} />
+        ) : (
+          <PlusCircleTwoTone onClick={e => onExpand(record, e)} />
+        )
+      
     }
     return (
       <div>
@@ -97,6 +115,7 @@ export default class index extends Component {
           title={title}
           tableHeight={tableHeight}
           tableExpand={tableExpand}
+          headerButtonArray={headerButtonArray}
         />
       </div>
     )
