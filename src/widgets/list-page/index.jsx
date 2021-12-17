@@ -16,7 +16,7 @@ export default class componentName extends Component {
   }
   render() {
 
-    const { columns, data, title, tableHeight, tableExpand, headerButtonArray, filterBar, tableWidth } = this.props;
+    const { columns, data, title, tableHeight, tableExpand, headerButtonArray, filterBar, tableWidth, tableOnChange } = this.props;
     const { expandedArr, } = this.state;
     
     const content = (
@@ -60,7 +60,6 @@ export default class componentName extends Component {
           scroll={{ y: tableHeight, x: tableWidth }}
           expandable={tableExpand}
           expandedRowKeys={expandedArr}
-          // defaultExpandedRowKeys={[2]}
           onRow={(record, index) => {
             return {
               onClick: event => {
@@ -74,6 +73,7 @@ export default class componentName extends Component {
               },
             }
           }}
+          onChange={tableOnChange}
         >
           {
             columns.map((item,index) => {
@@ -84,6 +84,9 @@ export default class componentName extends Component {
                 dataIndex={item.key}
                 align={item.align || 'left'}
                 render={item.render}
+                sorter={item.sorter}
+                width={item.width}
+                fixed={item.fixed}
               >
               </Column>
             )

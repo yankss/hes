@@ -21,6 +21,18 @@ export default class SystemManagement extends Component {
           render: text => <Tag color="magenta">{text}</Tag>
         },
         {
+          title: 'Identity',
+          dataIndex: 'identity',
+          key: 'identity',
+          render: text => <Tag color="magenta">{text}</Tag>
+        },
+        {
+          title: 'IntegralValue',
+          dataIndex: 'integralValue',
+          key: 'integralValue',
+          sorter: (a, b) => a.integralValue - b.integralValue,
+        },
+        {
           title: 'Age',
           dataIndex: 'age',
           key: 'age',
@@ -80,6 +92,7 @@ export default class SystemManagement extends Component {
         {
           key: '1',
           name: 'John Brown',
+          integralValue: 341,
           phone: '13566437666',
           age: 32,
           address: 'New York No. 1 Lake Park',
@@ -95,6 +108,7 @@ export default class SystemManagement extends Component {
           key: '2',
           name: 'Jim Green',
           phone: '13566437666',
+          integralValue: 343,
           age: 42,
           address: 'London No. 1 Lake Park',
           tags: ['loser', 'houseManagement'],
@@ -109,6 +123,7 @@ export default class SystemManagement extends Component {
           key: '3',
           name: 'Joe Black',
           phone: '13566437666',
+          integralValue: 546,
           age: 32,
           address: 'Sidney No. 1 Lake Park',
           tags: ['cool', 'teacher'],
@@ -123,6 +138,7 @@ export default class SystemManagement extends Component {
           key: '4',
           name: '小成',
           phone: '13566437666',
+          integralValue: 3665,
           age: 32,
           address: '钟落潭广新路388号',
           tags: ['cool', 'teacher', '稳重'],
@@ -137,6 +153,7 @@ export default class SystemManagement extends Component {
           key: '5',
           name: '小成',
           phone: '13566437666',
+          integralValue: 143,
           age: 32,
           address: '钟落潭广新路388号',
           tags: ['cool', 'teacher', '稳重'],
@@ -152,6 +169,7 @@ export default class SystemManagement extends Component {
           name: '小成',
           phone: '13566437666',
           age: 32,
+          integralValue: 223,
           address: '钟落潭广新路388号',
           tags: ['cool', 'teacher', '稳重'],
           actionImg: [<FundTwoTone />, <DeleteTwoTone />, <BulbTwoTone />],
@@ -165,6 +183,7 @@ export default class SystemManagement extends Component {
           key: '7',
           name: '小成',
           phone: '13566437666',
+          integralValue: 723,
           age: 32,
           address: '钟落潭广新路388号',
           tags: ['cool', 'teacher', '稳重'],
@@ -179,6 +198,37 @@ export default class SystemManagement extends Component {
           key: '8',
           name: '小成',
           phone: '13566437666',
+          integralValue: 931,
+          age: 32,
+          address: '钟落潭广新路388号',
+          tags: ['cool', 'teacher', '稳重'],
+          actionImg: [<FundTwoTone />, <DeleteTwoTone />, <BulbTwoTone />],
+          actionMethod: [
+            this.showFundTwoTone,
+            this.showDeleteTwoTone,
+            this.showBulbTwoTone
+          ]
+        },
+        {
+          key: '9',
+          name: '小成',
+          phone: '13566437666',
+          integralValue: 255,
+          age: 32,
+          address: '钟落潭广新路388号',
+          tags: ['cool', 'teacher', '稳重'],
+          actionImg: [<FundTwoTone />, <DeleteTwoTone />, <BulbTwoTone />],
+          actionMethod: [
+            this.showFundTwoTone,
+            this.showDeleteTwoTone,
+            this.showBulbTwoTone
+          ]
+        },
+        {
+          key: '10',
+          name: '小成',
+          phone: '13566437666',
+          integralValue: 124,
           age: 32,
           address: '钟落潭广新路388号',
           tags: ['cool', 'teacher', '稳重'],
@@ -191,9 +241,16 @@ export default class SystemManagement extends Component {
         },
       ],
       title: '系统管理',
-      tableHeight: 460,
+      tableHeight: 550,
     }
+    this.tableOnChange = this.tableOnChange.bind(this);
   }
+
+
+  tableOnChange(pagination, filters, sorter, extra) {
+    console.log('params', pagination, filters, sorter, extra);
+  }
+
   render() {
     const { columns, data, title, tableHeight} = this.state;
     return (
@@ -203,6 +260,7 @@ export default class SystemManagement extends Component {
           data={data} 
           title={title}
           tableHeight={tableHeight}
+          tableOnChange={this.tableOnChange}
         >
         </ListPage>
       </div>

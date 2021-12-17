@@ -37,30 +37,39 @@ export default class index extends Component {
           title: 'RenterName',
           dataIndex: 'renterName',
           key: 'renterName',
-          render: text => <Button type="link">{text}</Button>,
+          width: 150,
+          align: 'left',
+          render: text => <Button style={{paddingLeft: '0'}} type="link">{text}</Button>,
         },
         {
           title: 'RenterPhone',
           dataIndex: 'renterPhone',
           key: 'renterPhone',
-          render: text => <Button type="link">{text}</Button>,
+          width: 150,
+          align: 'left',
+          render: text => <Button style={{paddingLeft: '0'}} type="link">{text}</Button>,
         },
         {
           title: 'LandlordName',
           dataIndex: 'landlordName',
           key: 'landlordName',
-          render: text => <Button type="link">{text}</Button>,
+          width: 150,
+          align: 'left',
+          render: text => <Button style={{paddingLeft: '0'}} type="link">{text}</Button>,
         },
         {
           title: 'LandlordPhone',
           dataIndex: 'landlordPhone',
           key: 'landlordPhone',
-          render: text => <Button type="link">{text}</Button>,
+          width: 150,
+          align: 'left',
+          render: text => <Button style={{paddingLeft: '0'}} type="link">{text}</Button>,
         },
         {
           title: 'Address',
           dataIndex: 'address',
           key: 'address',
+          width: 200,
           render: address => (
             <Tooltip placement="top" title={address}>
               <span>{address}</span>
@@ -71,6 +80,7 @@ export default class index extends Component {
           title: 'LeaseState',
           key: 'leaseState',
           dataIndex: 'leaseState',
+          width: 130,
           render: leaseState => (
             <>
               {
@@ -85,7 +95,7 @@ export default class index extends Component {
           title: 'Tags',
           key: 'tags',
           dataIndex: 'tags',
-          width: '300px',
+          width: 300,
           render: tags => (
             <>
               {tags.map(tag => {
@@ -115,29 +125,56 @@ export default class index extends Component {
           key: 'waterRate',
           width: 100,
           fixed: 'right',
+          render: (text, record) => (
+            <>
+              {
+                record.leaseState === '已出租' ?
+                record.waterFee :
+                `${record.waterRate}元/升`
+              }
+            </>
+          )
         },
         {
           title: 'ElectricityRate',
           dataIndex: 'electricityRate',
           key: 'electricityRate',
-          width: 100,
+          width: 130,
           fixed: 'right',
+          render: (text, record) => (
+            <>
+              { 
+                record.leaseState === '已出租' ?
+                record.electricityFee :
+                `${record.electricityRate}元/度`
+              }
+            </>
+          )
         },
         {
           title: 'TotalAmount',
           dataIndex: 'totalAmount',
           key: 'totalAmount',
-          width: 100,
+          width: 130,
           fixed: 'right',
           defaultSortOrder: 'descend',
           sorter: (a, b) => a.totalAmount - b.totalAmount,
-          render: (text, record) => <Button type='link'>{text}</Button>
+          render: (text, record) => (
+            <>
+              { 
+                record.leaseState === '已出租' ?
+                <Button type='link'>{text}</Button> :
+                <Button danger type='link'>暂无</Button>
+              }
+            </>
+          )
+          // render: (text, record) => <Button type='link'>{text}</Button>
         },
         {
           title: 'Action',
           key: 'action',
           fixed: 'right',
-          // width: 300,
+          width: 200,
           render: (text, record) => (
             <Space size="middle">
               {
@@ -197,10 +234,14 @@ export default class index extends Component {
       data : [
         {
           key: '1',
+          renterPhone: '13566437666',
           rent: 500,
           totalAmount: 0,
-          waterRate: 10.2,
-          electricityRate: 50.1,
+          waterFee: 10.2,
+          waterRate: 0.7,
+          electricityRate: 1.5,
+          electricityFee: 50.1,
+          
           renterName: 'John Brown',
           age: 32,
           address: 'New York No. 1 Lake Park',
@@ -210,10 +251,13 @@ export default class index extends Component {
         },
         {
           key: '2',
+          renterPhone: '13566437666',
           rent: 400,
           totalAmount: 0,
-          waterRate: 17.2,
-          electricityRate: 170.1,
+          waterFee: 17.2,
+          electricityFee: 170.1,
+          electricityRate: 1.5,
+          waterRate: 0.7,
           renterName: 'Jim Green',
           age: 42,
           address: 'London No. 1 Lake Park',
@@ -223,10 +267,13 @@ export default class index extends Component {
         },
         {
           key: '3',
+          renterPhone: '13566437666',
           rent: 800,
           totalAmount: 0,
-          waterRate: 10.2,
-          electricityRate: 200.1,
+          waterFee: 10.2,
+          electricityFee: 200.1,
+          waterRate: 0.7,
+          electricityRate: 1.5,
           renterName: 'Joe Black',
           age: 32,
           address: 'Sidney No. 1 Lake Park',
@@ -236,10 +283,13 @@ export default class index extends Component {
         },
         {
           key: '4',
+          renterPhone: '13566437666',
           totalAmount: 0,
           rent: 750,
-          waterRate: 40.2,
-          electricityRate: 150.1,
+          waterFee: 40.2,
+          electricityFee: 150.1,
+          waterRate: 0.7,
+          electricityRate: 1.5,
           renterName: '小成',
           age: 32,
           address: '钟落潭广新路388号',
@@ -249,10 +299,13 @@ export default class index extends Component {
         },
         {
           key: '5',
+          renterPhone: '13566437666',
           totalAmount: 0,
           rent: 1050,
-          waterRate: 43.2,
-          electricityRate: 350.1,
+          waterFee: 43.2,
+          electricityFee: 350.1,
+          waterRate: 0.7,
+          electricityRate: 1.5,
           renterName: '小成',
           age: 32,
           address: '钟落潭广新路388号',
@@ -262,10 +315,13 @@ export default class index extends Component {
         },
         {
           key: '6',
+          renterPhone: '13566437666',
           totalAmount: 0,
           rent: 400,
-          waterRate: 10.2,
-          electricityRate: 50.1,
+          waterFee: 10.2,
+          electricityFee: 50.1,
+          waterRate: 0.7,
+          electricityRate: 1.5,
           renterName: '小成',
           age: 32,
           address: '钟落潭广新路388号',
@@ -275,10 +331,13 @@ export default class index extends Component {
         },
         {
           key: '7',
+          renterPhone: '13566437666',
           totalAmount: 0,
           rent: 400,
-          waterRate: 10.2,
-          electricityRate: 50.1,
+          waterFee: 10.2,
+          electricityFee: 50.1,
+          waterRate: 0.7,
+          electricityRate: 1.5,
           renterName: '小成',
           age: 32,
           address: '钟落潭广新路388号',
@@ -288,10 +347,13 @@ export default class index extends Component {
         },
         {
           key: '8',
+          renterPhone: '13566437666',
           totalAmount: 0,
           rent: 400,
-          waterRate: 10.2,
-          electricityRate: 50.1,
+          waterFee: 10.2,
+          electricityFee: 50.1,
+          waterRate: 0.7,
+          electricityRate: 1.5,
           renterName: '小成',
           age: 32,
           address: '钟落潭广新路388号',
@@ -302,7 +364,7 @@ export default class index extends Component {
       ],
       title: '房屋管理',
       tableHeight: 500,
-      tableWidth: '150%',
+      tableWidth: '100%',
       chartVisible: false,
       chartOptions: {},
       chartTitle: '',
@@ -492,7 +554,7 @@ export default class index extends Component {
     const filterBar = (
       <>
         <Row className='filter-bar'>
-          <Col style={{margin: '0 10px'}} span={3}><Input placeholder="请输入租客姓名 :" allowClear={true}/></Col>
+          <Col style={{margin: '0 10px 0 0'}} span={3}><Input placeholder="请输入租客姓名 :" allowClear={true}/></Col>
           <Col style={{margin: '0 10px'}} span={3}><Input placeholder="请输入屋主姓名 :" allowClear={true}/></Col>
           <Col style={{margin: '0 10px'}} span={6}><Input placeholder="请输入地址 :" allowClear={true}/></Col>
           <Col style={{margin: '0 10px'}} span={3}>
