@@ -11,10 +11,10 @@ import BuildingManagement from '../../pages/HousingResourceManagement/BuildingMa
 import HouseManagement from '../../pages/HousingResourceManagement/HouseManagement';
 import PriceDetails from '../../pages/PriceDetails';
 import RentDetails from '../../pages/RentDetails';
-import SystemManagement from '../../pages/SystemManagement'
+import ProspectiveCustomerManagement from '../../pages/SystemManagement/ProspectiveCustomerManagement';
+import RenterManagement from '../../pages/SystemManagement/RenterManagement';
+import LandlordManagement from '../../pages/SystemManagement/LandlordManagement';
 import ChetMessage  from '../../pages/ChetMessage'
-// import MessageDetail from '../../pages/ChetMessage/MessageDetail'
-// import ErrorPage from '../../pages/Error'
 
 const { Header, Content } = Layout;
 const { SubMenu } = Menu;
@@ -105,7 +105,6 @@ export default class App extends Component {
               }}
             >
               <Switch>
-                {/* <Route exact path="*" component={ErrorPage}></Route> */}
                 <Route exact path="/" component={Home}></Route>
                 <Route exact path="/advertising-management" component={AdvertisingManagement}></Route>
                 <Route exact path="/certification-center" component={CertificationCenter}></Route>
@@ -114,9 +113,10 @@ export default class App extends Component {
                 <Route exact path="/house-management" component={HouseManagement}></Route>
                 <Route exact path="/price-details" component={PriceDetails}></Route>
                 <Route exact path="/rent-details" component={RentDetails}></Route>
-                <Route exact path="/system-management" component={SystemManagement}></Route>
+                <Route exact path="/prospectiveCustomer-management" component={ProspectiveCustomerManagement}></Route>
+                <Route exact path="/renter-management" component={RenterManagement}></Route>
+                <Route exact path="/landlord-management" component={LandlordManagement}></Route>
                 <Route exact path="/chet-message" component={ChetMessage}></Route>
-                {/* <Route exact path="/chet-message/message-detail" component={MessageDetail}></Route> */}
               </Switch>
             </Content>
           </Layout>

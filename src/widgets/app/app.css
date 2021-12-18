@@ -83,3 +83,6 @@ body {
 .ant-page-header-content {
   padding-top: 0px;
 }
+.ant-table-tbody>tr>td {
+  white-space: pre;
+}

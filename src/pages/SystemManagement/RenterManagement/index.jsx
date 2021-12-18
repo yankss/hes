@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ListPage from '../../widgets/list-page';
+import ListPage from '../../../widgets/list-page';
 import { Tag, Space, Button, Tooltip } from 'antd';
 import { FundTwoTone, DeleteTwoTone, BulbTwoTone } from '@ant-design/icons';
 
@@ -18,12 +18,6 @@ export default class SystemManagement extends Component {
           title: 'Phone',
           dataIndex: 'phone',
           key: 'phone',
-          render: text => <Tag color="magenta">{text}</Tag>
-        },
-        {
-          title: 'Identity',
-          dataIndex: 'identity',
-          key: 'identity',
           render: text => <Tag color="magenta">{text}</Tag>
         },
         {
@@ -240,7 +234,7 @@ export default class SystemManagement extends Component {
           ]
         },
       ],
-      title: '系统管理',
+      title: '租客管理',
       tableHeight: 550,
     }
     this.tableOnChange = this.tableOnChange.bind(this);

@@ -8,6 +8,9 @@ import rentDetails from './rent-details';
 import systemManagement from './system-management';
 import chetMessage from "./chet-message";
 import errorPage from  "./error"
+import prospectiveCustomerManagement from './prospectiveCustomer-management';
+import renterManagement from "./renter-management";
+import landlordManagement from './landlord-management'
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [
@@ -24,5 +27,8 @@ export default [
   ...rentDetails,
   ...chetMessage,
   ...systemManagement,
-  ...errorPage
+  ...errorPage,
+  ...prospectiveCustomerManagement,
+  ...renterManagement,
+  ...landlordManagement,
 ]

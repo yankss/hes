@@ -87,6 +87,9 @@ export default class componentName extends Component {
                 sorter={item.sorter}
                 width={item.width}
                 fixed={item.fixed}
+                filters={item.filters}
+                onFilter={item.onFilter}
+                ellipsis={item.ellipsis}
               >
               </Column>
             )

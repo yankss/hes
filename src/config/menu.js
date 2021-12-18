@@ -7,7 +7,9 @@ import {
   PieChartTwoTone,
   SettingTwoTone,
   ShopTwoTone,
-  MessageTwoTone
+  MessageTwoTone,
+  CrownTwoTone,
+  HeartTwoTone,
 } from '@ant-design/icons';
 const menuArr = [
   {
@@ -20,7 +22,13 @@ const menuArr = [
     label: '系统管理',
     path: '/system-management',
     value: '1',
-    icon: SettingTwoTone
+    icon: SettingTwoTone,
+    children: [
+      { label: '潜客管理', path: '/prospectiveCustomer-management', value: '1-1', icon: HeartTwoTone },
+      { label: '租客管理', path: '/renter-management', value: '1-2', icon: CrownTwoTone },
+      { label: '房东管理', path: '/landlord-management', value: '1-3', icon: CrownTwoTone },
+
+    ]
   },
   {
     label: '房源管理',
