@@ -23,6 +23,7 @@ export default class NewTopic extends Component {
     super(props);
     this.state = {
       imageUrl: '',
+      formData: {},
       loading: false,
       previewVisible: false,
       previewImage: '',
@@ -37,6 +38,7 @@ export default class NewTopic extends Component {
       fileList: [
       ],
     };
+    this.onChangeFormData = this.onChangeFormData.bind(this);
   }
 
   handleAvatarChange = info => {
@@ -77,6 +79,7 @@ export default class NewTopic extends Component {
 
   componentDidMount() {
   }
+  
 
   handlePreview = async file => {
     if (!file.url && !file.preview) {
@@ -93,9 +96,28 @@ export default class NewTopic extends Component {
   handleChange = ({ fileList }) => this.setState({ fileList });
 
   handleCancel = () => this.setState({ previewVisible: false });
+  onChangeFormData(e) {
+    let formDataObj = {};
+    console.log(e.target);
+    const { id, value } = e.target;
+    formDataObj[`${id}`] = value;
+    formDataObj = Object.assign(this.state.formData, formDataObj);
+    this.setState({ formData: formDataObj})
+  }
 
   render() {
-    const { tagChildren, fileList, previewVisible, previewTitle, previewImage, imageUrl, loading } = this.state;
+    const { tagChildren, 
+            fileList, 
+            previewVisible, 
+            previewTitle, 
+            previewImage, 
+            imageUrl, 
+            loading, } = this.state;
+    let { formData } = this.state;
+
+    const { newHouseObject } = this.props;
+    formData = newHouseObject;
+    console.log('formData', formData);
 
     const uploadButton = (
       <div>
@@ -154,6 +176,7 @@ export default class NewTopic extends Component {
                   listType="picture-card"
                   className="avatar-uploader"
                   showUploadList={false}
+                  value={formData.avatar}
                   action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                   beforeUpload={this.beforeUpload}
                   onChange={this.handleAvatarChange}
@@ -168,7 +191,9 @@ export default class NewTopic extends Component {
                 label="Address :"
                 rules={[{ required: true, message: 'Please enter Address' }]}
               >
-                <Input placeholder="Please enter Address" allowClear />
+                <Input 
+                value={formData.address} 
+                placeholder="Please enter Address" allowClear />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -177,7 +202,10 @@ export default class NewTopic extends Component {
                 label="Rent :"
                 rules={[{ required: true, message: 'Please enter Rent' }]}
               >
-                <Input addonAfter="RMB/Month" placeholder="Please enter Rent" allowClear />
+                <Input 
+                value={formData.rent} 
+                onChange={(e)=> this.onChangeFormData(e)}
+                addonAfter="RMB/Month" placeholder="Please enter Rent" allowClear />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -186,7 +214,9 @@ export default class NewTopic extends Component {
                 label="IsLease :"
                 rules={[{ required: true, message: 'Please choose the IsLease' }]}
               >
-                <Select placeholder="Please choose the IsLease :" allowClear>
+                <Select 
+                value={formData.isLease} 
+                placeholder="Please choose the IsLease :" allowClear>
                   <Option value="1">Yes</Option>
                   <Option value="2">No</Option>
                 </Select>
@@ -198,7 +228,9 @@ export default class NewTopic extends Component {
                 label="WaterRate :"
                 rules={[{ required: true, message: 'Please enter WaterRate' }]}
               >
-                <Input addonAfter="RMB/Litre" placeholder="Please enter WaterRate" allowClear />
+                <Input 
+                value={formData.waterRate} 
+                addonAfter="RMB/Litre" placeholder="Please enter WaterRate" allowClear />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -207,7 +239,9 @@ export default class NewTopic extends Component {
                 label="ElectricityRate :"
                 rules={[{ required: true, message: 'Please enter ElectricityRate' }]}
               >
-                <Input addonAfter="RMB/Kilowatt" placeholder="Please enter ElectricityRate" allowClear />
+                <Input 
+                value={formData.electricityRate} 
+                addonAfter="RMB/Kilowatt" placeholder="Please enter ElectricityRate" allowClear />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -216,7 +250,9 @@ export default class NewTopic extends Component {
                 label="LandlordName :"
                 rules={[{ required: true, message: 'Please enter LandlordName' }]}
               >
-                <Input placeholder="Please enter LandlordName" allowClear />
+                <Input 
+                value={formData.landlordName} 
+                placeholder="Please enter LandlordName" allowClear />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -225,7 +261,9 @@ export default class NewTopic extends Component {
                 label="LandlordPhone :"
                 rules={[{ required: true, message: 'Please enter LandlordPhone' }]}
               >
-                <Input placeholder="Please enter LandlordPhone" allowClear />
+                <Input 
+                value={formData.landlordName} 
+                placeholder="Please enter LandlordPhone" allowClear />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -234,7 +272,9 @@ export default class NewTopic extends Component {
                 label="RenterName :"
                 rules={[{ required: true, message: 'Please enter RenterName' }]}
               >
-                <Input placeholder="Please enter RenterName" allowClear />
+                <Input 
+                value={formData.renterName} 
+                placeholder="Please enter RenterName" allowClear />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -243,7 +283,9 @@ export default class NewTopic extends Component {
                 label="RenterPhone :"
                 rules={[{ required: true, message: 'Please enter RenterPhone' }]}
               >
-                <Input placeholder="Please enter RenterPhone" allowClear />
+                <Input 
+                value={formData.renterPhone} 
+                placeholder="Please enter RenterPhone" allowClear />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -254,6 +296,7 @@ export default class NewTopic extends Component {
               >
                 <Select
                   mode="multiple"
+                  value={formData.tagTypes}
                   showArrow
                   style={{float:  'left', marginRight: '20px', width: '100%'}}
                   allowClear={true}
@@ -279,7 +322,9 @@ export default class NewTopic extends Component {
                   },
                 ]}
               >
-                <Input.TextArea rows={4} placeholder="please enter url description" allowClear/>
+                <Input.TextArea 
+                value={formData.description}
+                 rows={4} placeholder="please enter url description" allowClear/>
               </Form.Item>
             </Col>
           </Row>

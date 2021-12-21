@@ -86,3 +86,7 @@ body {
 .ant-table-tbody>tr>td {
   white-space: pre;
 }
+
+ul li div span span {
+  color: black;
+}

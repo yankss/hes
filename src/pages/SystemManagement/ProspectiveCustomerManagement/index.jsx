@@ -12,17 +12,21 @@ export default class SystemManagement extends Component {
           title: 'Name',
           dataIndex: 'name',
           key: 'name',
+          width: '100px',
           render: text => <Button style={{paddingLeft: 0}} type="link">{text}</Button>,
         },
         {
           title: 'Phone',
           dataIndex: 'phone',
+          width: '100px',
           key: 'phone',
           render: text => <Button style={{paddingLeft: '0'}} type='link' >{text}</Button>
         },
         {
           title: 'IntentionIdentity',
           dataIndex: 'intentionIdentity',
+          width: '150px',
+          align: 'center',
           key: 'intentionIdentity',
           filters: [
             {
@@ -42,6 +46,7 @@ export default class SystemManagement extends Component {
           title: 'Gender',
           dataIndex: 'gender',
           key: 'gender',
+          width: '100px',
           filters: [
             {
               text: '男',
@@ -58,6 +63,7 @@ export default class SystemManagement extends Component {
         },
         {
           title: 'Liveness',
+          width: '100px',
           dataIndex: 'liveness',
           key: 'liveness',
           sorter: (a, b) => a.liveness - b.liveness,
@@ -65,12 +71,14 @@ export default class SystemManagement extends Component {
         {
           title: 'Age',
           dataIndex: 'age',
+          width: '100px',
           key: 'age',
         },
         {
           title: 'Address',
           dataIndex: 'address',
           key: 'address',
+          width: '200px',
           ellipsis: true,
           render: address => (
             // <Tooltip placement="top" title={address}>
@@ -85,6 +93,7 @@ export default class SystemManagement extends Component {
           title: 'Tags',
           key: 'tags',
           dataIndex: 'tags',
+          width: '300px',
           render: tags => (
             <>
               {tags.map(tag => {
@@ -102,6 +111,7 @@ export default class SystemManagement extends Component {
           ),
         },
         {
+          width: '200px',
           title: 'Action',
           key: 'action',
           render: (text, record) => (

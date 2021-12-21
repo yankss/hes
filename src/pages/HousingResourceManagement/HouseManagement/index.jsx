@@ -199,7 +199,7 @@ export default class index extends Component {
                       <Popconfirm
                         key={index}
                         title="Are you sure to delete this task?"
-                        onConfirm={(e) => this.confirm(e, 'showDeleteTwoTone', record)}
+                        onConfirm={(e) => this.confirm(e, 'showEditTwoTone', record)}
                         onCancel={this.cancel}
                         okText="Yes"
                         cancelText="No"
@@ -380,7 +380,9 @@ export default class index extends Component {
         { value: 'blue' },
         { value: 'yellow' },
       ],
-      newHouseVisible: false
+      newHouseVisible: false,
+      newHouseObject: {},
+      drawerTitle: ''
       
     };
     
@@ -406,7 +408,6 @@ export default class index extends Component {
     message.success('Click on Yes');
     switch (type) {
       case 'showFundTwoTone':
-        console.log(record);
         this.setState({ chartTitle: record.name })
         this.setState({ address: record.address });
         this.setState({ chartVisible: true })
@@ -484,8 +485,15 @@ export default class index extends Component {
         }, 0);
       break;
 
-      case 'showDeleteTwoTone':
-      
+      case 'showEditTwoTone':
+        setTimeout(() => {
+          this.setState({ newHouseObject: record });
+          this.showNewHouseBoard(true);
+        }, 100);
+        
+        
+        
+        
       break;
 
       case 'showBulbTwoTone':
@@ -509,13 +517,24 @@ export default class index extends Component {
     this.setState({ chartVisible: false });
   }
   showNewHouseBoard(flag) {
-    console.log(1111111111111);
     this.setState({ newHouseVisible: flag})
   }
 
   render() {
-    const { columns, data, title, tableHeight, tableWidth, chartVisible, chartTitle, address, tagChildren, leaseStateTag, newHouseVisible } = this.state;
+    const { columns, 
+            data, 
+            title, 
+            tableHeight, 
+            tableWidth, 
+            chartVisible, 
+            chartTitle, 
+            address, 
+            tagChildren, 
+            leaseStateTag, 
+            newHouseVisible,
+            newHouseObject } = this.state;
     
+
     const headerButtonArray =  [
       <Button key="1" type="primary" onClick={() => this.showNewHouseBoard(true)}>NewHouse</Button>,
       <Button key="3" type="primary">Reset</Button>,
@@ -524,7 +543,6 @@ export default class index extends Component {
     ]
 
     function tagRender(props) {
-      console.log('props', props);
       const { value, closable, onClose } = props;
       const onPreventMouseDown = event => {
         event.preventDefault();
@@ -623,7 +641,7 @@ export default class index extends Component {
             </Space>
           }
         >
-          <NewHouse/>
+          <NewHouse newHouseObject={newHouseObject}/>
         </Drawer>
       </div>
     )
