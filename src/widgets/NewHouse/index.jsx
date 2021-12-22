@@ -22,6 +22,7 @@ export default class NewTopic extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      rent: 0,
       imageUrl: '',
       formData: {},
       loading: false,
@@ -39,6 +40,7 @@ export default class NewTopic extends Component {
       ],
     };
     this.onChangeFormData = this.onChangeFormData.bind(this);
+    this.selectOnChange = this.selectOnChange.bind(this);
   }
 
   handleAvatarChange = info => {
@@ -78,6 +80,13 @@ export default class NewTopic extends Component {
   }
 
   componentDidMount() {
+    
+    let { newHouseObject } = this.props;
+    newHouseObject = Object.assign(this.state.formData, newHouseObject);
+    this.setState({ formData: newHouseObject})
+    console.log(this.state.formData);
+    this.setState({rent: newHouseObject.rent})
+    
   }
   
 
@@ -98,11 +107,26 @@ export default class NewTopic extends Component {
   handleCancel = () => this.setState({ previewVisible: false });
   onChangeFormData(e) {
     let formDataObj = {};
-    console.log(e.target);
     const { id, value } = e.target;
     formDataObj[`${id}`] = value;
     formDataObj = Object.assign(this.state.formData, formDataObj);
     this.setState({ formData: formDataObj})
+    console.log(this.state.formData);
+    
+  }
+  selectOnChange(selection) {
+    console.log('selection', selection);
+    let formDataObj = {};
+    if(selection instanceof Array) {
+      formDataObj.tags = selection;
+    }else {
+      formDataObj.leaseState = selection;
+    }
+    formDataObj = Object.assign(this.state.formData, formDataObj);
+    this.setState({ formData: formDataObj})
+  }
+  onChangeAddress() {
+
   }
 
   render() {
@@ -112,12 +136,11 @@ export default class NewTopic extends Component {
             previewTitle, 
             previewImage, 
             imageUrl, 
-            loading, } = this.state;
-    let { formData } = this.state;
+            loading,
+            rent,
+            formData } = this.state;
 
-    const { newHouseObject } = this.props;
-    formData = newHouseObject;
-    console.log('formData', formData);
+    
 
     const uploadButton = (
       <div>
@@ -192,8 +215,10 @@ export default class NewTopic extends Component {
                 rules={[{ required: true, message: 'Please enter Address' }]}
               >
                 <Input 
-                value={formData.address} 
-                placeholder="Please enter Address" allowClear />
+                  value={formData.address} 
+                  placeholder="Please enter Address" allowClear 
+                  onChange={(e)=> this.onChangeFormData(e)}
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -203,9 +228,9 @@ export default class NewTopic extends Component {
                 rules={[{ required: true, message: 'Please enter Rent' }]}
               >
                 <Input 
-                value={formData.rent} 
-                onChange={(e)=> this.onChangeFormData(e)}
-                addonAfter="RMB/Month" placeholder="Please enter Rent" allowClear />
+                  value={rent} 
+                  onChange={(e)=> this.onChangeFormData(e)}
+                  addonAfter="RMB/Month" placeholder="Please enter Rent" allowClear />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -215,8 +240,9 @@ export default class NewTopic extends Component {
                 rules={[{ required: true, message: 'Please choose the IsLease' }]}
               >
                 <Select 
-                value={formData.isLease} 
-                placeholder="Please choose the IsLease :" allowClear>
+                  value={formData.isLease} 
+                  onChange={(selection)=> this.selectOnChange(selection)}
+                  placeholder="Please choose the IsLease :" allowClear>
                   <Option value="1">Yes</Option>
                   <Option value="2">No</Option>
                 </Select>
@@ -230,6 +256,7 @@ export default class NewTopic extends Component {
               >
                 <Input 
                 value={formData.waterRate} 
+                onChange={(e)=> this.onChangeFormData(e)}
                 addonAfter="RMB/Litre" placeholder="Please enter WaterRate" allowClear />
               </Form.Item>
             </Col>
@@ -240,8 +267,9 @@ export default class NewTopic extends Component {
                 rules={[{ required: true, message: 'Please enter ElectricityRate' }]}
               >
                 <Input 
-                value={formData.electricityRate} 
-                addonAfter="RMB/Kilowatt" placeholder="Please enter ElectricityRate" allowClear />
+                  value={formData.electricityRate} 
+                  onChange={(e)=> this.onChangeFormData(e)}
+                  addonAfter="RMB/Kilowatt" placeholder="Please enter ElectricityRate" allowClear />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -251,8 +279,9 @@ export default class NewTopic extends Component {
                 rules={[{ required: true, message: 'Please enter LandlordName' }]}
               >
                 <Input 
-                value={formData.landlordName} 
-                placeholder="Please enter LandlordName" allowClear />
+                  value={formData.landlordName} 
+                  onChange={(e)=> this.onChangeFormData(e)}
+                  placeholder="Please enter LandlordName" allowClear />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -262,8 +291,9 @@ export default class NewTopic extends Component {
                 rules={[{ required: true, message: 'Please enter LandlordPhone' }]}
               >
                 <Input 
-                value={formData.landlordName} 
-                placeholder="Please enter LandlordPhone" allowClear />
+                  value={formData.landlordName} 
+                  onChange={(e)=> this.onChangeFormData(e)}
+                  placeholder="Please enter LandlordPhone" allowClear />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -273,8 +303,9 @@ export default class NewTopic extends Component {
                 rules={[{ required: true, message: 'Please enter RenterName' }]}
               >
                 <Input 
-                value={formData.renterName} 
-                placeholder="Please enter RenterName" allowClear />
+                  value={formData.renterName} 
+                  onChange={(e)=> this.onChangeFormData(e)}
+                  placeholder="Please enter RenterName" allowClear />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -284,8 +315,9 @@ export default class NewTopic extends Component {
                 rules={[{ required: true, message: 'Please enter RenterPhone' }]}
               >
                 <Input 
-                value={formData.renterPhone} 
-                placeholder="Please enter RenterPhone" allowClear />
+                  value={formData.renterPhone} 
+                  onChange={(e)=> this.onChangeFormData(e)}
+                  placeholder="Please enter RenterPhone" allowClear />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -302,7 +334,7 @@ export default class NewTopic extends Component {
                   allowClear={true}
                   placeholder="Please select tags :"
                   tagRender={tagRender}
-                  onChange={this.tagChange}
+                  onChange={(selection) => this.selectOnChange(selection)}
                   options={tagChildren}
                 >
                 </Select>
@@ -323,8 +355,9 @@ export default class NewTopic extends Component {
                 ]}
               >
                 <Input.TextArea 
-                value={formData.description}
-                 rows={4} placeholder="please enter url description" allowClear/>
+                  value={formData.description}
+                  onChange={(e)=> this.onChangeFormData(e)}
+                  rows={4} placeholder="please enter url description" allowClear/>
               </Form.Item>
             </Col>
           </Row>
