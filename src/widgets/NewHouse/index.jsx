@@ -80,13 +80,10 @@ export default class NewTopic extends Component {
   }
 
   componentDidMount() {
-    
     let { newHouseObject } = this.props;
     newHouseObject = Object.assign(this.state.formData, newHouseObject);
     this.setState({ formData: newHouseObject})
     console.log(this.state.formData);
-    this.setState({rent: newHouseObject.rent})
-    
   }
   
 
