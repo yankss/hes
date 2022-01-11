@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 
-export default class advertisingManagement extends Component {
+export default class index extends Component {
   render() {
     return (
       <div>
-        广告管理
+        收据管理
       </div>
     )
   }

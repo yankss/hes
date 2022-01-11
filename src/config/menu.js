@@ -2,7 +2,6 @@ import {
   HomeTwoTone,
   BankTwoTone,
   FundTwoTone,
-  GoldTwoTone,
   IdcardTwoTone,
   PieChartTwoTone,
   SettingTwoTone,
@@ -10,6 +9,9 @@ import {
   MessageTwoTone,
   CrownTwoTone,
   HeartTwoTone,
+  StarTwoTone,
+  ContainerTwoTone,
+  ScheduleTwoTone,
 } from '@ant-design/icons';
 const menuArr = [
   {
@@ -39,15 +41,15 @@ const menuArr = [
     ],
     icon: BankTwoTone
   },
-  { label: '租赁详情', 
-    path: '/rent-details', 
-    value: '3',
-    icon: FundTwoTone
-  },
-  { label: '广告管理', 
-    path: '/advertising-management', 
+  { label: '合约管理', 
+    path: '/contract-management', 
     value: '4',
-    icon: GoldTwoTone
+    icon: ContainerTwoTone
+  },
+  { label: '收据管理', 
+    path: '/receipt_management', 
+    value: '10',
+    icon: ScheduleTwoTone
   },
   { label: '认证中心', 
     path: '/certification-center', 
@@ -57,17 +59,28 @@ const menuArr = [
   { label: '数据分析', 
     path: '/data-analysis', 
     value: '6',
-    icon: PieChartTwoTone
-  },
-  { label: '房价详情', 
-    path: '/price-details', 
-    value: '7',
-    icon: FundTwoTone
+    icon: PieChartTwoTone,
+    children: [
+      { label: '租赁详情', path: '/rent-details', value: '6-1', icon: FundTwoTone},
+      { label: '房价详情', path: '/price-details', value: '6-2', icon: FundTwoTone },
+
+    ]
   },
   { label: '留言板', 
     path: '/chet-message', 
     value: '8',
     icon: MessageTwoTone 
+  },
+  {
+    label: '个人中心',
+    path: '/system-management',
+    value: '9',
+    icon: SettingTwoTone,
+    children: [
+      { label: '收藏夹', path: '/favorites', value: '9-1', icon: StarTwoTone},
+      { label: '个人设置', path: '/personalSetting', value: '9-2', icon: CrownTwoTone },
+
+    ]
   },
 ];
 

@@ -42,6 +42,10 @@ export default class MessageDetail extends Component {
     this.setState({ listData: data});
   }
 
+  componentWillUnmount() {
+    clearTimeout();
+  }
+
   onLoadMore = () => {
     this.setState({
       loading: true,

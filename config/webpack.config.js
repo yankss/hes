@@ -750,6 +750,18 @@ module.exports = function (webpackEnv) {
       tls: 'empty',
       child_process: 'empty',
     },
+    devServer: {
+      port: 3001,
+      proxy: {
+        '/api': {
+          target: 'http:localhost:8181',
+          ws: true,
+          pathRewrite: {'^/api' : ''},
+          changeOrigin: true,     // target是域名的话，需要这个参数，
+          secure: false,          // 设置支持https协议的代理
+        }
+      }
+    },
     // Turn off performance processing because we utilize
     // our own hints via the FileSizeReporter
     performance: false,

@@ -1,10 +1,15 @@
 import React, { Component } from 'react'
 
 export default class index extends Component {
+  constructor(props) {
+    super(props);
+    this.state ={ }
+  }
+  
   render() {
     return (
       <div>
-        数据分析
+        收藏夹
       </div>
     )
   }

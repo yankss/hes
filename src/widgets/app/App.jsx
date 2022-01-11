@@ -4,17 +4,20 @@ import { Layout, Menu, Badge } from 'antd';
 import menuList from '../../config/menu'
 import './app.css'
 import Home from '../../pages/Home';
-import AdvertisingManagement from '../../pages/AdvertisingManagement';
+import ContractManagement from '../../pages/ContractManagement';
 import CertificationCenter from '../../pages/CertificationCenter';
-import DataAnalysis from '../../pages/DataAnalysis'
 import BuildingManagement from '../../pages/HousingResourceManagement/BuildingManagement';
 import HouseManagement from '../../pages/HousingResourceManagement/HouseManagement';
-import PriceDetails from '../../pages/PriceDetails';
-import RentDetails from '../../pages/RentDetails';
+import PriceDetails from '../../pages/DataAnalysis/PriceDetails';
+import RentDetails from '../../pages/DataAnalysis/RentDetails';
 import ProspectiveCustomerManagement from '../../pages/SystemManagement/ProspectiveCustomerManagement';
 import RenterManagement from '../../pages/SystemManagement/RenterManagement';
 import LandlordManagement from '../../pages/SystemManagement/LandlordManagement';
 import ChetMessage  from '../../pages/ChetMessage'
+import personalCenter from '../../pages/PersonalCenter/PersonalSetting';
+import Favorites from '../../pages/PersonalCenter/Favorites';
+import receiptManagement from '../../pages/ReceiptManagement';
+import Login from '../../pages/Login';
 
 const { Header, Content } = Layout;
 const { SubMenu } = Menu;
@@ -27,12 +30,14 @@ export default class App extends Component {
     this.state = {
       current: ['0'],
       count: 10,
+      routerName: ''
     }
   }
 
   handleClick = e => {
     this.setState({current: e.key})
   }
+
 
   render() {
     let { current, count } = this.state;
@@ -106,9 +111,8 @@ export default class App extends Component {
             >
               <Switch>
                 <Route exact path="/" component={Home}></Route>
-                <Route exact path="/advertising-management" component={AdvertisingManagement}></Route>
+                <Route exact path="/contract-management" component={ContractManagement}></Route>
                 <Route exact path="/certification-center" component={CertificationCenter}></Route>
-                <Route exact path="/data-analysis" component={DataAnalysis}></Route>
                 <Route exact path="/building-management" component={BuildingManagement}></Route>
                 <Route exact path="/house-management" component={HouseManagement}></Route>
                 <Route exact path="/price-details" component={PriceDetails}></Route>
@@ -117,6 +121,11 @@ export default class App extends Component {
                 <Route exact path="/renter-management" component={RenterManagement}></Route>
                 <Route exact path="/landlord-management" component={LandlordManagement}></Route>
                 <Route exact path="/chet-message" component={ChetMessage}></Route>
+                <Route exact path="/favorites" component={Favorites}></Route>
+                <Route exact path="/receipt-management" component={receiptManagement}></Route>
+                <Route exact path="/personalSetting" component={personalCenter}></Route>
+                <Route exact path="/receipt_management" component={receiptManagement}></Route>
+                <Route exact path="/login" component={Login}></Route>
               </Switch>
             </Content>
           </Layout>

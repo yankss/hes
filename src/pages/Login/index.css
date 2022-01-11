@@ -1,0 +1,28 @@
+.login-card {
+  border: 1px solid rebeccapurple;
+  height: 30%;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.main-container-login {
+  width: 100vw;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.ant-input-affix-wrapper>input.ant-input {
+  padding-left: 5px;
+}
+.ant-input-affix-wrapper {
+  height: 40px;
+}
+.action-bar-login {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-evenly;
+}

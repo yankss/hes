@@ -1,16 +1,14 @@
 import React from "react";
-import advertisingManagement from './advertising-management';
+import contractManagement from './contract-management';
 import buildingManagement from './building-management';
 import certificationCenter from './certification-center';
 import dataAnalysis from './data-analysis';
-import priceDetails from './price-details';
-import rentDetails from './rent-details';
 import systemManagement from './system-management';
 import chetMessage from "./chet-message";
 import errorPage from  "./error"
-import prospectiveCustomerManagement from './prospectiveCustomer-management';
-import renterManagement from "./renter-management";
-import landlordManagement from './landlord-management'
+import personalCenter from "./personal-center";
+import receiptManagement from "./receipt-management";
+import login from './login'
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [
@@ -19,16 +17,14 @@ export default [
     exact: true,
     component: React.lazy(() => import('../pages/Home/index'))
   },
-  ...advertisingManagement,
+  ...contractManagement,
   ...buildingManagement,
   ...certificationCenter,
   ...dataAnalysis,
-  ...priceDetails,
-  ...rentDetails,
   ...chetMessage,
   ...systemManagement,
   ...errorPage,
-  ...prospectiveCustomerManagement,
-  ...renterManagement,
-  ...landlordManagement,
+  ...personalCenter,
+  ...receiptManagement,
+  ...login
 ]
