@@ -22,7 +22,6 @@ const menuArr = [
   },
   {
     label: '系统管理',
-    path: '/system-management',
     value: '1',
     icon: SettingTwoTone,
     children: [
@@ -57,7 +56,6 @@ const menuArr = [
     icon: IdcardTwoTone
   },
   { label: '数据分析', 
-    path: '/data-analysis', 
     value: '6',
     icon: PieChartTwoTone,
     children: [
@@ -73,7 +71,6 @@ const menuArr = [
   },
   {
     label: '个人中心',
-    path: '/system-management',
     value: '9',
     icon: SettingTwoTone,
     children: [

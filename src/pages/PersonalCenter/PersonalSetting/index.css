@@ -1,0 +1,28 @@
+.personal-setting-actionBar {
+  margin-right: 10px;
+}
+.ant-descriptions-header {
+  margin-top: 10px;
+}
+.ps-topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+.ps-infoContainer {
+  display: flex;
+  align-items: center;
+}
+.ps-statistical {
+  width: 300px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0px 0px 15px 1px #efefef;
+}
+.ps-info-username {
+  font-size: 24px;
+  font-weight: 600;
+  margin-left: 30px;
+}

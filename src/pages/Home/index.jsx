@@ -136,11 +136,6 @@ const { Title, Paragraph, Text, Link } = Typography;
                     <Meta title="Europe Street beat" description="www.instagram.com" />
                   </Card>
                 </a>
-                // <div className="item-container" key={index1}>
-                //   <a href={`#${menuItem.path}`} >
-                //     {menuItem.label}
-                //   </a>
-                // </div>
               )
               : (
                 menuItem.children.map((itemChild, index2) => (
@@ -155,11 +150,6 @@ const { Title, Paragraph, Text, Link } = Typography;
                     <Meta title="Europe Street beat" description="www.instagram.com" />
                   </Card>
                   </a>
-                  // <div className="item-container" key={index2}>
-                  //   <a href={`#${itemChild.path}`} >
-                  //     {itemChild.label}
-                  //   </a>
-                  // </div>
                 ))
               )
             })
