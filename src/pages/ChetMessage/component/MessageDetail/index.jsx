@@ -1,5 +1,5 @@
 import React, { Component, } from 'react'
-import { List, Avatar, Skeleton, Button, Badge, Carousel, BackTop } from 'antd';
+import { List, Avatar, Skeleton, Button, Badge, Carousel } from 'antd';
 import { LikeOutlined, StarOutlined } from '@ant-design/icons';
 import './index.css'
 
@@ -11,7 +11,7 @@ export default class MessageDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      listData: [],
+      toplicData: [],
       initLoading: true
     }
     this.onClickPublisher = this.onClickPublisher.bind(this);
@@ -21,25 +21,34 @@ export default class MessageDetail extends Component {
     fetch(fakeDataUrl)
       .then(res => res.json())
       .then(res => {
+        console.log(res);
+        let result = res.results;
+        result = result.map((item, index) => {
+          item.avatar = item.picture.large
+          return item;
+        })
+        console.log('result', result);
         this.setState({
           initLoading: false,
-          data: res.results,
-          list: res.results,
+          data: result,
+          commitListData: result,
+        }, () => {
+          let data = [];
+          for (let i = 0; i < 1; i++) {
+            data.push({
+              href: 'https://ant.design',
+              title: `ant design part ${i}`,
+              avatar: 'https://joeschmoe.io/api/v1/random',
+              description:
+                'Ant Design, a design language for background applications, is refined by Ant UED Team.',
+              content:
+                'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+            });
+          }
+          this.setState({ toplicData: data});
         });
       });
-    let data = [];
-    for (let i = 0; i < 1; i++) {
-      data.push({
-        href: 'https://ant.design',
-        title: `ant design part ${i}`,
-        avatar: 'https://joeschmoe.io/api/v1/random',
-        description:
-          'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-        content:
-          'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-      });
-    }
-    this.setState({ listData: data});
+    
   }
 
   componentWillUnmount() {
@@ -49,7 +58,7 @@ export default class MessageDetail extends Component {
   onLoadMore = () => {
     this.setState({
       loading: true,
-      list: this.state.data.concat(
+      commitListData: this.state.data.concat(
         [...new Array(count)].map(() => ({ loading: true, name: {}, picture: {} })),
       ),
     });
@@ -60,13 +69,10 @@ export default class MessageDetail extends Component {
         this.setState(
           {
             data,
-            list: data,
+            commitListData: data,
             loading: false,
           },
           () => {
-            // Resetting window's offsetTop so as to display react-virtualized demo underfloor.
-            // In real scene, you can using public method of react-virtualized:
-            // https://stackoverflow.com/questions/46700726/how-to-use-public-method-updateposition-of-react-virtualized
             window.dispatchEvent(new Event('resize'));
           },
         );
@@ -83,7 +89,7 @@ export default class MessageDetail extends Component {
   }
 
   render() {
-    const { listData,  list,  initLoading, loading } = this.state;
+    const { toplicData,  commitListData,  initLoading, loading } = this.state;
 
     const contentStyle = {
       height: '160px',
@@ -93,17 +99,6 @@ export default class MessageDetail extends Component {
       background: '#364d79',
       width: '250px',
       margin: 0
-    };
-
-    const style = {
-      height: 40,
-      width: 40,
-      lineHeight: '40px',
-      borderRadius: 4,
-      backgroundColor: '#1088e9',
-      color: '#fff',
-      textAlign: 'center',
-      fontSize: 14,
     };
 
     const loadMore =
@@ -117,9 +112,6 @@ export default class MessageDetail extends Component {
           }}
         >
           <Button onClick={this.onLoadMore}>loading more</Button>
-          <BackTop visibilityHeight={10}>
-            <div style={style}>UP</div>
-          </BackTop>
         </div>
       ) : null;
 
@@ -131,12 +123,13 @@ export default class MessageDetail extends Component {
           itemLayout="vertical"
           size="large"
           pagination={false}
-          dataSource={listData}
+          dataSource={toplicData}
           renderItem={item => (
             <List.Item
               key={item.title}
               extra={
                 <div>
+                  {/* 轮播图 */}
                   <Carousel effect="fade" autoplay>
                     <div style={{width: '250px'}}>
                       <img
@@ -175,7 +168,7 @@ export default class MessageDetail extends Component {
           loading={initLoading}
           itemLayout="horizontal"
           loadMore={loadMore}
-          dataSource={list}
+          dataSource={commitListData}
           renderItem={item => (
             <List.Item
               actions={[

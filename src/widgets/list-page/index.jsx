@@ -11,14 +11,45 @@ export default class componentName extends Component {
     this.state = {
       selectedRow: '',
       expandedArr: [],
-      
+    }
+    if(props.onRef) {
+      props.onRef(this);
+    }
+    this.expandHandle = this.expandHandle.bind(this);
+  }
+
+  expandHandle(record, index) {
+
+    const { expandedArr } = this.state;
+    return {
+      onClick: event => {
+        if(event.target.cellIndex === 7 
+          || event.target.innerText === 'Allow' 
+          || event.target.innerText === '确 定'
+          || event.target.innerText === 'Cancel'
+          || event.target.innerText === 'OK') {
+          return;
+        }
+        if(expandedArr.length === 0) {
+          this.setState({ expandedArr: [record.key]});
+        }else if(expandedArr[0] !== record.key){
+          this.setState({ expandedArr: [record.key]});
+        }else {
+          this.setState({ expandedArr: []})
+        }
+        if(this.props.title === '认证中心') {
+          this.props.getExpandedArr(this.state.expandedArr);
+        }
+        
+      }
     }
   }
+
+
   render() {
 
     const { columns, data, title, tableHeight, tableExpand, headerButtonArray, filterBar, tableWidth, tableOnChange } = this.props;
     const { expandedArr, } = this.state;
-    
     const content = (
       <>
         <Paragraph className='page-header-description'>
@@ -60,20 +91,8 @@ export default class componentName extends Component {
           scroll={{ y: tableHeight, x: tableWidth }}
           expandable={tableExpand}
           expandedRowKeys={expandedArr}
-          onRow={(record, index) => {
-            return {
-              onClick: event => {
-                if(expandedArr.length === 0) {
-                  this.setState({ expandedArr: [record.key]})
-                }else if(expandedArr[0] !== record.key){
-                  this.setState({ expandedArr: [record.key]})
-                }else {
-                  this.setState({ expandedArr: []})
-                }
-              },
-            }
-          }}
           onChange={tableOnChange}
+          onRow={(record, index) => this.expandHandle(record, index)}
         >
           {
             columns.map((item,index) => {

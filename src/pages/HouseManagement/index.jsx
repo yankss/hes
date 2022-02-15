@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import * as echarts from 'echarts';
-import ListPage from '../../../widgets/list-page';
+import ListPage from '../../widgets/list-page';
 import { Tag, Space, Button, Tooltip, Popconfirm, message, Modal, notification, Col, Input, Row, Select, Drawer } from 'antd';
 import { FundTwoTone, EditTwoTone, BulbTwoTone, SmileOutlined  } from '@ant-design/icons';
 import {
@@ -13,7 +13,7 @@ import {
 import { LineChart } from 'echarts/charts';
 import { UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
-import NewHouse  from '../../../widgets/NewHouse'
+import NewHouse  from '../../widgets/NewHouse'
 import './index.css'
 
 echarts.use([

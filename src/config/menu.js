@@ -5,7 +5,6 @@ import {
   IdcardTwoTone,
   PieChartTwoTone,
   SettingTwoTone,
-  ShopTwoTone,
   MessageTwoTone,
   CrownTwoTone,
   HeartTwoTone,
@@ -32,12 +31,9 @@ const menuArr = [
     ]
   },
   {
-    label: '房源管理',
+    label: '房屋管理',
     value: '2',
-    children: [
-      { label: '楼栋信息', path: '/building-management', value: '2-1', icon: ShopTwoTone  },
-      { label: '房屋管理', path: '/house-management', value: '2-2', icon: BankTwoTone },
-    ],
+    path: '/house-management',
     icon: BankTwoTone
   },
   { label: '合约管理', 

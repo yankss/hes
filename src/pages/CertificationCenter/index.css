@@ -1,0 +1,8 @@
+/* .ant-layout, .ant-layout * {
+  position: relative;
+} */
+.noPass-reason-input {
+  position: absolute;
+  right: 0px;
+  width: 300px;
+}

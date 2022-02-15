@@ -6,8 +6,7 @@ import './app.css'
 import Home from '../../pages/Home';
 import ContractManagement from '../../pages/ContractManagement';
 import CertificationCenter from '../../pages/CertificationCenter';
-import BuildingManagement from '../../pages/HousingResourceManagement/BuildingManagement';
-import HouseManagement from '../../pages/HousingResourceManagement/HouseManagement';
+import HouseManagement from '../../pages/HouseManagement';
 import PriceDetails from '../../pages/DataAnalysis/PriceDetails';
 import RentDetails from '../../pages/DataAnalysis/RentDetails';
 import ProspectiveCustomerManagement from '../../pages/SystemManagement/ProspectiveCustomerManagement';
@@ -113,7 +112,6 @@ export default class App extends Component {
                 <Route exact path="/" component={Home}></Route>
                 <Route exact path="/contract-management" component={ContractManagement}></Route>
                 <Route exact path="/certification-center" component={CertificationCenter}></Route>
-                <Route exact path="/building-management" component={BuildingManagement}></Route>
                 <Route exact path="/house-management" component={HouseManagement}></Route>
                 <Route exact path="/price-details" component={PriceDetails}></Route>
                 <Route exact path="/rent-details" component={RentDetails}></Route>

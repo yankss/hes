@@ -1,9 +1,32 @@
 import React, { Component } from 'react'
-import { Descriptions, Steps , Button, Statistic, Row, Col, Image, Tag } from 'antd';
-import { FireFilled, SketchCircleFilled, UserOutlined, LoadingOutlined, SmileOutlined } from '@ant-design/icons';
+import { Descriptions,
+          Steps,
+          Button,
+          Statistic,
+          Row,
+          Col,
+          Image, 
+          Tag, 
+          Tooltip, 
+          Modal, 
+          message 
+} from 'antd';
+import {  FireFilled, 
+          SketchCircleFilled, 
+          UserOutlined, 
+          LoadingOutlined, 
+          SmileOutlined, 
+          Loading3QuartersOutlined, 
+          FrownOutlined, 
+          CloseCircleOutlined, 
+          CheckOutlined,
+          ExclamationCircleTwoTone,
+          ExclamationCircleOutlined 
+} from '@ant-design/icons';
 import './index.css'
 
 const { Step } = Steps;
+const { confirm } = Modal;
 
 export default class index extends Component {
   constructor(props) {
@@ -45,6 +68,7 @@ export default class index extends Component {
       ],
       userObject: {}
     }
+    this.applyHandle = this.applyHandle.bind(this);
   }
 
   componentDidMount() {
@@ -61,6 +85,7 @@ export default class index extends Component {
       integralValue: 732,
       certificationStatus: 0,
       isCertification: 0,
+      failureReason: '学生认证不通过，校园信息填写有误。'
     }
     // 数据处理
     userObject.gender === 0 ? userObject.gender = '女' : userObject.gender = '男';
@@ -72,13 +97,36 @@ export default class index extends Component {
     this.setState({ userObject });
 
   }
+
+  applyHandle() {
+    confirm({
+      title: '是否确定进行认证申请?',
+      icon: <ExclamationCircleOutlined />,
+      content: '进行认证申请前请确保已经完善所有个人信息，若已完善可以点击"确定"按钮申请认证，否则请先完善个人信息再进行认证申请。',
+      okText: '确认申请',
+      cancelText: '完善信息',
+      onOk() {
+        return new Promise((resolve, reject) => {   
+          message.success('This is a success message');
+        }).catch(() => console.log('Oops errors!'));
+      },
+      onCancel() {
+        console.log(11111111111);
+      },
+    });
+  }
   
   render() {
     const { descriptionItems, userObject } = this.state;
-    const { tag, certificationStatus } = userObject;
+    const { tag, certificationStatus, failureReason } = userObject;
     const actionBar = <>
       <div className='personal-setting-actionBar'>
-        <Button>编辑</Button>
+        {
+          certificationStatus === 0 ? <Button onClick={() => this.applyHandle()}>申请认证</Button>
+          : certificationStatus === 2 ? <Button>重新认证</Button>
+          : null
+        }
+        <Button>完善信息</Button>
       </div>
     </>
     
@@ -99,8 +147,8 @@ export default class index extends Component {
 // 未提交
     const notSubmit = <>
       <Steps>
-        <Step status="finish" title="未提交" icon={<UserOutlined />} />
-        <Step status="process" title="审核中" icon={<LoadingOutlined />} />
+        <Step status="wait" title="未提交" icon={<UserOutlined />} />
+        <Step status="wait" title="未审核" icon={<Loading3QuartersOutlined />} />
         <Step status="wait" title="认证完成" icon={<SmileOutlined />} />
       </Steps>
     </>
@@ -115,22 +163,31 @@ export default class index extends Component {
     </>
 
 // 认证失败
+    const errorTitle = <>
+      审核不通过 
+      <Tooltip title={`失败原因: ${failureReason}`}>
+        <ExclamationCircleTwoTone twoToneColor={'#faad14'} />
+      </Tooltip>
+      
+    </>
+
     const certificationNoPass = <>
-      <Steps>
+      <Steps current={1} status="error">
         <Step status="finish" title="已提交" icon={<UserOutlined />} />
-        <Step status="process" title="已审核" icon={<LoadingOutlined />} />
-        <Step status="wait" title="认证失败" icon={<SmileOutlined />} />
+        <Step status="finish" title={errorTitle} icon={<CloseCircleOutlined />} />
+        <Step status="error" title="认证失败" icon={<FrownOutlined />} />
       </Steps>
     </>
+
 
 // 认证成功
     const certificationPass = <>
       <Steps>
         <Step status="finish" title="已提交" icon={<UserOutlined />} />
-        <Step status="process" title="已审核" icon={<LoadingOutlined />} />
-        <Step status="wait" title="认证成功" icon={<SmileOutlined />} />
+        <Step status="finish" title="审核通过" icon={<CheckOutlined />} />
+        <Step status="finish" title="认证成功" icon={<SmileOutlined />} />
       </Steps>
-    </>
+    </>  
 
     return (
       <div>

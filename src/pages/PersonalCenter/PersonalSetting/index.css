@@ -1,5 +1,8 @@
 .personal-setting-actionBar {
   margin-right: 10px;
+  width: 200px;
+  display: flex;
+  justify-content: space-evenly;
 }
 .ant-descriptions-header {
   margin-top: 10px;
