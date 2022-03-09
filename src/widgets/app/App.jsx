@@ -38,73 +38,78 @@ export default class App extends Component {
   }
 
 
+
   render() {
     let { current, count } = this.state;
     return (
       <Layout className="main-container">
         <Router>
           <Layout className="site-layout">
-            <Header className="site-layout-background" style={{ padding: 0 }}>
-              <Menu 
-                onClick={this.handleClick} 
-                className="my-menu"
-                selectedKeys={[current]}
-                theme="dark"  
-                mode="horizontal" 
-                defaultSelectedKeys={current} 
-              >
-                {
-                  menuList.map((item, index1) => {
-                    if(item.children) {
-                      return (
-                        <SubMenu key={item.value} icon={<item.icon/>} title={item.label} popupClassName="children-menu">
-                          {
-                            item.children.map((cItem, index2) => {
-                              return (
-                                  <MenuItem icon={<cItem.icon/>}  key={cItem.value}>
-                                    <Link to={`${cItem.path}`}>
-                                      {cItem.label}
-                                    </Link>
-                                  </MenuItem>
-                              )
-                            })
-                          }
-                        </SubMenu>
-                      )
-                    }else {
-                      if(item.value === '8') {
-                        return (
-                          <MenuItem icon={<item.icon/>} key={item.value} >
-                            <Link to={`${item.path}`}>
-                              { count !== 0 
-                                ? <Badge count={count} color="cyan" style={{marginTop: '16px', marginRight: '-5px', }}>
-                                    {item.label}
-                                  </Badge>
-                                :
-                                item.label
+            {
+              document.location.href === 'http://localhost:3000/#/login' ? null :
+              (
+                <Header className="site-layout-background" style={{ padding: 0 }}>
+                  <Menu 
+                    onClick={this.handleClick} 
+                    className="my-menu"
+                    selectedKeys={[current]}
+                    theme="dark"  
+                    mode="horizontal" 
+                    defaultSelectedKeys={current} 
+                  >
+                    {
+                      menuList.map((item, index1) => {
+                        if(item.children) {
+                          return (
+                            <SubMenu style={{fontSize: '.7rem'}} key={item.value} icon={<item.icon/>} title={item.label} popupClassName="children-menu">
+                              {
+                                item.children.map((cItem, index2) => {
+                                  return (
+                                      <MenuItem icon={<cItem.icon/>}  key={cItem.value}>
+                                        <Link style={{fontSize: '.7rem'}} to={`${cItem.path}`}>
+                                          {cItem.label}
+                                        </Link>
+                                      </MenuItem>
+                                  )
+                                })
                               }
-                              
-                            </Link>
-                          </MenuItem>
-                        )
-                      }else {
-                        return (
-                          <MenuItem icon={<item.icon/>} key={item.value} >
-                            <Link to={`${item.path}`}>
-                            {item.label}
-                            </Link>
-                          </MenuItem>
-                        )
-                      }
+                            </SubMenu>
+                          )
+                        }else {
+                          if(item.value === '8') {
+                            return (
+                              <MenuItem icon={<item.icon/>} key={item.value} >
+                                <Link to={`${item.path}`}>
+                                  { count !== 0 
+                                    ? <Badge count={count} color="cyan" style={{ marginTop: '16px', marginRight: '-5px', }}>
+                                        <div style={{fontSize: '.7rem'}}>{item.label}</div>
+                                      </Badge>
+                                    :
+                                    <div style={{fontSize: '.7rem'}}>{item.label}</div>
+                                  }
+                                  
+                                </Link>
+                              </MenuItem>
+                            )
+                          }else {
+                            return (
+                              <MenuItem icon={<item.icon/>} key={item.value} >
+                                <Link style={{fontSize: '.7rem'}} to={`${item.path}`}>
+                                  {item.label}
+                                </Link>
+                              </MenuItem>
+                            )
+                          }
+                        }
+                      })
                     }
-                  })
-                }
-              </Menu>
-            </Header>
+                  </Menu>
+                </Header>
+              )
+            }
             <Content
               className="site-layout-background"
               style={{
-                padding: '2px 2px',
                 minHeight: 280,
               }}
             >

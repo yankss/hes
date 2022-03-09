@@ -14,4 +14,4 @@ export function getListData() {
     url: '/users/getAllUser',
     method: 'get',
   })
-} 
+}

@@ -1,24 +1,43 @@
+/* @import url('https:fonts.googleapis.com/css2?family=Noto+Sans:wght@700&display=swap'); */
+
 .login-card {
-  border: 1px solid rebeccapurple;
-  height: 30%;
+  border-radius: 12px;
+  box-shadow: 0 0 14px rgb(223, 113, 113);
+  height: 40%;
   width: 40%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  position: absolute;
+  z-index: 999;
+  top: 30vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  
+}
+.card-title-login {
+  color: #d3d1cf;
+  font-size: 1rem;
 }
 
 .main-container-login {
   width: 100vw;
-  height: 100%;
+  height: 100vh;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  position: relative;
+  flex-direction: column;
+  background-image: url('../../assets/imgs/loginImg/wallhaven-mdeo9y.jpg');
+  background-position: center;
+  background-size: cover;
+  
 }
 .ant-input-affix-wrapper>input.ant-input {
   padding-left: 5px;
 }
 .ant-input-affix-wrapper {
+  height: 40px;
   height: 40px;
 }
 .action-bar-login {
@@ -26,3 +45,136 @@
   display: flex;
   justify-content: space-evenly;
 }
+
+
+:root {
+  font-size: 27px;
+}
+
+body {
+  min-height: 100vh;
+  flex-direction: column;
+  font-family: 'Concert One', cursive;
+}
+
+.appName, .welcomeText {
+  padding: 0;
+  margin: 0;
+  position: relative;
+  color: rgb(178 179 182);
+}
+
+
+
+.appName {
+  font-size: 7rem;
+  animation: 5s rotate ease-in-out infinite;
+  margin-top: -40px;
+}
+
+@keyframes rotate {
+  0%, 100% {
+    transform: rotate3d(0,1,0,-20deg);
+  }
+  50% {
+    transform: rotate3d(0,1,0,20deg);
+  }
+}
+
+.welcomeText {
+  font-size: 4rem;
+  letter-spacing: -4px;
+  animation: 2.5s thank-you ease-in-out infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes thank-you {
+  0%, 100% {
+    transform: rotate3d(1,0,0,-10deg);
+  }
+  50% {
+    transform: rotate3d(1,0,0,10deg);
+  }
+}
+
+
+.appName::before,
+.appName::after {
+  content: '房无忧';
+}
+
+.welcomeText::before,
+.welcomeText::after {
+  content: 'Welcome To You!';
+}
+
+.appName::before,
+.appName::after,
+.welcomeText::before,
+.welcomeText::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.appName::before {
+  transform: translate3d(15px,5px,-10px);
+  color: #009CDE;
+  animation: 5s h2-before ease-in-out infinite;
+}
+
+@keyframes h2-before {
+  0%, 100% {
+    transform: translate3d(15px,5px,-10px);
+  }
+  50% {
+    transform: translate3d(-15px,5px,-10px);
+  }
+}
+
+.appName::after {
+  transform: translate3d(30px,10px,-20px);
+  color: #003C71;
+  animation: 5s h2-after ease-in-out infinite;
+}
+
+@keyframes h2-after {
+  0%, 100% {
+    transform: translate3d(30px,10px,-20px);
+  }
+  50% {
+    transform: translate3d(-30px,10px,-20px);
+  }
+}
+
+.welcomeText::before {
+  transform: translate3d(0px,6px,-10px);
+  color: #009CDE;
+  animation: 2.5s h3-before ease-in-out infinite;
+}
+
+@keyframes h3-before {
+  0%, 100% {
+    transform: translate3d(0px,6px,-10px);
+  }
+  50% {
+    transform: translate3d(0px,-3px,-10px);
+  }
+}
+
+.welcomeText::after {
+  transform: translate3d(0px,12px,-20px);
+  color: #003C71;
+  animation: 2.5s h3-after ease-in-out infinite;
+}
+
+@keyframes h3-after {
+  0%, 100% {
+    transform: translate3d(0px,12px,-20px);
+  }
+  50% {
+    transform: translate3d(0px,-6px,-20px);
+  }
+}
+

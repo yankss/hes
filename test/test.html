@@ -5,15 +5,36 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    .mainContainer {
+      width: 100vw;
+      height: 200px;
+      
+    }
+    .left {
+      width: 300px;
+      height: 200px;
+      background-color: aqua;
+      float: left;
+    }
+    .right {
+      height: 200px;
+      background-color: blue;
+    }
+    .aaa {
+      clear: both;
+    }
+  </style>
 </head>
 <body>
+  <div class="mainContainer">
+    <div class="left">left</div>
+    <div class="right"> right</div>
+    <div class="aaa"></div>
+  </div>
   
-  <script>
-    var a = [1,2,3,4]
-    var b = a.filter(item => {
-      console.log(1111);
-    })
-    console.log(b);
+  <script type="text/javascript">
+    
   </script>
 </body>
 </html>

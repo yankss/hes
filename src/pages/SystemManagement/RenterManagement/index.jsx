@@ -235,7 +235,7 @@ export default class SystemManagement extends Component {
         },
       ],
       title: '租客管理',
-      tableHeight: 550,
+      tableHeight: 500,
     }
     this.tableOnChange = this.tableOnChange.bind(this);
   }

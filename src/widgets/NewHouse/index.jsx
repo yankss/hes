@@ -30,15 +30,16 @@ export default class NewTopic extends Component {
       previewImage: '',
       previewTitle: '图片上传',
       tagChildren: [
-        { value: 'gold' },
-        { value: 'lime' },
-        { value: 'green' }, 
-        { value: 'cyan' },
-        { value: 'blue'}
+        { label: '热血', color: 'gold', value: 1 },
+        { label: '搞笑', color: 'lime', value: 2 },
+        { label: '无聊', color: 'green', value: 3 }, 
+        { label: '美食', color: 'cyan', value: 4 },
+        { label: '运动', color: 'blue', value: 5 }
       ],
       fileList: [
       ],
     };
+    this.formRef = React.createRef();
     this.onChangeFormData = this.onChangeFormData.bind(this);
     this.selectOnChange = this.selectOnChange.bind(this);
   }
@@ -81,11 +82,24 @@ export default class NewTopic extends Component {
 
   componentDidMount() {
     let { newHouseObject } = this.props;
-    newHouseObject = Object.assign(this.state.formData, newHouseObject);
     this.setState({ formData: newHouseObject})
-    console.log(this.state.formData);
+    this.formRef.current.setFieldsValue(newHouseObject) 
+    if(newHouseObject === {}) {
+      this.formRef.current.resetFields();
+    }
   }
-  
+
+  componentDidUpdate() {
+    if (JSON.stringify(this.state.formData) === JSON.stringify(this.props.newHouseObject)) { return false }
+    let { newHouseObject } = this.props;
+    this.setState({ formData: newHouseObject})
+    this.formRef.current.setFieldsValue(newHouseObject) 
+    console.log(newHouseObject);
+    if(newHouseObject === {}) {
+      this.formRef.current.resetFields({});
+    }
+  }
+
 
   handlePreview = async file => {
     if (!file.url && !file.preview) {
@@ -103,13 +117,12 @@ export default class NewTopic extends Component {
 
   handleCancel = () => this.setState({ previewVisible: false });
   onChangeFormData(e) {
+    console.log(e.target);
     let formDataObj = {};
     const { id, value } = e.target;
     formDataObj[`${id}`] = value;
     formDataObj = Object.assign(this.state.formData, formDataObj);
     this.setState({ formData: formDataObj})
-    console.log(this.state.formData);
-    
   }
   selectOnChange(selection) {
     console.log('selection', selection);
@@ -119,11 +132,10 @@ export default class NewTopic extends Component {
     }else {
       formDataObj.leaseState = selection;
     }
-    formDataObj = Object.assign(this.state.formData, formDataObj);
-    this.setState({ formData: formDataObj})
-  }
-  onChangeAddress() {
-
+    formDataObj = Object.assign(this.state.formData, formDataObj)
+    this.setState({ formData: formDataObj}, () => {
+      console.log(this.state.formData);
+    })
   }
 
   render() {
@@ -134,10 +146,8 @@ export default class NewTopic extends Component {
             previewImage, 
             imageUrl, 
             loading,
-            rent,
             formData } = this.state;
 
-    
 
     const uploadButton = (
       <div>
@@ -147,26 +157,26 @@ export default class NewTopic extends Component {
     );
 
     function tagRender(props) {
-      const { value, closable, onClose } = props;
+      const { value, closable, onClose, label } = props;
+      let color = 
+      value === 1 ? 'gold'
+      : value === 2 ? 'lime'
+      : value === 3 ? 'green'
+      : value === 4 ? 'cyan'
+      : 'blue'
       const onPreventMouseDown = event => {
         event.preventDefault();
         event.stopPropagation();
       };
       return (
         <Tag
-          color={value}
+          color={color}
           onMouseDown={onPreventMouseDown}
           closable={closable}
           onClose={onClose}
           style={{ marginRight: 3 }}
         >
-          {
-            value === 'gold' ? '热血' 
-            : value === 'lime' ? '搞笑' 
-            : value === 'green' ? '无聊' 
-            : value === 'cyan' ? '美食' 
-            : '运动 '
-          }
+          {label}
         </Tag>
       );
     }
@@ -181,7 +191,12 @@ export default class NewTopic extends Component {
 
     return (
       <div>
-        <Form layout="vertical" hideRequiredMark>
+        <Form 
+          layout="vertical" 
+          hideRequiredMark
+          initialValues={formData}
+          ref={this.formRef}
+        >
           <Row gutter={16}>
             <Col span={24}>
               <Form.Item
@@ -225,23 +240,26 @@ export default class NewTopic extends Component {
                 rules={[{ required: true, message: 'Please enter Rent' }]}
               >
                 <Input 
-                  value={rent} 
+                  value={formData.rent} 
                   onChange={(e)=> this.onChangeFormData(e)}
-                  addonAfter="RMB/Month" placeholder="Please enter Rent" allowClear />
+                  addonAfter="RMB/Month" 
+                  placeholder="Please enter Rent" 
+                  allowClear />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                name="isLease"
+                name="leaseState"
                 label="IsLease :"
                 rules={[{ required: true, message: 'Please choose the IsLease' }]}
               >
                 <Select 
-                  value={formData.isLease} 
+                  value={formData.leaseState} 
                   onChange={(selection)=> this.selectOnChange(selection)}
-                  placeholder="Please choose the IsLease :" allowClear>
-                  <Option value="1">Yes</Option>
-                  <Option value="2">No</Option>
+                  placeholder="Please choose the IsLease :" 
+                  allowClear>
+                  <Option value={1}>Yes</Option>
+                  <Option value={0}>No</Option>
                 </Select>
               </Form.Item>
             </Col>
@@ -288,7 +306,7 @@ export default class NewTopic extends Component {
                 rules={[{ required: true, message: 'Please enter LandlordPhone' }]}
               >
                 <Input 
-                  value={formData.landlordName} 
+                  value={formData.landlordPhone} 
                   onChange={(e)=> this.onChangeFormData(e)}
                   placeholder="Please enter LandlordPhone" allowClear />
               </Form.Item>
@@ -319,13 +337,13 @@ export default class NewTopic extends Component {
             </Col>
             <Col span={12}>
               <Form.Item
-                name="tagTypes"
+                name="tags"
                 label="TagTypes :"
                 rules={[{ required: true, message: 'Please select tags' }]}
               >
                 <Select
                   mode="multiple"
-                  value={formData.tagTypes}
+                  value={formData.tags}
                   showArrow
                   style={{float:  'left', marginRight: '20px', width: '100%'}}
                   allowClear={true}

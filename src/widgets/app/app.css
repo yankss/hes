@@ -38,7 +38,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  background: radial-gradient(#0f4c81, transparent)  !important;
+  /* background: radial-gradient(#0f4c81, transparent)  !important; */
   position: fixed;
   top: 0;
   z-index: 999;
@@ -46,8 +46,10 @@ body {
 }
 
 .ant-menu-dark .ant-menu-sub, .ant-menu.ant-menu-dark, .ant-menu.ant-menu-dark .ant-menu-sub {
-  background: radial-gradient(#5FA1DB, transparent)  !important;
-  border-radius: 10px;
+  /* background: radial-gradient(#5FA1DB, transparent)  !important; */
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  /* border-radius: 10px; */
 }
 .ant-btn {
   border-radius: 10px;
@@ -86,7 +88,13 @@ body {
 .ant-table-tbody>tr>td {
   white-space: pre;
 }
+.ant-table-tbody>tr>td {
+  font-size: .6rem;
+}
 
 ul li div span span {
   color: black;
+}
+.ant-btn {
+  font-size: .6rem;
 }

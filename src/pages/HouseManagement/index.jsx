@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import * as echarts from 'echarts';
 import ListPage from '../../widgets/list-page';
-import { Tag, Space, Button, Tooltip, Popconfirm, message, Modal, notification, Col, Input, Row, Select, Drawer } from 'antd';
+import { Tag, Space, Button, Tooltip, Popconfirm, message, Modal, notification, Drawer } from 'antd';
 import { FundTwoTone, EditTwoTone, BulbTwoTone, SmileOutlined  } from '@ant-design/icons';
 import {
   TitleComponent,
@@ -84,9 +84,9 @@ export default class index extends Component {
           render: leaseState => (
             <>
               {
-                leaseState === '已出租' ? 
-                (<Tag color='blue'>{leaseState}</Tag>) : 
-                (<Tag color='yellow'>{leaseState}</Tag>)
+                leaseState === 1 ? 
+                (<Tag color='blue'>已出租</Tag>) : 
+                (<Tag color='yellow'>未出租</Tag>)
               }
             </>
           ),
@@ -128,7 +128,7 @@ export default class index extends Component {
           render: (text, record) => (
             <>
               {
-                record.leaseState === '已出租' ?
+                record.leaseState === 1 ?
                 record.waterFee :
                 `${record.waterRate}元/升`
               }
@@ -144,7 +144,7 @@ export default class index extends Component {
           render: (text, record) => (
             <>
               { 
-                record.leaseState === '已出租' ?
+                record.leaseState === 1 ?
                 record.electricityFee :
                 `${record.electricityRate}元/度`
               }
@@ -162,7 +162,7 @@ export default class index extends Component {
           render: (text, record) => (
             <>
               { 
-                record.leaseState === '已出租' ?
+                record.leaseState === 1 ?
                 <Button type='link'>{text}</Button> :
                 <Button danger type='link'>暂无</Button>
               }
@@ -241,12 +241,13 @@ export default class index extends Component {
           waterRate: 0.7,
           electricityRate: 1.5,
           electricityFee: 50.1,
-          
+          landlordPhone: '13445667342',
+          landlordName: '完犊子',
           renterName: 'John Brown',
           age: 32,
           address: 'New York No. 1 Lake Park',
           tags: ['nice', 'developer'],
-          leaseState: '已出租',
+          leaseState: 1,
           actionImg: [<FundTwoTone />, <EditTwoTone />, <BulbTwoTone />],
         },
         {
@@ -257,12 +258,14 @@ export default class index extends Component {
           waterFee: 17.2,
           electricityFee: 170.1,
           electricityRate: 1.5,
+          landlordPhone: '13445667342',
+          landlordName: '完犊子',
           waterRate: 0.7,
           renterName: 'Jim Green',
           age: 42,
           address: 'London No. 1 Lake Park',
           tags: ['loser', 'houseManagement'],
-          leaseState: '已出租',
+          leaseState: 1,
           actionImg: [<FundTwoTone />, <EditTwoTone />, <BulbTwoTone />],
         },
         {
@@ -274,11 +277,13 @@ export default class index extends Component {
           electricityFee: 200.1,
           waterRate: 0.7,
           electricityRate: 1.5,
+          landlordPhone: '13445667342',
+          landlordName: '完犊子',
           renterName: 'Joe Black',
           age: 32,
           address: 'Sidney No. 1 Lake Park',
           tags: ['cool', 'teacher'],
-          leaseState: '未出租',
+          leaseState: 0,
           actionImg: [<FundTwoTone />, <EditTwoTone />, <BulbTwoTone />],
         },
         {
@@ -289,12 +294,14 @@ export default class index extends Component {
           waterFee: 40.2,
           electricityFee: 150.1,
           waterRate: 0.7,
+          landlordPhone: '13445667342',
+          landlordName: '完犊子',
           electricityRate: 1.5,
           renterName: '小成',
           age: 32,
           address: '钟落潭广新路388号',
           tags: ['cool', 'teacher', '稳重'],
-          leaseState: '未出租',
+          leaseState: 0,
           actionImg: [<FundTwoTone />, <EditTwoTone />, <BulbTwoTone />],
         },
         {
@@ -304,13 +311,15 @@ export default class index extends Component {
           rent: 1050,
           waterFee: 43.2,
           electricityFee: 350.1,
+          landlordPhone: '13445667342',
+          landlordName: '完犊子',
           waterRate: 0.7,
           electricityRate: 1.5,
           renterName: '小成',
           age: 32,
           address: '钟落潭广新路388号',
           tags: ['cool', 'teacher', '稳重'],
-          leaseState: '已出租',
+          leaseState: 1,
           actionImg: [<FundTwoTone />, <EditTwoTone />, <BulbTwoTone />],
         },
         {
@@ -322,11 +331,13 @@ export default class index extends Component {
           electricityFee: 50.1,
           waterRate: 0.7,
           electricityRate: 1.5,
+          landlordPhone: '13445667342',
+          landlordName: '完犊子',
           renterName: '小成',
           age: 32,
           address: '钟落潭广新路388号',
           tags: ['cool', 'teacher', '稳重'],
-          leaseState: '已出租',
+          leaseState: 1,
           actionImg: [<FundTwoTone />, <EditTwoTone />, <BulbTwoTone />],
         },
         {
@@ -336,13 +347,15 @@ export default class index extends Component {
           rent: 400,
           waterFee: 10.2,
           electricityFee: 50.1,
+          landlordPhone: '13445667342',
+          landlordName: '完犊子',
           waterRate: 0.7,
           electricityRate: 1.5,
           renterName: '小成',
           age: 32,
           address: '钟落潭广新路388号',
           tags: ['cool', 'teacher', '稳重'],
-          leaseState: '未出租',
+          leaseState: 0,
           actionImg: [<FundTwoTone />, <EditTwoTone />, <BulbTwoTone />],
         },
         {
@@ -352,44 +365,97 @@ export default class index extends Component {
           rent: 400,
           waterFee: 10.2,
           electricityFee: 50.1,
+          landlordPhone: '13445667342',
+          landlordName: '完犊子',
           waterRate: 0.7,
           electricityRate: 1.5,
           renterName: '小成',
           age: 32,
           address: '钟落潭广新路388号',
           tags: ['cool', 'teacher', '稳重'],
-          leaseState: '已出租',
+          leaseState: 1,
           actionImg: [<FundTwoTone />, <EditTwoTone />, <BulbTwoTone />],
         },
       ],
       title: '房屋管理',
-      tableHeight: 500,
+      tableHeight: 400,
       tableWidth: '100%',
       chartVisible: false,
       chartOptions: {},
       chartTitle: '',
       address: '',
       tagChildren: [
-        { value: 'gold' },
-        { value: 'lime' },
-        { value: 'green' }, 
-        { value: 'cyan' },
-        { value: 'blue'}
+        { label: '热血', color: 'gold', value: 1 },
+        { label: '搞笑', color: 'lime', value: 2 },
+        { label: '无聊', color: 'green', value: 3 }, 
+        { label: '美食', color: 'cyan', value: 4 },
+        { label: '运动', color: 'blue', value: 5 }
       ],
       leaseStateTag: [
-        { value: 'blue' },
-        { value: 'yellow' },
+        { label: '已出租', value: 1 },
+        { label: '未出租', value: 0 },
       ],
       newHouseVisible: false,
       newHouseObject: {},
-      drawerTitle: ''
+      drawerTitle: '',
+      filterBar: [
+        {
+          placeholder: '请输入租客姓名: ',
+          value: 'renterName',
+          name: 'renterName',
+          allowClear: true,
+          span: 3.5,
+          type: 'input'
+        },
+        {
+          placeholder: '请输入屋主姓名: ',
+          value: 'landlordName',
+          name: 'landlordName',
+          allowClear: true,
+          span: 3.5,
+          type: 'input'
+        },
+        {
+          placeholder: '请输入租赁状态: ',
+          value: 'leaseState',
+          name: 'leaseState',
+          allowClear: true,
+          span: 5,
+          type: 'select',
+          mode: 'tags',
+          tagRender: this.tagRender,
+          options: [
+            { label: '已出租', value: 1 },
+            { label: '未出租', value: 0 },
+          ],
+        },
+        {
+          placeholder: '请输入标签: ',
+          value: 'tags',
+          name: 'tags',
+          allowClear: true,
+          span: 8,
+          type: 'select',
+          tagRender: this.tagRender,
+          mode: 'multiple',
+          options: [
+            { label: '热血', color: 'gold', value: 1 },
+            { label: '搞笑', color: 'lime', value: 2 },
+            { label: '无聊', color: 'green', value: 3 }, 
+            { label: '美食', color: 'cyan', value: 4 },
+            { label: '运动', color: 'blue', value: 5 }
+          ],
+        },
+      ]
       
     };
     
+    this.aaa = React.createRef();
     this.confirm = this.confirm.bind(this);
     this.cancel = this.cancel.bind(this);
     this.closeChartVisible = this.closeChartVisible.bind(this);
     this.showNewHouseBoard = this.showNewHouseBoard.bind(this);
+    this.searchHandle = this.searchHandle.bind(this);
   }
   
 
@@ -516,8 +582,19 @@ export default class index extends Component {
   closeChartVisible() {
     this.setState({ chartVisible: false });
   }
-  showNewHouseBoard(flag) {
+  showNewHouseBoard(flag, isNewButton) {
+    if(isNewButton === true) {
+      this.setState({newHouseObject: {}})
+    }
     this.setState({ newHouseVisible: flag})
+  }
+  searchHandle() {
+    let { searchData } = this.aaa.current.state
+    console.log(searchData);
+  }
+  resetHandle() {
+    console.log(this.aaa.current);
+    this.aaa.current.resetHandle();
   }
 
   render() {
@@ -529,81 +606,19 @@ export default class index extends Component {
             chartVisible, 
             chartTitle, 
             address, 
-            tagChildren, 
-            leaseStateTag, 
             newHouseVisible,
-            newHouseObject } = this.state;
+            newHouseObject,
+            filterBar } = this.state;
     
 
     const headerButtonArray =  [
-      <Button key="1" type="primary" onClick={() => this.showNewHouseBoard(true)}>NewHouse</Button>,
-      <Button key="3" type="primary">Reset</Button>,
-      <Button key="2" type="primary">Search</Button>,
+      <Button key="1" type="primary" onClick={() => this.showNewHouseBoard(true, true)}>NewHouse</Button>,
+      <Button key="3" type="primary" onClick={() => this.resetHandle()}>Reset</Button>,
+      <Button key="2" type="primary" onClick={() => this.searchHandle()}>Search</Button>,
       
     ]
 
-    function tagRender(props) {
-      const { value, closable, onClose } = props;
-      const onPreventMouseDown = event => {
-        event.preventDefault();
-        event.stopPropagation();
-      };
-      return (
-        <Tag
-          color={value}
-          onMouseDown={onPreventMouseDown}
-          closable={closable}
-          onClose={onClose}
-          style={{ marginRight: 3 }}
-        >
-          {
-            value === 'gold' ? '热血' 
-            : value === 'lime' ? '搞笑' 
-            : value === 'green' ? '无聊' 
-            : value === 'cyan' ? '美食' 
-            : value === 'blue' ? '已出租' 
-            : value === 'yellow' ? '未出租' 
-            : '运动 '
-          }
-        </Tag>
-      );
-    }
 
-    const filterBar = (
-      <>
-        <Row className='filter-bar'>
-          <Col style={{margin: '0 10px 0 0'}} span={3}><Input placeholder="请输入租客姓名 :" allowClear={true}/></Col>
-          <Col style={{margin: '0 10px'}} span={3}><Input placeholder="请输入屋主姓名 :" allowClear={true}/></Col>
-          <Col style={{margin: '0 10px'}} span={6}><Input placeholder="请输入地址 :" allowClear={true}/></Col>
-          <Col style={{margin: '0 10px'}} span={3}>
-            <Select
-              mode="multiple"
-              showArrow
-              style={{float:  'left', marginRight: '20px', width: '100%'}}
-              allowClear={true}
-              placeholder="请输入租赁状态 :"
-              tagRender={tagRender}
-              onChange={this.tagChange}
-              options={leaseStateTag}
-            >
-            </Select>
-          </Col>
-          <Col style={{margin: '0 10px'}} span={6}>
-            <Select
-              mode="multiple"
-              showArrow
-              style={{float:  'left', marginRight: '20px', width: '100%'}}
-              allowClear={true}
-              placeholder="请输入标签 ："
-              tagRender={tagRender}
-              onChange={this.tagChange}
-              options={tagChildren}
-            >
-            </Select>
-          </Col>
-        </Row>
-      </>
-    )
     return (
       <div className="my-content">
         <ListPage 
@@ -614,6 +629,7 @@ export default class index extends Component {
           headerButtonArray={headerButtonArray}
           filterBar={filterBar}
           tableWidth={tableWidth}
+          ref={this.aaa}
         >
         </ListPage>
         {/* 图标弹框 */}

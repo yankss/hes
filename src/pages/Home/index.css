@@ -37,7 +37,7 @@
 
 .placeholder {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background-color: #c5cbcb;
   position: relative;
   border-radius: 16px;
@@ -130,4 +130,50 @@
   right: 50px;
   color: #c5cbcb !important;
   /* background-color: rgba(0, 0, 0, 0.4); */
+}
+.shuttersContainer {
+  display: flex;
+  width: 95vw;
+  margin: auto;
+  margin-top: 30px;
+}
+.card {
+  background-size: auto 100%;
+  background-position: center;
+  border-radius: 50px;
+  flex: .5;
+  cursor: pointer;
+  height: 80vh;
+  position: relative;
+  margin: 10px;
+  transition: flex .7s cubic-bezier(0.05, .6, .4, .9);
+}
+.card.active {
+  flex: 5;
+}
+.card:nth-child(1) {
+  background-image: url('/src/assets/imgs/shuttersImgs/wallhaven-13r9p3.jpg');
+}
+.card:nth-child(2) {
+  background-image: url('/src/assets/imgs/shuttersImgs/wallhaven-47k5g3.jpg');
+}
+.card:nth-child(3) {
+  background-image: url('/src/assets/imgs/shuttersImgs/wallhaven-mdvwqy.jpg');
+}
+.card:nth-child(4) {
+  background-image: url('/src/assets/imgs/shuttersImgs/wallhaven-od9xv7.jpg');
+}
+.card:nth-child(5) {
+  background-image: url('/src/assets/imgs/shuttersImgs/wallhaven-vgr5op.jpg');
+}
+@media (max-width: 500px) {
+  .wrap {
+    width: 100vw;
+  }
+  .card:nth-child(4) {
+    display: none;
+  }
+  .card:nth-child(5) {
+    display: none;
+  }
 }

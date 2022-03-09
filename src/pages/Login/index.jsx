@@ -20,9 +20,9 @@ class index extends Component {
 
 
   componentDidMount() {
-    userApi.getListData().then(res => {
-      console.log(res);
-    })
+    // userApi.getListData().then(res => {
+    //   console.log(res);
+    // })
   }
 
   handleLogin() {
@@ -71,7 +71,7 @@ class index extends Component {
       <div className='main-container-login'>
         <div className='login-card'>
           <div className='card-title-login'>
-            房屋无忧管理系统登录
+            房屋无忧管理系统
           </div>
           <div className='card-container-login'>
             <Input
@@ -101,6 +101,8 @@ class index extends Component {
           </div>
           
         </div>
+        <h2 className='appName'>房无忧</h2>
+        <h3 className='welcomeText'>Welcome To You!</h3>
       </div>
     );
   }

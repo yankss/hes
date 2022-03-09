@@ -68,6 +68,7 @@ export default class index extends Component {
       ],
       data: [
         {
+          id: 1,
           key: 1,
           name: 'John Brown',
           age: 32,
@@ -79,8 +80,10 @@ export default class index extends Component {
           popconfirmVisible: false,
           confirmLoading: false,
           isPassBtton: true,
+          noPassReason: '',
         },
         {
+          id: 2,
           key: 2,
           name: 'Jim Green',
           age: 42,
@@ -92,8 +95,10 @@ export default class index extends Component {
           popconfirmVisible: false,
           confirmLoading: false,
           isPassBtton: true,
+          noPassReason: '',
         },
         {
+          id: 3,
           key: 3,
           name: 'Joe Black',
           age: 32,
@@ -105,14 +110,16 @@ export default class index extends Component {
           popconfirmVisible: false,
           confirmLoading: false,
           isPassBtton: true,
+          noPassReason: '',
         },
       ],
       title: '认证中心',
-      tableHeight: 460,
+      tableHeight: 660,
     };
     this.handleAction = this.handleAction.bind(this);
     // this.getExpandedArr = this.getExpandedArr.bind(this);
     this.showPopconfirm = this.showPopconfirm.bind(this);
+    this.changeNoPassReason = this.changeNoPassReason.bind(this);
   }
 
 
@@ -129,48 +136,45 @@ export default class index extends Component {
 
       case 'NoPass':
         data = data.map((item, index) => {
-          if(item.key === row.key) {
+          if(item.id === row.id) {
             item.isPassBtton = false;
           }
           return item;
         })
         this.setState({ data },() => {
-          console.log(this.state.data);
         });
         
         break;
 
       case 'Cancle':
         data = data.map((item, index) => {
-          if(item.key === row.key) {
+          if(item.id === row.id) {
             item.isPassBtton = true;
           }
           return item;
         })
         this.setState({ data },() => {
-          console.log(this.state.data);
         });
         break;
 
       case 'Sure':
         data = data.map((item, index) => {
-          if(item.key === row.key) {
+          if(item.id === row.id) {
             item.confirmLoading = true;
           }
           return item;
         })
         this.setState({ data }, () => {
-          console.log(data);
           setTimeout(() => {
             data = data.map((item, index) => {
-              if(item.key === row.key) {
+              if(item.id === row.id) {
                 item.confirmLoading = false;
                 item.popconfirmVisible = false;
               }
               return item;
             })
             this.setState({ data });
-          }, 2000);
+          }, 1000);
         });
         
         break;
@@ -183,7 +187,7 @@ export default class index extends Component {
   showPopconfirm(row, flag) {
     let { data } = this.state;
     data = data.map((item, index) => {
-      if(item.key === row.key) {
+      if(item.id === row.id) {
         item.popconfirmVisible = flag;
       }
       return item;
@@ -195,32 +199,54 @@ export default class index extends Component {
     console.log('expandedArr', expandedArr);
   }
 
+  changeNoPassReason(text, record){
+    let value = text.currentTarget.value;
+    record.noPassReason = value;
+    let { data } = this.state;
+    data = data.map(item => {
+      if(item.id === record.id){
+        item.noPassReason = value;
+      }
+      return item;
+    })
+    this.setState({ data }, () => {
+      console.log(this.state);
+    })
+  }
+
 
   render() {
-    const { columns, data, title, tableHeight, headerButtonArray, isPassBtton } = this.state;
+    const { columns, data, title, tableHeight, headerButtonArray } = this.state;
     const tableExpand = {
-      expandedRowRender: record => <div>
-        <Row>
-          {
-            columns.map((item, index) => {
-              if(item.title !== 'Action') {
+      expandedRowRender: record => 
+        <div>
+          <Row>
+            {
+              columns.map((item, index) => {
                 return (
-                  <Col span={5} key={item.key} style={{marginTop: '10px'}}>
-                      <Tag color='blue'>{item.title}</Tag> : { record[`${item.key}`]} 
-                  </Col>
+                  item.title !== 'Action' ? 
+                  (
+                    <Col span={5} key={item.key} style={{marginTop: '10px'}}>
+                        <Tag color='blue'>{item.title}</Tag> : { record[`${item.key}`]} 
+                    </Col>
+                  )
+                  : null
                 )
-              }else {
-                return null;
-              }
-            })
-          }
-          {
-            isPassBtton === false ? 
-            <TextArea placeholder="请输入不通过的原因..." className='noPass-reason-input' showCount maxLength={50}  />
-            : null
-          }
-        </Row>
-      </div>,
+              })
+            }
+            {
+              record.isPassBtton === false ? 
+              <TextArea 
+                placeholder="请输入不通过的原因..." 
+                className='noPass-reason-input' 
+                showCount 
+                maxLength={50}
+                onChange={(text) => this.changeNoPassReason(text, record)}
+              />
+              : null
+            }
+          </Row>
+        </div>,
       rowExpandable: record => record.name !== 'Not Expandable',
       expandIcon: ({ expanded, onExpand, record }) =>
         expanded ? (

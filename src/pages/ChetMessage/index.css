@@ -26,3 +26,8 @@
   align-items: flex-end;
   justify-content: flex-end;
 }
+.ant-back-top {
+  right: 30px;
+  bottom: 10px;
+  position: absolute;
+}

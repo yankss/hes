@@ -27,19 +27,11 @@ const { Title, Paragraph, Text, Link } = Typography;
   }
 
   componentDidMount() {
-    // userApi.login({
-    //   username: 'tim',
-    //   password: '123'
-    // }).then(res => {
-    //   console.log('res', res);
-    // }, err => {
-    //   console.log('err', err);
+    // userApi.getListData().then(res => {
+    //   console.log(res);
+    // }).then(err => {
+    //   console.log(err);
     // })
-    userApi.getListData().then(res => {
-      console.log(res);
-    }).then(err => {
-      console.log(err);
-    })
     const rows = document.querySelectorAll('ul li');
     homeStore.setRows(rows);
     const clientH = document.documentElement.clientHeight;
@@ -63,6 +55,22 @@ const { Title, Paragraph, Text, Link } = Typography;
     setTimeout(() => {
       this.setState({ loading: false});
     }, 2000);
+
+    let card = document.getElementsByClassName('card');
+
+
+    for(let i = 0; i < card.length; i++) {
+      card[i].addEventListener('mouseover', function(){
+        removeActive();
+        this.className = 'card active'
+      })
+    }
+
+    function removeActive() {
+      for(let i = 0; i < card.length; i++) {
+          card[i].className = 'card'
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -121,6 +129,13 @@ const { Title, Paragraph, Text, Link } = Typography;
             </Paragraph>
             </Typography>
         </div>
+        <div className='shuttersContainer'>
+          <div className="card active"></div>
+          <div className="card" ></div>
+          <div className="card" ></div>
+          <div className="card" ></div>
+          <div className="card" ></div>
+          </div>
         <div className="home-main-container">
           {
             menuList.map((menuItem, index1) => {
@@ -132,8 +147,8 @@ const { Title, Paragraph, Text, Link } = Typography;
                     className="item-container"
                     loading={loading}
                   >
-                    <Button type="link">{menuItem.label}</Button>
-                    <Meta title="Europe Street beat" description="www.instagram.com" />
+                    <Button type="link" style={{fontSize: '0.7rem'}}>{menuItem.label}</Button>
+                    <Meta style={{fontSize: '0.6rem'}} title="Europe Street beat" description="www.instagram.com" />
                   </Card>
                 </a>
               )
@@ -146,8 +161,8 @@ const { Title, Paragraph, Text, Link } = Typography;
                     className="item-container"
                     loading={loading}
                   >
-                    <Button type="link">{itemChild.label}</Button>
-                    <Meta title="Europe Street beat" description="www.instagram.com" />
+                    <Button style={{fontSize: '0.7rem'}} type="link">{itemChild.label}</Button>
+                    <Meta style={{fontSize: '0.6rem'}} title="Europe Street beat" description="www.instagram.com" />
                   </Card>
                   </a>
                 ))
