@@ -34,7 +34,7 @@ export default class index extends Component {
     this.state = {
       columns : [
         {
-          title: 'RenterName',
+          title: '租客姓名',
           dataIndex: 'renterName',
           key: 'renterName',
           width: 150,
@@ -42,7 +42,7 @@ export default class index extends Component {
           render: text => <Button style={{paddingLeft: '0'}} type="link">{text}</Button>,
         },
         {
-          title: 'RenterPhone',
+          title: '租客电话',
           dataIndex: 'renterPhone',
           key: 'renterPhone',
           width: 150,
@@ -50,7 +50,7 @@ export default class index extends Component {
           render: text => <Button style={{paddingLeft: '0'}} type="link">{text}</Button>,
         },
         {
-          title: 'LandlordName',
+          title: '房东姓名',
           dataIndex: 'landlordName',
           key: 'landlordName',
           width: 150,
@@ -58,7 +58,7 @@ export default class index extends Component {
           render: text => <Button style={{paddingLeft: '0'}} type="link">{text}</Button>,
         },
         {
-          title: 'LandlordPhone',
+          title: '房东电话',
           dataIndex: 'landlordPhone',
           key: 'landlordPhone',
           width: 150,
@@ -66,7 +66,7 @@ export default class index extends Component {
           render: text => <Button style={{paddingLeft: '0'}} type="link">{text}</Button>,
         },
         {
-          title: 'Address',
+          title: '房屋地址',
           dataIndex: 'address',
           key: 'address',
           width: 200,
@@ -77,7 +77,7 @@ export default class index extends Component {
           )
         },
         {
-          title: 'LeaseState',
+          title: '租赁状态',
           key: 'leaseState',
           dataIndex: 'leaseState',
           width: 130,
@@ -92,7 +92,7 @@ export default class index extends Component {
           ),
         },
         {
-          title: 'Tags',
+          title: '房屋标签',
           key: 'tags',
           dataIndex: 'tags',
           width: 300,
@@ -113,14 +113,14 @@ export default class index extends Component {
           ),
         },
         {
-          title: 'Rent',
+          title: '月租',
           dataIndex: 'rent',
           key: 'rent',
           width: 100,
           fixed: 'right',
         },
         {
-          title: 'WaterRate',
+          title: '水费单价',
           dataIndex: 'waterRate',
           key: 'waterRate',
           width: 100,
@@ -136,7 +136,7 @@ export default class index extends Component {
           )
         },
         {
-          title: 'ElectricityRate',
+          title: '电费单价',
           dataIndex: 'electricityRate',
           key: 'electricityRate',
           width: 130,
@@ -152,7 +152,7 @@ export default class index extends Component {
           )
         },
         {
-          title: 'TotalAmount',
+          title: '总房租',
           dataIndex: 'totalAmount',
           key: 'totalAmount',
           width: 130,
@@ -171,7 +171,7 @@ export default class index extends Component {
           // render: (text, record) => <Button type='link'>{text}</Button>
         },
         {
-          title: 'Action',
+          title: '操作',
           key: 'action',
           fixed: 'right',
           width: 200,
@@ -183,7 +183,7 @@ export default class index extends Component {
                     return (
                       <Popconfirm
                         key={index}
-                        title="Are you sure to show this task?"
+                        title="是否显示该房屋的租金曲线图?"
                         onConfirm={(e) => this.confirm(e, 'showFundTwoTone', record)}
                         onCancel={this.cancel}
                         okText="Yes"
@@ -198,7 +198,7 @@ export default class index extends Component {
                     return (
                       <Popconfirm
                         key={index}
-                        title="Are you sure to delete this task?"
+                        title="是否要对该房屋信息进行修改?"
                         onConfirm={(e) => this.confirm(e, 'showEditTwoTone', record)}
                         onCancel={this.cancel}
                         okText="Yes"
@@ -212,7 +212,7 @@ export default class index extends Component {
                     return (
                       <Popconfirm
                         key={index}
-                        title="Are you sure to notice this task?"
+                        title="是否要通知该房屋租客上交租金?"
                         onConfirm={(e) => this.confirm(e, 'showBulbTwoTone',record)}
                         onCancel={this.cancel}
                         okText="Yes"
@@ -423,7 +423,6 @@ export default class index extends Component {
           span: 5,
           type: 'select',
           mode: 'tags',
-          tagRender: this.tagRender,
           options: [
             { label: '已出租', value: 1 },
             { label: '未出租', value: 0 },
@@ -436,7 +435,6 @@ export default class index extends Component {
           allowClear: true,
           span: 8,
           type: 'select',
-          tagRender: this.tagRender,
           mode: 'multiple',
           options: [
             { label: '热血', color: 'gold', value: 1 },
@@ -446,7 +444,8 @@ export default class index extends Component {
             { label: '运动', color: 'blue', value: 5 }
           ],
         },
-      ]
+      ],
+      moduleDescription: '本管理模块是名为房屋管理，房屋用户可以在此模块管理自己发布的房屋信息，也可以查看房屋信息以及通知租客按时交租。'
       
     };
     
@@ -490,7 +489,7 @@ export default class index extends Component {
               trigger: 'axis'
             },
             legend: {
-              data: ['Email', 'Union Ads', 'Video Ads', 'Direct', 'Search Engine']
+              data: ['电单价', '水单价', '月水费', '月电费', '总租金']
             },
             grid: {
               left: '3%',
@@ -506,38 +505,38 @@ export default class index extends Component {
             xAxis: {
               type: 'category',
               boundaryGap: false,
-              data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+              data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月']
             },
             yAxis: {
               type: 'value'
             },
             series: [
               {
-                name: 'Email',
+                name: '电单价',
                 type: 'line',
                 stack: 'Total',
                 data: [120, 132, 101, 134, 90, 230, 210]
               },
               {
-                name: 'Union Ads',
+                name: '水单价',
                 type: 'line',
                 stack: 'Total',
                 data: [220, 182, 191, 234, 290, 330, 310]
               },
               {
-                name: 'Video Ads',
+                name: '月水费',
                 type: 'line',
                 stack: 'Total',
                 data: [150, 232, 201, 154, 190, 330, 410]
               },
               {
-                name: 'Direct',
+                name: '月电费',
                 type: 'line',
                 stack: 'Total',
                 data: [320, 332, 301, 334, 390, 330, 320]
               },
               {
-                name: 'Search Engine',
+                name: '总租金',
                 type: 'line',
                 stack: 'Total',
                 data: [820, 932, 901, 934, 1290, 1330, 1320]
@@ -604,7 +603,7 @@ export default class index extends Component {
             tableHeight, 
             tableWidth, 
             chartVisible, 
-            chartTitle, 
+            moduleDescription,
             address, 
             newHouseVisible,
             newHouseObject,
@@ -612,10 +611,9 @@ export default class index extends Component {
     
 
     const headerButtonArray =  [
-      <Button key="1" type="primary" onClick={() => this.showNewHouseBoard(true, true)}>NewHouse</Button>,
-      <Button key="3" type="primary" onClick={() => this.resetHandle()}>Reset</Button>,
-      <Button key="2" type="primary" onClick={() => this.searchHandle()}>Search</Button>,
-      
+      <Button key="1" type="primary" onClick={() => this.showNewHouseBoard(true, true)}>新建房屋</Button>,
+      <Button key="3" type="primary" onClick={() => this.resetHandle()}>重置</Button>,
+      <Button key="2" type="primary" onClick={() => this.searchHandle()}>搜索</Button>,
     ]
 
 
@@ -630,11 +628,12 @@ export default class index extends Component {
           filterBar={filterBar}
           tableWidth={tableWidth}
           ref={this.aaa}
+          moduleDescription={moduleDescription}
         >
         </ListPage>
         {/* 图标弹框 */}
         <Modal
-          title={`${chartTitle}位于${address}房子近几个月的租金曲线图 :`}
+          title={`位于${address}房子近几个月的租金曲线图 :`}
           centered
           onCancel={this.closeChartVisible}
           visible={chartVisible}

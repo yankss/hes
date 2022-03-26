@@ -28,24 +28,7 @@ export default class NewTopic extends Component {
         { value: 'blue'}
       ],
       fileList: [
-        {
-          uid: '-3',
-          name: 'image.png',
-          status: 'done',
-          url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        },
-        {
-          uid: '-xxx',
-          percent: 50,
-          name: 'image.png',
-          status: 'uploading',
-          url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        },
-        {
-          uid: '-5',
-          name: 'image.png',
-          status: 'error',
-        },
+        
       ],
     };
   }
@@ -128,7 +111,7 @@ export default class NewTopic extends Component {
           >
             <List.Item.Meta
               avatar={ <Avatar src={item.avatar} />}
-              title={<a href={item.href}>{item.title}</a>}
+              title={<a href={item.href}>Yankxx</a>}
             />
           </List.Item>
           )}
@@ -138,7 +121,7 @@ export default class NewTopic extends Component {
             <Col span={12}>
               <Form.Item
                 name="topicTitle"
-                label="topicTitle"
+                label="话题标题"
                 rules={[{ required: true, message: 'Please enter topicTitle' }]}
               >
                 <Input placeholder="Please enter topicTitle" allowClear />
@@ -147,7 +130,7 @@ export default class NewTopic extends Component {
             <Col span={12}>
               <Form.Item
                 name="tagTypes"
-                label="TagTypes"
+                label="标签类型"
                 rules={[{ required: true, message: 'Please select tags' }]}
               >
                 <Select
@@ -168,7 +151,7 @@ export default class NewTopic extends Component {
             <Col span={12}>
               <Form.Item
                 name="canComment"
-                label="CanComment"
+                label="能否评论"
                 rules={[{ required: true, message: 'Please choose the CanComment' }]}
               >
                 <Select placeholder="Please choose the CanComment" allowClear>
@@ -182,7 +165,7 @@ export default class NewTopic extends Component {
             <Col span={24}>
               <Form.Item
                 name="description"
-                label="Description"
+                label="话题描述"
                 rules={[
                   {
                     required: true,
@@ -197,7 +180,7 @@ export default class NewTopic extends Component {
           <Row gutter={16}>
             <Col span={24}>
               <Form.Item
-                label="Illustrations"
+                label="插图"
                 rules={[
                   {
                     required: true,
@@ -222,7 +205,7 @@ export default class NewTopic extends Component {
                     onPreview={this.handlePreview}
                     onChange={this.handleChange}
                   >
-                    {fileList.length >= 8 ? null : uploadButton}
+                    {fileList.length >= 3 ? null : uploadButton}
                   </Upload>
                 </Form.Item>
                 <span style={{ color: '#aaaaaa'}}>图片顺序为轮播图顺序，务必上传最少一张图片。</span>

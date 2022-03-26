@@ -6,6 +6,7 @@ import MessageDetail from './component/MessageDetail'
 import NewTopic from './component/NewTopic';
 import './index.css'
 
+
 const { TextArea } = Input;
 const {Option} = Select;
 const { RangePicker } = DatePicker;
@@ -18,19 +19,21 @@ export default class index extends Component {
       messageBoardVisible: false,
       commitObject: 'xxx',
       tagChildren: [
-        { value: 'gold' },
-        { value: 'lime' },
-        { value: 'green' }, 
-        { value: 'cyan' },
-        { value: 'blue'}
+        { label: '热血', color: 'gold', value: 1 },
+        { label: '搞笑', color: 'lime', value: 2 },
+        { label: '无聊', color: 'green', value: 3 }, 
+        { label: '美食', color: 'cyan', value: 4 },
+        { label: '运动', color: 'blue', value: 5 }
       ],
-      searchObject: {}
+      searchObject: {},
+      commentContainer: ''
     };
     this.comment = this.comment.bind(this);
     this.tagChange = this.tagChange.bind(this);
     this.publisherChange = this.publisherChange.bind(this);
     this.topicChange = this.topicChange.bind(this);
     this.showNewTopicBoard = this.showNewTopicBoard.bind(this);
+    this.dateChange = this.dateChange.bind(this);
   }
   showMessageBoard(flag, listItem) {
     this.setState({ messageBoardVisible: flag})
@@ -48,16 +51,53 @@ export default class index extends Component {
     this.setState({ commitObject: co})
   }
   tagChange(value, option) {
-    console.log('value', value);
-    console.log('option', option);
+    let searchObject = {};
+    option = option.map((item, index) => {
+      return item.value;
+    })
+    searchObject.tagArr = option;
+    searchObject = Object.assign(this.state.searchObject, searchObject);
+    this.setState({searchObject});
   }
-  publisherChange(value, option) {
-    console.log('value', value);
-    console.log('option', option);
+  publisherChange(value) {
+    let searchObject = {};
+    searchObject.author = value;
+    searchObject = Object.assign(this.state.searchObject, searchObject);
+    this.setState({searchObject});
   }
-  topicChange(value, option) {
-    console.log('value', value);
-    console.log('option', option);
+  topicChange(value) {
+    let searchObject = {};
+    searchObject.topic = value;
+    searchObject = Object.assign(this.state.searchObject, searchObject);
+    this.setState({searchObject});
+  }
+  dateChange(dates,dateString) {
+    let searchObject = {};
+    searchObject.date = dates;
+    searchObject.startDate = dateString[0];
+    searchObject.endDate = dateString[1];
+    searchObject = Object.assign(this.state.searchObject, searchObject);
+    this.setState({searchObject});
+  }
+  searchHandle() {
+    let {date, ...searchObject} = this.state.searchObject
+    console.log(searchObject);
+  }
+  resetHandle() {
+    let searchObject = {};
+    this.setState({searchObject}, () => {
+      console.log(this.state.searchObject);
+    })
+  }
+  sentComment = () => {
+    let { commentContainer } = this.state;
+    this.setState({sureCommentContainer: commentContainer})
+  }
+  commentContainerChange = (e) => {
+    this.setState({commentContainer: e.target.value})
+  }
+  resetCommentContainer = () => {
+    this.setState({sureCommentContainer: undefined})
   }
 
   componentDidMount() {
@@ -74,33 +114,44 @@ export default class index extends Component {
       });
     }
     this.setState({listData: data});
+
+    
   }
   
 
   render() {
-    const { listData, initLoading, loading, messageBoardVisible, commitObject, tagChildren, newTopicVisible } = this.state;
+    const { listData
+          , initLoading
+          , loading
+          , messageBoardVisible
+          , commitObject
+          , tagChildren
+          , newTopicVisible
+          , searchObject
+          , commentContainer
+          ,sureCommentContainer  } = this.state;
 
     function tagRender(props) {
-      const { value, closable, onClose } = props;
+      const { value, closable, onClose, label } = props;
+      let color = 
+      value === 1 ? 'gold'
+      : value === 2 ? 'lime'
+      : value === 3 ? 'green'
+      : value === 4 ? 'cyan'
+      : 'blue'
       const onPreventMouseDown = event => {
         event.preventDefault();
         event.stopPropagation();
       };
       return (
         <Tag
-          color={value}
+          color={color}
           onMouseDown={onPreventMouseDown}
           closable={closable}
           onClose={onClose}
-          style={{ marginRight: 3 }}
+          style={{ marginRight: 3 , fontSize: '.7rem'}}
         >
-          {
-            value === 'gold' ? '热血' 
-            : value === 'lime' ? '搞笑' 
-            : value === 'green' ? '无聊' 
-            : value === 'cyan' ? '美食' 
-            : '运动 '
-          }
+          {label}
         </Tag>
       );
     }
@@ -142,25 +193,25 @@ export default class index extends Component {
           tags={<Tag color="blue">Running</Tag>}
           extra={[
             <Button key="3" type="primary" style={{marginLeft: '20px'}} onClick={() => this.showNewTopicBoard(true)}>
-              NewTopic
+              新建话题
             </Button>,
-            <Button key="1" type="primary" style={{marginLeft: '20px'}}>
-              Search
+            <Button key="1" type="primary" style={{marginLeft: '20px'}} onClick={() => this.searchHandle()}>
+              搜索
             </Button>,
-            <Button key="2" type="primary" style={{marginLeft: '20px'}}>
-              Reset
+            <Button key="2" type="primary" style={{marginLeft: '20px'}} onClick={() => this.resetHandle()}>
+              重置
             </Button>,
           ]}
         >
         </PageHeader>
-        {/* fiter-bar */}
         <Row>
           <Col span={24}>
             <div className='fiter-bar'>
               <Select
                 mode="multiple"
                 showArrow
-                style={{float:  'left', marginRight: '20px', width: '30%'}}
+                value={searchObject.tagArr}
+                style={{float: 'left', marginRight: '20px', width: '50%'}}
                 allowClear={true}
                 placeholder="请输入标签 ："
                 tagRender={tagRender}
@@ -169,42 +220,39 @@ export default class index extends Component {
               >
               </Select>
               <Select
-                style={{float:  'left', marginRight: '20px'}}
+                style={{float: 'left', marginRight: '20px', width: '20%'}}
                 showSearch
+                value={searchObject.author}
                 allowClear={true}
                 placeholder="请输入作者："
-                optionFilterProp="children"
-                onChange={() => this.publisherChange}
-                filterOption={(input, option) =>
-                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
+                onChange={(value) => this.publisherChange(value)}
               >
                 <Option value="jack">Jack</Option>
                 <Option value="lucy">Lucy</Option>
                 <Option value="tom">Tom</Option>
               </Select>
               <Select
-                style={{float:  'left'}}
+                style={{float:  'left', width: '20%'}}
                 showSearch
+                value={searchObject.topic}
                 allowClear={true}
                 placeholder="请输入话题："
-                onChange={() => this.topicChange}
+                onChange={(value) => this.topicChange(value)}
                 optionFilterProp="children"
-                filterOption={(input, option) =>
-                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
               >
                 <Option value="jack">Jack</Option>
                 <Option value="lucy">Lucy</Option>
                 <Option value="tom">Tom</Option>
               </Select>
               <RangePicker
-              style={{ width: '230px', marginLeft: '20px'}}
+                style={{ width: '300px', marginLeft: '20px'}}
+                value={searchObject.date}
                 ranges={{
                   Today: [moment(), moment()],
                   'This Month': [moment().startOf('month'), moment().endOf('month')],
                 }}
-                />
+                onChange={this.dateChange}
+              />
             </div>
           </Col>
         </Row>
@@ -235,16 +283,16 @@ export default class index extends Component {
           >
             <List.Item.Meta
               avatar={ <Avatar src={item.avatar} />}
-              title={<a href={item.href}>{item.title}<Tag style={{ marginLeft: '10px'}} color='blue'>运动</Tag></a>}
+              title={<a href={item.href}>{item.title}<Tag style={{ marginLeft: '10px', fontSize: '18px'}} color='blue'>运动</Tag></a>}
               description={item.description}
             />
-            {item.content}
+            <div style={{fontSize: '16px'}}>{item.content}</div>
           </List.Item>
           )}
         />
         {/* 评论区抽屉  */}
         <Drawer
-          title={`aaa Drawer`}
+          title={`话题详情`}
           placement="right"
           size={'large'}
           onClose={() => this.showMessageBoard(false)}
@@ -260,29 +308,34 @@ export default class index extends Component {
                 showCount maxLength={100} 
                 style={{ height: 60, width: 600}}
                 allowClear={true}
+                value={commentContainer}
+                onChange={this.commentContainerChange}
               />
-              <Button>发送</Button>
+              <Button onClick={this.sentComment}>发送</Button>
             </Space>
           }
         >
           <div>
-          <MessageDetail comment={this.comment}/>
+            <MessageDetail 
+              comment={this.comment}
+              sureCommentContainer={sureCommentContainer}
+              resetCommentContainer={this.resetCommentContainer}
+            />
           </div>
-          
         </Drawer>
 
         {/* NewTopic抽屉 */}
         <Drawer
-          title="Create a new topic"
+          title="新建一个话题"
           width={720}
           onClose={() => this.showNewTopicBoard(false)}
           visible={newTopicVisible}
           bodyStyle={{ paddingBottom: 80 }}
           extra={
             <Space>
-              <Button onClick={() => this.showNewTopicBoard(false)}>Cancel</Button>
+              <Button onClick={() => this.showNewTopicBoard(false)}>取消</Button>
               <Button onClick={() => this.showNewTopicBoard(false)} type="primary">
-                Submit
+                提交
               </Button>
             </Space>
           }

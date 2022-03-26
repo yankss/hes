@@ -10,7 +10,7 @@ import ball2 from '../../assets/imgs/balls/ball02.png';
 import ball3 from '../../assets/imgs/balls/ball03.png';
 import ball4 from '../../assets/imgs/balls/ball04.png';
 import ball5 from '../../assets/imgs/balls/ball05.png';
-import * as userApi from '../../api/user';
+// import * as userApi from '../../api/user';
 
 const { Meta } = Card;
 const { Title, Paragraph, Text, Link } = Typography;

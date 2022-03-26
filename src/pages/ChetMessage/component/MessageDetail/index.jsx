@@ -12,7 +12,8 @@ export default class MessageDetail extends Component {
     super(props);
     this.state = {
       toplicData: [],
-      initLoading: true
+      initLoading: true,
+      commitListData: []
     }
     this.onClickPublisher = this.onClickPublisher.bind(this);
   }
@@ -21,13 +22,18 @@ export default class MessageDetail extends Component {
     fetch(fakeDataUrl)
       .then(res => res.json())
       .then(res => {
-        console.log(res);
         let result = res.results;
         result = result.map((item, index) => {
           item.avatar = item.picture.large
           return item;
         })
-        console.log('result', result);
+        result = result.map((item, index) => {
+          item.picture = item.picture.large;
+          item.name = item.name.last;
+          item.commentNumber = Math.ceil(Math.random()*10);
+          item.description = "Ant Design, a design language for background applications, is refined by Ant UED Team";
+          return item;
+        })
         this.setState({
           initLoading: false,
           data: result,
@@ -53,6 +59,28 @@ export default class MessageDetail extends Component {
 
   componentWillUnmount() {
     clearTimeout();
+  }
+
+  componentDidUpdate() {
+    let { sureCommentContainer } = this.props;
+    
+    if(sureCommentContainer !== undefined) {
+      let newList = [];
+      let { commitListData } = this.state;
+      newList = JSON.parse(JSON.stringify(commitListData));
+      let commentObject = {}
+      commentObject.description = sureCommentContainer;
+      commentObject.name = '虞紫鸢';
+      commentObject.commentNumber = 0
+      commentObject.picture = 'https://easyhouse-bucket.oss-cn-guangzhou.aliyuncs.com/male';
+      newList.unshift(commentObject);
+      this.setState({ commitListData: newList },() => {
+        console.log(this.state.commitListData);
+      });
+      this.props.resetCommentContainer();
+    }else {
+      return;
+    }
   }
 
   onLoadMore = () => {
@@ -89,7 +117,8 @@ export default class MessageDetail extends Component {
   }
 
   render() {
-    const { toplicData,  commitListData,  initLoading, loading } = this.state;
+    const { toplicData,  loading, commitListData, initLoading, } = this.state;
+
 
     const contentStyle = {
       height: '160px',
@@ -111,7 +140,7 @@ export default class MessageDetail extends Component {
             lineHeight: '32px',
           }}
         >
-          <Button onClick={this.onLoadMore}>loading more</Button>
+          <Button onClick={this.onLoadMore}>加载更多</Button>
         </div>
       ) : null;
 
@@ -158,7 +187,7 @@ export default class MessageDetail extends Component {
                 title={<Button onClick={()=>this.onClickPublisher(item)} type='link'>{item.title}</Button>}
                 description={item.description}
               />
-              {item.content}
+              <div style={{fontSize: '16px'}}>{item.content}</div>
             </List.Item>
           )}
         />
@@ -169,24 +198,24 @@ export default class MessageDetail extends Component {
           itemLayout="horizontal"
           loadMore={loadMore}
           dataSource={commitListData}
-          renderItem={item => (
-            <List.Item
-              actions={[
-                <Button key="list-loadmore-edit" onClick={() => this.commit(item)}>commit</Button>,
-                <Badge count={8} color="cyan">
-                  <Button key="list-loadmore-more">more</Button>
-                </Badge>
-                
-              ]}
-            >
-              <Skeleton avatar title={false} loading={item.loading} active>
-                <List.Item.Meta
-                  avatar={<Avatar src={item.picture.large} />}
-                  title={<a href="https://ant.design">{item.name.last}</a>}
-                  description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-                />
-              </Skeleton>
-            </List.Item>
+          renderItem={
+            item => (
+              <List.Item
+                actions={[
+                  <Button key="list-loadmore-edit" onClick={() => this.commit(item)}>评论</Button>,
+                  <Badge count={item.commentNumber} color="cyan">
+                    <Button key="list-loadmore-more">更多</Button>
+                  </Badge>
+                ]}
+              >
+                <Skeleton avatar title={false} loading={item.loading} active>
+                  <List.Item.Meta
+                    avatar={<Avatar src={item.picture} />}
+                    title={<a href="https://ant.design">{item.name}</a>}
+                    description={item.description}
+                  />
+                </Skeleton>
+              </List.Item>
           )}
         />
       </div>

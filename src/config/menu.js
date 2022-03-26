@@ -1,7 +1,6 @@
 import {
   HomeTwoTone,
   BankTwoTone,
-  FundTwoTone,
   IdcardTwoTone,
   PieChartTwoTone,
   SettingTwoTone,
@@ -54,11 +53,12 @@ const menuArr = [
   { label: '数据分析', 
     value: '6',
     icon: PieChartTwoTone,
-    children: [
-      { label: '租赁详情', path: '/rent-details', value: '6-1', icon: FundTwoTone},
-      { label: '房价详情', path: '/price-details', value: '6-2', icon: FundTwoTone },
+    path: '/data-analysis',
+    // children: [
+    //   { label: '租赁详情', path: '/rent-details', value: '6-1', icon: FundTwoTone},
+    //   { label: '房价详情', path: '/price-details', value: '6-2', icon: FundTwoTone },
 
-    ]
+    // ]
   },
   { label: '留言板', 
     path: '/chet-message', 

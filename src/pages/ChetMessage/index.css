@@ -23,11 +23,20 @@
   margin-right: 25px;
   display: flex;
   float: right;
-  align-items: flex-end;
+  align-items: center;
   justify-content: flex-end;
 }
 .ant-back-top {
   right: 30px;
   bottom: 10px;
   position: absolute;
+}
+.ant-picker-input>input {
+  font-size: 16px;
+}
+.ant-select {
+  font-size: 16px;
+}
+.ant-list-item-meta-description {
+  font-size: 16px;
 }

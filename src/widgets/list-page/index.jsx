@@ -114,13 +114,13 @@ export default class componentName extends Component {
     const content = (
       <>
         <Paragraph className='page-header-description'>
-          Ant Design interprets the color system into two levels: a system-level color system and a
-          product-level color system.
+          {this.props.moduleDescription || `Ant Design interprets the color system into two levels: a system-level color system and a
+          product-level color system.`} 
         </Paragraph>
         <Form >
-          <Row>
+          <Row className='filter-bar'>
             {
-              filterBar.map((item, index) => {
+              filterBar ? filterBar.map((item, index) => {
                 return (
                   <Col 
                     span={item.span}
@@ -134,6 +134,7 @@ export default class componentName extends Component {
                         item.type === 'input' ?
                         (
                           <Input 
+                            style={{height: '30px'}}
                             value={searchData[item.value]} 
                             placeholder={item.placeholder} 
                             onChange={(e)=> this.onChangeSearchData(e)}
@@ -175,6 +176,7 @@ export default class componentName extends Component {
                   </Col>
                 )
               })
+              : null
             }
           </Row>
         </Form>

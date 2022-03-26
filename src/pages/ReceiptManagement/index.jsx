@@ -16,6 +16,7 @@ const initThree = () => {
   document.getElementById("container").appendChild(renderer.domElement);
   //镜头控制器
   var controls = new OrbitControls(camera, renderer.domElement);
+  console.log(controls);
   
   //一会儿在这里添加3D物体
   // useaBox();
@@ -45,36 +46,36 @@ const useaSphere = () => {
   camera.position.set(0,0,0.01);
 }
 
-const useaBox = () => {
-  var materials = [];
-  var texture_left = new THREE.TextureLoader().load( './scene_left.jpeg' );
-  materials.push( new THREE.MeshBasicMaterial( { map: texture_left} ) );
+// const useaBox = () => {
+//   var materials = [];
+//   var texture_left = new THREE.TextureLoader().load( './scene_left.jpeg' );
+//   materials.push( new THREE.MeshBasicMaterial( { map: texture_left} ) );
   
-  var texture_right = new THREE.TextureLoader().load( './scene_right.jpeg' );
-  materials.push( new THREE.MeshBasicMaterial( { map: texture_right} ) );
+//   var texture_right = new THREE.TextureLoader().load( './scene_right.jpeg' );
+//   materials.push( new THREE.MeshBasicMaterial( { map: texture_right} ) );
   
-  var texture_top = new THREE.TextureLoader().load( 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png' );
-  materials.push( new THREE.MeshBasicMaterial( { map: texture_top} ) );
+//   var texture_top = new THREE.TextureLoader().load( 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png' );
+//   materials.push( new THREE.MeshBasicMaterial( { map: texture_top} ) );
   
-  var texture_bottom = new THREE.TextureLoader().load( 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png' );
-  materials.push( new THREE.MeshBasicMaterial( { map: texture_bottom} ) );
+//   var texture_bottom = new THREE.TextureLoader().load( 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png' );
+//   materials.push( new THREE.MeshBasicMaterial( { map: texture_bottom} ) );
   
-  var texture_front = new THREE.TextureLoader().load( 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png' );
-  materials.push( new THREE.MeshBasicMaterial( { map: texture_front} ) );
+//   var texture_front = new THREE.TextureLoader().load( 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png' );
+//   materials.push( new THREE.MeshBasicMaterial( { map: texture_front} ) );
   
-  var texture_back = new THREE.TextureLoader().load( 'https://p4.itc.cn/q_70/images01/20210422/7fba831aa0f44a84af0639b0f394bbee.png' );
-  materials.push( new THREE.MeshBasicMaterial( { map: texture_back} ) );
-  console.log('materials', materials);
+//   var texture_back = new THREE.TextureLoader().load( 'https://p4.itc.cn/q_70/images01/20210422/7fba831aa0f44a84af0639b0f394bbee.png' );
+//   materials.push( new THREE.MeshBasicMaterial( { map: texture_back} ) );
+//   console.log('materials', materials);
 
-  var box = new THREE.Mesh( new THREE.BoxGeometry( 1, 1, 1 ), materials);
+//   var box = new THREE.Mesh( new THREE.BoxGeometry( 1, 1, 1 ), materials);
 
-  scene.add(box);
+//   scene.add(box);
 
-  box.geometry.scale(1,1,-1);
+//   box.geometry.scale(1,1,-1);
 
 
-  camera.position.set(0,0,0.01)
-}
+//   camera.position.set(0,0,0.01)
+// }
 
   useEffect(() => {
     initThree();

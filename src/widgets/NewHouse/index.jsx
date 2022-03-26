@@ -203,7 +203,7 @@ export default class NewTopic extends Component {
                 name="avatar"
                 valuePropName="fileList" 
                 getValueFromEvent={this.normFile} 
-                label="avatar :"
+                label="头像 :"
                 rules={[{ required: true, message: 'Please enter avatar' }]}
               >
                 <Upload
@@ -223,7 +223,7 @@ export default class NewTopic extends Component {
             <Col span={24}>
               <Form.Item
                 name="address"
-                label="Address :"
+                label="房屋地址 :"
                 rules={[{ required: true, message: 'Please enter Address' }]}
               >
                 <Input 
@@ -236,7 +236,7 @@ export default class NewTopic extends Component {
             <Col span={12}>
               <Form.Item
                 name="rent"
-                label="Rent :"
+                label="月租 :"
                 rules={[{ required: true, message: 'Please enter Rent' }]}
               >
                 <Input 
@@ -250,7 +250,7 @@ export default class NewTopic extends Component {
             <Col span={12}>
               <Form.Item
                 name="leaseState"
-                label="IsLease :"
+                label="是否已出租 :"
                 rules={[{ required: true, message: 'Please choose the IsLease' }]}
               >
                 <Select 
@@ -266,7 +266,7 @@ export default class NewTopic extends Component {
             <Col span={12}>
               <Form.Item
                 name="waterRate"
-                label="WaterRate :"
+                label="水费单价 :"
                 rules={[{ required: true, message: 'Please enter WaterRate' }]}
               >
                 <Input 
@@ -278,7 +278,7 @@ export default class NewTopic extends Component {
             <Col span={12}>
               <Form.Item
                 name="electricityRate"
-                label="ElectricityRate :"
+                label="电费单价 :"
                 rules={[{ required: true, message: 'Please enter ElectricityRate' }]}
               >
                 <Input 
@@ -290,7 +290,7 @@ export default class NewTopic extends Component {
             <Col span={12}>
               <Form.Item
                 name="landlordName"
-                label="LandlordName :"
+                label="房东名字 :"
                 rules={[{ required: true, message: 'Please enter LandlordName' }]}
               >
                 <Input 
@@ -302,7 +302,7 @@ export default class NewTopic extends Component {
             <Col span={12}>
               <Form.Item
                 name="landlordPhone"
-                label="LandlordPhone :"
+                label="房东电话 :"
                 rules={[{ required: true, message: 'Please enter LandlordPhone' }]}
               >
                 <Input 
@@ -314,7 +314,7 @@ export default class NewTopic extends Component {
             <Col span={12}>
               <Form.Item
                 name="renterName"
-                label="RenterName :"
+                label="租客名字 :"
                 rules={[{ required: true, message: 'Please enter RenterName' }]}
               >
                 <Input 
@@ -326,7 +326,7 @@ export default class NewTopic extends Component {
             <Col span={12}>
               <Form.Item
                 name="renterPhone"
-                label="RenterPhone :"
+                label="租客电话 :"
                 rules={[{ required: true, message: 'Please enter RenterPhone' }]}
               >
                 <Input 
@@ -338,7 +338,7 @@ export default class NewTopic extends Component {
             <Col span={12}>
               <Form.Item
                 name="tags"
-                label="TagTypes :"
+                label="房屋标签 :"
                 rules={[{ required: true, message: 'Please select tags' }]}
               >
                 <Select
@@ -361,7 +361,7 @@ export default class NewTopic extends Component {
             <Col span={24}>
               <Form.Item
                 name="description"
-                label="Description :"
+                label="房屋描述 :"
                 rules={[
                   {
                     required: true,
@@ -379,7 +379,7 @@ export default class NewTopic extends Component {
           <Row gutter={16}>
             <Col span={24}>
               <Form.Item
-                label="3Dpanorama :"
+                label="3D全景图 :"
                 rules={[
                   {
                     required: true,

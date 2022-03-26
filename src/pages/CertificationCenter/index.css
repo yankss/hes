@@ -6,3 +6,11 @@
   right: 0px;
   width: 300px;
 }
+.expandedRowImg {
+  display: flex;
+  align-items: center;
+}
+.expandedContainer {
+  display: flex;
+  align-items: center;
+}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Tooltip, Button } from 'antd';
+import { Input, Tooltip, Button, Form } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone, InfoCircleOutlined, UserOutlined, LockOutlined } from '@ant-design/icons';
 import './index.css';
 import * as userApi from '../../api/user';
@@ -9,9 +9,69 @@ class index extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userObj: {
-      }
+      userObject: {},
+      userObj: {},
+      formType: 2,
+      psFormItems: [
+        {
+          label: '账号',
+          key: 'account',
+          type: 'input',
+          disabled: false,
+          placeholder: '请输入账号'
+        },
+        {
+          label: '用户名',
+          key: 'username',
+          type: 'input',
+          disabled: false,
+          placeholder: '请输入用户名'
+        },
+        {
+          label: '密码',
+          key: 'password',
+          type: 'input',
+          disabled: false,
+          placeholder: '请输入密码'
+        },
+        {
+          label: '确认密码',
+          key: 'surePassword',
+          type: 'input',
+          disabled: false,
+          placeholder: '请再次输入密码'
+        },
+        {
+          label: '电话',
+          key: 'phone',
+          type: 'input',
+          disabled: false,
+          placeholder: '请输入电话'
+        },
+        {
+          label: '电子邮箱',
+          key: 'email',
+          type: 'input',
+          disabled: false,
+          placeholder: '请输入电子邮箱'
+        },
+        {
+          label: '性别',
+          key: 'gender',
+          type: 'input',
+          disabled: false,
+          placeholder: '选择输入性别'
+        },
+        {
+          label: '年龄',
+          key: 'age',
+          type: 'input',
+          disabled: false,
+          placeholder: '请输入年龄'
+        },
+      ],
     }
+    this.registerFormRef = React.createRef();
     this.handleLogin = this.handleLogin.bind(this);
     this.handleReset = this.handleReset.bind(this);
     this.accountChange = this.accountChange.bind(this);
@@ -41,7 +101,13 @@ class index extends Component {
   }
 
   handleReset() {
-    console.log(2222222222222);
+    
+    let { formType } = this.state;
+    if(formType === 1) {
+      this.setState({ userObj: {} })
+    }else if(formType === 2){
+      this.registerFormRef.current.resetFields();
+    }
   }
 
   accountChange(target) {
@@ -63,47 +129,123 @@ class index extends Component {
     }
     this.setState({ userObj: newUserObj })
   }
+  handleRegister = () => {
+    let loginCard = document.querySelector('.login-card')
+    let registerCard = document.querySelector('.register-card')
+    loginCard.style.transform = 'rotateY(180deg)'
+    registerCard.style.transform = 'rotateY(0deg)'
+    this.setState({ formType: 2 })
+  }
+  handleSubmit = () => {
+    let loginCard = document.querySelector('.login-card')
+    let registerCard = document.querySelector('.register-card')
+    loginCard.style.transform = 'rotateY(0deg)'
+    registerCard.style.transform = 'rotateY(-180deg)'
+    this.setState({ formType: 1 })
+  }
+  onChangeFormData = (e) => {
+    let userObject = {};
+    let { id, value } = e.target;
+    userObject[`${id}`] = value;
+    userObject = Object.assign(this.state.userObject, userObject);
+    console.log(userObject);
+    this.setState({ userObject})
+  }
 
 
   render() {
-    let { userObj } = this.state;
+    const { userObj, psFormItems, userObject } = this.state;
     return (
       <div className='main-container-login'>
-        <div className='login-card'>
-          <div className='card-title-login'>
-            房屋无忧管理系统
-          </div>
-          <div className='card-container-login'>
-            <Input
-              onChange={(e) => this.accountChange(e.target)}
-              value={userObj.username}
-              placeholder="Enter your username"
-              allowClear={true}
-              prefix={<UserOutlined className="site-form-item-icon" />}
-              suffix={
-                <Tooltip title="Extra information">
-                  <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
-                </Tooltip>
-              }
-            />
-            <Input.Password
-              onChange={(e) => this.passwordChange(e.target)}
-              value={userObj.password}
-              placeholder="input password"
-              allowClear={true}
-              prefix={<LockOutlined className="site-form-item-icon" />}
-              iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
-            />
-            <div className='action-bar-login'>
-              <Button onClick={() => this.handleLogin()}>登录</Button>
-              <Button onClick={() => this.handleReset()}>重置</Button>
+        <div className='rotateCardContainer'>
+          <div className='login-card'>
+            <div className='card-title-login'>
+              登录
+            </div>
+            <div className='card-container-login'>
+              <Input
+                className='login-input'
+                onChange={(e) => this.accountChange(e.target)}
+                value={userObj.username}
+                placeholder="请输入账号..."
+                allowClear={true}
+                prefix={<UserOutlined className="site-form-item-icon" />}
+                suffix={
+                  <Tooltip title="Extra information">
+                    <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+                  </Tooltip>
+                }
+              />
+              <Input.Password
+                className='login-input'
+                onChange={(e) => this.passwordChange(e.target)}
+                value={userObj.password}
+                placeholder="请输入密码..."
+                allowClear={true}
+                prefix={<LockOutlined className="site-form-item-icon" />}
+                iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+              />
+              <div className='action-bar-login'>
+                <Button onClick={() => this.handleLogin()}>登录</Button>
+                <Button onClick={() => this.handleReset()}>重置</Button>
+                <Button onClick={this.handleRegister}>注册</Button>
+              </div>
             </div>
           </div>
-          
+          <div className='register-card'>
+            <div className='card-title-register'>
+              注册
+            </div>
+            <div className='card-container-register'>
+              <Form
+                autoComplete="off"
+                onFinish={() => this.onFinish()}
+                onFinishFailed={() => this.onFinishFailed()}
+                className='registerForm'
+                ref={this.registerFormRef}
+              >
+                {
+                  psFormItems.map((item, index) => {
+                    return (
+                      item.type === 'input' ?
+                      (
+                        <Form.Item
+                          rules={item.rules}
+                          key={item.key}
+                          className='registerFormItem'
+                        >
+                          <div className='registerFormItemLabel'>{`${item.label} :`}</div>
+                          <Form.Item
+                            name={item.key}
+                            rules={item.rules}
+                            style={{margin: '0'}}
+                          >
+                            <Input 
+                              disabled={item.disabled}
+                              placeholder={item.placeholder}
+                              value={userObject[`${item.key}`]}
+                              onChange={(e) => this.onChangeFormData(e)}
+                            />
+                          </Form.Item>
+                          
+                        </Form.Item>
+                      )
+                      : null
+                    )
+                  })
+                }
+              </Form>
+            <div className='action-bar-login'>
+              <Button onClick={this.handleSubmit}>提交</Button>
+              <Button onClick={this.handleReset}>重置</Button>
+            </div>
+            </div>
+          </div>
         </div>
         <h2 className='appName'>房无忧</h2>
         <h3 className='welcomeText'>Welcome To You!</h3>
       </div>
+      
     );
   }
 }

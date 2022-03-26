@@ -5,7 +5,11 @@
   justify-content: space-evenly;
 }
 .ant-descriptions-header {
+  margin-left: 24px;
   margin-top: 10px;
+}
+.ant-descriptions-title {
+  font-size: 22px;
 }
 .ps-topBar {
   display: flex;
@@ -28,4 +32,15 @@
   font-size: 24px;
   font-weight: 600;
   margin-left: 30px;
+}
+.ps-form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px;
+}
+.ps-FormItem {
+  width: 400px;
+  margin-left: 10px;
 }

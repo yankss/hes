@@ -9,7 +9,9 @@ import { Descriptions,
           Tag, 
           Tooltip, 
           Modal, 
-          message 
+          message,
+          Form,
+          Input,
 } from 'antd';
 import {  FireFilled, 
           SketchCircleFilled, 
@@ -21,8 +23,10 @@ import {  FireFilled,
           CloseCircleOutlined, 
           CheckOutlined,
           ExclamationCircleTwoTone,
-          ExclamationCircleOutlined 
+          ExclamationCircleOutlined,
 } from '@ant-design/icons';
+import ImageUpload from '../../../widgets/image-upload';
+import AvatarUpload from '../../../widgets/avatar-upload';
 import './index.css'
 
 const { Step } = Steps;
@@ -32,6 +36,73 @@ export default class index extends Component {
   constructor(props) {
     super(props);
     this.state ={
+      psFormItems: [
+        {
+          label: '头像',
+          key: 'avatar',
+          type: 'avatarImage'
+        },
+        {
+          label: '账号',
+          key: 'account',
+          type: 'input',
+          disabled: true
+        },
+        {
+          label: '用户名',
+          key: 'username',
+          type: 'input',
+          disabled: false
+        },
+        {
+          label: '电话',
+          key: 'phone',
+          type: 'input',
+          disabled: false
+        },
+        {
+          label: '电子邮箱',
+          key: 'email',
+          type: 'input',
+          disabled: false
+        },
+        {
+          label: '性别',
+          key: 'gender',
+          type: 'input',
+          disabled: true
+        },
+        {
+          label: '年龄',
+          key: 'age',
+          type: 'input',
+          disabled: false
+        },
+        {
+          label: '标签',
+          key: 'tag',
+          type: 'input',
+          disabled: false
+        },
+        {
+          label: '身份',
+          key: 'identity',
+          type: 'input',
+          disabled: true
+        },
+        {
+          label: '身份证',
+          key: 'idCard',
+          type: 'image',
+          disabled: false
+        },
+        {
+          label: '学生证',
+          key: 'studentCard',
+          type: 'image',
+          disabled: false
+        },
+      ],
       descriptionItems: [
         {
           label: '账号',
@@ -66,8 +137,11 @@ export default class index extends Component {
           key: 'identity'
         },
       ],
-      userObject: {}
+      userObject: {},
+      modalVisible: false,
+      confirmLoading: false,
     }
+    this.formRef = React.createRef();
     this.applyHandle = this.applyHandle.bind(this);
   }
 
@@ -80,25 +154,31 @@ export default class index extends Component {
       gender: 1,
       age: '18',
       tag: 'cool,实惠',
-      identity: 2,
+      identity: 0,
       liveness: 1128,
       integralValue: 732,
       certificationStatus: 0,
       isCertification: 0,
-      failureReason: '学生认证不通过，校园信息填写有误。'
+      failureReason: '学生认证不通过，校园信息填写有误。',
+      avatarImageUrl: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
     }
     // 数据处理
     userObject.gender === 0 ? userObject.gender = '女' : userObject.gender = '男';
-    userObject.identity === 0 ? userObject.identity = '潜客'
+    userObject.identity === 0 ? userObject.identity = '游客'
     : userObject.identity === 1 ? userObject.identity = '租客'
     : userObject.identity === 2 ? userObject.identity = '房东'
     : userObject.identity = '超级管理员';
     userObject.tag = userObject.tag.split(',');
     this.setState({ userObject });
 
+    
+
   }
 
+
+
   applyHandle() {
+    let _this = this;
     confirm({
       title: '是否确定进行认证申请?',
       icon: <ExclamationCircleOutlined />,
@@ -111,22 +191,65 @@ export default class index extends Component {
         }).catch(() => console.log('Oops errors!'));
       },
       onCancel() {
-        console.log(11111111111);
+        _this.showModal();
       },
     });
   }
+
+  showModal() {
+    this.setState({ modalVisible: true });
+    console.log(this.formRef);
+    setTimeout(() => {
+      let {userObject} = this.state;
+
+      this.formRef.current.setFieldsValue(userObject) 
+    }, 100);
+  }
+
+  handleOk() {
+    this.setState({ setConfirmLoading: true });
+    setTimeout(() => {
+      this.setState({ modalVisible: false });
+      this.setState({ setConfirmLoading: false });
+    }, 2000);
+    
+    console.log('ok');
+  }
+
+  handleCancel() {
+    this.setState({ modalVisible: false });
+    console.log('cancel');
+  }
+
+  onFinish() {
+
+  }
+
+  onFinishFailed() {
+
+  }
+
+  onChangeFormData = (e) => {
+    let userObject = {};
+    let { id, value } = e.target;
+    id = id.slice(6);
+    userObject[`${id}`] = value;
+    userObject = Object.assign(this.state.userObject, userObject);
+    console.log(userObject);
+    this.setState({ formData: userObject})
+  }
   
   render() {
-    const { descriptionItems, userObject } = this.state;
-    const { tag, certificationStatus, failureReason } = userObject;
+    const { descriptionItems, userObject, modalVisible, confirmLoading, psFormItems } = this.state;
+    const { tag, certificationStatus, failureReason, avatarImageUrl } = userObject;
     const actionBar = <>
       <div className='personal-setting-actionBar'>
         {
-          certificationStatus === 0 ? <Button onClick={() => this.applyHandle()}>申请认证</Button>
-          : certificationStatus === 2 ? <Button>重新认证</Button>
+          certificationStatus === 0 ? <Button style={{marginRight: '20px'}} type="primary" onClick={() => this.applyHandle()}>申请认证</Button>
+          : certificationStatus === 2 ? <Button style={{marginRight: '20px'}} type="primary">重新认证</Button>
           : null
         }
-        <Button>完善信息</Button>
+        <Button type="primary" onClick={() => this.showModal()}>完善信息</Button>
       </div>
     </>
     
@@ -189,6 +312,8 @@ export default class index extends Component {
       </Steps>
     </>  
 
+
+
     return (
       <div>
         <div className='ps-topBar'>
@@ -196,7 +321,7 @@ export default class index extends Component {
             <Image
               width={150}
               style={{ borderRadius: '50%' }}
-              src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+              src={avatarImageUrl}
             />
             <span className='ps-info-username'>Yankss</span>
           </div>
@@ -214,13 +339,13 @@ export default class index extends Component {
           bordered
           extra={actionBar}>
           <Descriptions.Item label="认证状态" span={3}>
-          {
-            certificationStatus === 0 ? notSubmit
-            : certificationStatus === 1 ? underCheck
-            : certificationStatus === 2 ? certificationNoPass
-            : certificationStatus === 3 ? certificationPass
-            : '暂无认证信息'
-          }
+            {
+              certificationStatus === 0 ? notSubmit
+              : certificationStatus === 1 ? underCheck
+              : certificationStatus === 2 ? certificationNoPass
+              : certificationStatus === 3 ? certificationPass
+              : '暂无认证信息'
+            }
           </Descriptions.Item>
           {
             descriptionItems.map((item, index) => {
@@ -252,6 +377,73 @@ export default class index extends Component {
             })
           }
         </Descriptions>
+        <Modal
+          title="完善个人信息"
+          visible={modalVisible}
+          onOk={() => this.handleOk()}
+          confirmLoading={confirmLoading}
+          onCancel={() => this.handleCancel()}
+          width={1000}
+        >
+          <Form
+            ref={this.formRef}
+            name="basic"
+            onFinish={() => this.onFinish()}
+            onFinishFailed={() => this.onFinishFailed()}
+            className="ps-form"
+          >
+            {
+              psFormItems.map((item, index) => {
+                return (
+                  item.type === 'input' ?
+                  (
+                    <Form.Item
+                      label={item.label}
+                      name={item.key}
+                      rules={item.rules}
+                      key={item.key}
+                      className="ps-FormItem"
+                    >
+                      <Input 
+                        disabled={item.disabled}
+                        value={userObject[`${item.key}`]}
+                        onChange={(e) => this.onChangeFormData(e)}
+                      />
+                    </Form.Item>
+                  )
+                  : item.type === 'image' ?
+                  (
+                    <Form.Item
+                      label={item.label}
+                      name={item.key}
+                      rules={item.rules}
+                      key={item.key}
+                      className="ps-FormItem"
+                    >
+                      <ImageUpload/>
+                    </Form.Item>
+                  )
+                  : item.type === 'avatarImage' ?
+                  (
+                    <Form.Item
+                      label={item.label}
+                      name={item.key}
+                      rules={item.rules}
+                      key={item.key}
+                      className="ps-FormItem"
+                    >
+                      <AvatarUpload
+                        avatarImageUrl={avatarImageUrl}
+                      />
+                    </Form.Item>
+                  )
+                  : null
+                )
+              })
+            }
+
+          </Form>
+        </Modal>
       </div>
     )
   }

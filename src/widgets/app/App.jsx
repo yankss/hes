@@ -7,8 +7,7 @@ import Home from '../../pages/Home';
 import ContractManagement from '../../pages/ContractManagement';
 import CertificationCenter from '../../pages/CertificationCenter';
 import HouseManagement from '../../pages/HouseManagement';
-import PriceDetails from '../../pages/DataAnalysis/PriceDetails';
-import RentDetails from '../../pages/DataAnalysis/RentDetails';
+import DataAnalysis from '../../pages/DataAnalysis';
 import ProspectiveCustomerManagement from '../../pages/SystemManagement/ProspectiveCustomerManagement';
 import RenterManagement from '../../pages/SystemManagement/RenterManagement';
 import LandlordManagement from '../../pages/SystemManagement/LandlordManagement';
@@ -118,8 +117,7 @@ export default class App extends Component {
                 <Route exact path="/contract-management" component={ContractManagement}></Route>
                 <Route exact path="/certification-center" component={CertificationCenter}></Route>
                 <Route exact path="/house-management" component={HouseManagement}></Route>
-                <Route exact path="/price-details" component={PriceDetails}></Route>
-                <Route exact path="/rent-details" component={RentDetails}></Route>
+                <Route exact path="/data-analysis" component={DataAnalysis}></Route>
                 <Route exact path="/prospectiveCustomer-management" component={ProspectiveCustomerManagement}></Route>
                 <Route exact path="/renter-management" component={RenterManagement}></Route>
                 <Route exact path="/landlord-management" component={LandlordManagement}></Route>

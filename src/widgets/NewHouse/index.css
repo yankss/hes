@@ -1,3 +1,9 @@
 .avatar-uploader {
   border-radius: 50%;
 }
+.ant-form-item-label>label {
+  font-size: 16px;
+}
+.ant-input {
+  font-size: 16px;
+}
