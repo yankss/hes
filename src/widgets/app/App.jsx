@@ -36,6 +36,11 @@ export default class App extends Component {
     this.setState({current: e.key})
   }
 
+  componentDidUpdate() {
+    console.log(document.location.href);
+    console.log(window.location);
+  }
+
 
 
   render() {

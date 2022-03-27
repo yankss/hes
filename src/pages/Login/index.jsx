@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Tooltip, Button, Form } from 'antd';
+import { Input, Tooltip, Button, Form, message } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone, InfoCircleOutlined, UserOutlined, LockOutlined } from '@ant-design/icons';
 import './index.css';
 import * as userApi from '../../api/user';
@@ -135,13 +135,49 @@ class index extends Component {
     loginCard.style.transform = 'rotateY(180deg)'
     registerCard.style.transform = 'rotateY(0deg)'
     this.setState({ formType: 2 })
+    this.setState({ userObject: {}})
   }
-  handleSubmit = () => {
+  handleGoLogin = () => {
+    this.handleReset();
+    this.setState({ formType: 1 })
     let loginCard = document.querySelector('.login-card')
     let registerCard = document.querySelector('.register-card')
     loginCard.style.transform = 'rotateY(0deg)'
     registerCard.style.transform = 'rotateY(-180deg)'
-    this.setState({ formType: 1 })
+  }
+  handleSubmit = () => {
+    let {userObject} = this.state;
+    let { surePassword, ...userObj} = userObject;
+    userObj.gender === '男' ? userObj.gender = 1 : userObj.gender = 2
+    userApi.registered(userObj).then(res => {
+      console.log(res); 
+      message.success({
+        content: 'This is a prompt message with custom className and style',
+        className: 'custom-class',
+        style: {
+          marginTop: '10vh',
+        },
+      });
+      setTimeout(() => {
+        this.handleReset();
+        this.setState({ formType: 1 })
+        let loginCard = document.querySelector('.login-card')
+        let registerCard = document.querySelector('.register-card')
+        loginCard.style.transform = 'rotateY(0deg)'
+        registerCard.style.transform = 'rotateY(-180deg)'
+      }, 1000);
+      }).then(err => {
+        if(err !== undefined) {
+          console.log(err);
+          message.error({
+            content: `${err}`,
+            className: 'custom-class',
+            style: {
+              marginTop: '10vh',
+            },
+          });
+        }
+      })
   }
   onChangeFormData = (e) => {
     let userObject = {};
@@ -236,6 +272,7 @@ class index extends Component {
                 }
               </Form>
             <div className='action-bar-login'>
+              <Button onClick={this.handleGoLogin}>登录</Button>
               <Button onClick={this.handleSubmit}>提交</Button>
               <Button onClick={this.handleReset}>重置</Button>
             </div>
