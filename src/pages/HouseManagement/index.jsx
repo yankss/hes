@@ -14,7 +14,10 @@ import { LineChart } from 'echarts/charts';
 import { UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 import NewHouse  from '../../widgets/NewHouse'
-import './index.css'
+import './index.css';
+import * as houseApi from '../../api/houseApi'
+import * as tagApi from '../../api/tagApi';
+import * as hosueFacilityApi from '../../api/houseFacilityApi';
 
 echarts.use([
   TitleComponent,
@@ -34,22 +37,6 @@ export default class index extends Component {
     this.state = {
       columns : [
         {
-          title: '租客姓名',
-          dataIndex: 'renterName',
-          key: 'renterName',
-          width: 150,
-          align: 'left',
-          render: text => <Button style={{paddingLeft: '0'}} type="link">{text}</Button>,
-        },
-        {
-          title: '租客电话',
-          dataIndex: 'renterPhone',
-          key: 'renterPhone',
-          width: 150,
-          align: 'left',
-          render: text => <Button style={{paddingLeft: '0'}} type="link">{text}</Button>,
-        },
-        {
           title: '房东姓名',
           dataIndex: 'landlordName',
           key: 'landlordName',
@@ -66,9 +53,26 @@ export default class index extends Component {
           render: text => <Button style={{paddingLeft: '0'}} type="link">{text}</Button>,
         },
         {
+          title: '租客姓名',
+          dataIndex: 'renterName',
+          key: 'renterName',
+          width: 150,
+          align: 'left',
+          render: text => text ? <Button style={{paddingLeft: '0'}} type="link">{text}</Button> : <Button danger type='link'>暂无</Button>
+        },
+        {
+          title: '租客电话',
+          dataIndex: 'renterPhone',
+          key: 'renterPhone',
+          width: 150,
+          align: 'left',
+          render: text => text ? <Button style={{paddingLeft: '0'}} type="link">{text}</Button> : <Button danger type='link'>暂无</Button>
+        },
+        {
           title: '房屋地址',
           dataIndex: 'address',
           key: 'address',
+          ellipsis: true,
           width: 200,
           render: address => (
             <Tooltip placement="top" title={address}>
@@ -81,6 +85,17 @@ export default class index extends Component {
           key: 'leaseState',
           dataIndex: 'leaseState',
           width: 130,
+          filters: [
+            {
+              text: '已出租',
+              value: 1
+            },
+            {
+              text: '未出租',
+              value: 0
+            },
+          ],
+          onFilter: (value, record) => record.leaseState === value,
           render: leaseState => (
             <>
               {
@@ -93,12 +108,12 @@ export default class index extends Component {
         },
         {
           title: '房屋标签',
-          key: 'tags',
-          dataIndex: 'tags',
+          key: 'tag',
+          dataIndex: 'tag',
           width: 300,
-          render: tags => (
+          render: tag => (
             <>
-              {tags.map(tag => {
+              {tag.map(tag => {
                 let color = tag.length > 5 ? 'geekblue' : 'green';
                 if (tag === 'loser') {
                   color = 'volcano';
@@ -114,8 +129,8 @@ export default class index extends Component {
         },
         {
           title: '月租',
-          dataIndex: 'rent',
-          key: 'rent',
+          dataIndex: 'monthlyRent',
+          key: 'monthlyRent',
           width: 100,
           fixed: 'right',
         },
@@ -152,13 +167,13 @@ export default class index extends Component {
           )
         },
         {
-          title: '总房租',
-          dataIndex: 'totalAmount',
-          key: 'totalAmount',
+          title: '月总房租',
+          dataIndex: 'total',
+          key: 'total',
           width: 130,
           fixed: 'right',
           defaultSortOrder: 'descend',
-          sorter: (a, b) => a.totalAmount - b.totalAmount,
+          sorter: (a, b) => a.total - b.total,
           render: (text, record) => (
             <>
               { 
@@ -235,8 +250,12 @@ export default class index extends Component {
         {
           key: '1',
           renterPhone: '13566437666',
-          rent: 500,
-          totalAmount: 0,
+          houseArea: '40',
+          houseLayout: '一房一厅',
+          houseToward: '朝北',
+          floor: '14',
+          monthlyRent: 500,
+          total: 0,
           waterFee: 10.2,
           waterRate: 0.7,
           electricityRate: 1.5,
@@ -246,133 +265,7 @@ export default class index extends Component {
           renterName: 'John Brown',
           age: 32,
           address: 'New York No. 1 Lake Park',
-          tags: ['nice', 'developer'],
-          leaseState: 1,
-          actionImg: [<FundTwoTone />, <EditTwoTone />, <BulbTwoTone />],
-        },
-        {
-          key: '2',
-          renterPhone: '13566437666',
-          rent: 400,
-          totalAmount: 0,
-          waterFee: 17.2,
-          electricityFee: 170.1,
-          electricityRate: 1.5,
-          landlordPhone: '13445667342',
-          landlordName: '完犊子',
-          waterRate: 0.7,
-          renterName: 'Jim Green',
-          age: 42,
-          address: 'London No. 1 Lake Park',
-          tags: ['loser', 'houseManagement'],
-          leaseState: 1,
-          actionImg: [<FundTwoTone />, <EditTwoTone />, <BulbTwoTone />],
-        },
-        {
-          key: '3',
-          renterPhone: '13566437666',
-          rent: 800,
-          totalAmount: 0,
-          waterFee: 10.2,
-          electricityFee: 200.1,
-          waterRate: 0.7,
-          electricityRate: 1.5,
-          landlordPhone: '13445667342',
-          landlordName: '完犊子',
-          renterName: 'Joe Black',
-          age: 32,
-          address: 'Sidney No. 1 Lake Park',
-          tags: ['cool', 'teacher'],
-          leaseState: 0,
-          actionImg: [<FundTwoTone />, <EditTwoTone />, <BulbTwoTone />],
-        },
-        {
-          key: '4',
-          renterPhone: '13566437666',
-          totalAmount: 0,
-          rent: 750,
-          waterFee: 40.2,
-          electricityFee: 150.1,
-          waterRate: 0.7,
-          landlordPhone: '13445667342',
-          landlordName: '完犊子',
-          electricityRate: 1.5,
-          renterName: '小成',
-          age: 32,
-          address: '钟落潭广新路388号',
-          tags: ['cool', 'teacher', '稳重'],
-          leaseState: 0,
-          actionImg: [<FundTwoTone />, <EditTwoTone />, <BulbTwoTone />],
-        },
-        {
-          key: '5',
-          renterPhone: '13566437666',
-          totalAmount: 0,
-          rent: 1050,
-          waterFee: 43.2,
-          electricityFee: 350.1,
-          landlordPhone: '13445667342',
-          landlordName: '完犊子',
-          waterRate: 0.7,
-          electricityRate: 1.5,
-          renterName: '小成',
-          age: 32,
-          address: '钟落潭广新路388号',
-          tags: ['cool', 'teacher', '稳重'],
-          leaseState: 1,
-          actionImg: [<FundTwoTone />, <EditTwoTone />, <BulbTwoTone />],
-        },
-        {
-          key: '6',
-          renterPhone: '13566437666',
-          totalAmount: 0,
-          rent: 400,
-          waterFee: 10.2,
-          electricityFee: 50.1,
-          waterRate: 0.7,
-          electricityRate: 1.5,
-          landlordPhone: '13445667342',
-          landlordName: '完犊子',
-          renterName: '小成',
-          age: 32,
-          address: '钟落潭广新路388号',
-          tags: ['cool', 'teacher', '稳重'],
-          leaseState: 1,
-          actionImg: [<FundTwoTone />, <EditTwoTone />, <BulbTwoTone />],
-        },
-        {
-          key: '7',
-          renterPhone: '13566437666',
-          totalAmount: 0,
-          rent: 400,
-          waterFee: 10.2,
-          electricityFee: 50.1,
-          landlordPhone: '13445667342',
-          landlordName: '完犊子',
-          waterRate: 0.7,
-          electricityRate: 1.5,
-          renterName: '小成',
-          age: 32,
-          address: '钟落潭广新路388号',
-          tags: ['cool', 'teacher', '稳重'],
-          leaseState: 0,
-          actionImg: [<FundTwoTone />, <EditTwoTone />, <BulbTwoTone />],
-        },
-        {
-          key: '8',
-          renterPhone: '13566437666',
-          totalAmount: 0,
-          rent: 400,
-          waterFee: 10.2,
-          electricityFee: 50.1,
-          landlordPhone: '13445667342',
-          landlordName: '完犊子',
-          waterRate: 0.7,
-          electricityRate: 1.5,
-          renterName: '小成',
-          age: 32,
-          address: '钟落潭广新路388号',
-          tags: ['cool', 'teacher', '稳重'],
+          tag: ['nice', 'developer'],
           leaseState: 1,
           actionImg: [<FundTwoTone />, <EditTwoTone />, <BulbTwoTone />],
         },
@@ -416,39 +309,21 @@ export default class index extends Component {
           type: 'input'
         },
         {
-          placeholder: '请输入租赁状态: ',
-          value: 'leaseState',
-          name: 'leaseState',
-          allowClear: true,
-          span: 5,
-          type: 'select',
-          mode: 'tags',
-          options: [
-            { label: '已出租', value: 1 },
-            { label: '未出租', value: 0 },
-          ],
-        },
-        {
           placeholder: '请输入标签: ',
-          value: 'tags',
-          name: 'tags',
+          value: 'tag',
+          name: 'tag',
           allowClear: true,
           span: 8,
           type: 'select',
           mode: 'multiple',
-          options: [
-            { label: '热血', color: 'gold', value: 1 },
-            { label: '搞笑', color: 'lime', value: 2 },
-            { label: '无聊', color: 'green', value: 3 }, 
-            { label: '美食', color: 'cyan', value: 4 },
-            { label: '运动', color: 'blue', value: 5 }
-          ],
+          options: [],
         },
       ],
-      moduleDescription: '本管理模块是名为房屋管理，房屋用户可以在此模块管理自己发布的房屋信息，也可以查看房屋信息以及通知租客按时交租。'
-      
+      moduleDescription: '本管理模块是名为房屋管理，房屋用户可以在此模块管理自己发布的房屋信息，也可以查看房屋信息以及通知租客按时交租。',
+      isNewHouse: false,
+      isRented: true
     };
-    
+    this.newHouse = React.createRef();
     this.aaa = React.createRef();
     this.confirm = this.confirm.bind(this);
     this.cancel = this.cancel.bind(this);
@@ -459,14 +334,45 @@ export default class index extends Component {
   
 
   componentDidMount() {
-    let data = this.state.data;
-    data.map(item => {
-      item.totalAmount = item.rent  + item.electricityRate + item.waterRate;
-      item.totalAmount = (item.totalAmount+'').slice(0,(item.totalAmount+'').indexOf('.')+3)
-      return item;
-    })
 
-    this.setState({ data });
+
+    houseApi.getListData().then(res => {
+      console.log(res);
+      this.getAllTag();
+      let { data } = res;
+      data = data.map(item => {
+        item.tag =item.tag.split('、')
+        item.actionImg = [<FundTwoTone />, <EditTwoTone />, <BulbTwoTone />];
+        item.key = item.hid;
+        return item
+      })
+      this.setState({ data });
+    })
+  }
+
+  componentDidUpdate() {
+    if(sessionStorage.getItem("token") === null) {
+      this.props.history.push('/login')
+    }
+  }
+
+  getAllTag = () => {
+    tagApi.getAllTag().then(res => {
+      let filterBar = [...this.state.filterBar];
+      let tagList = [];
+      tagList = res.data.map(item => {
+        let tagItem = {};
+        tagItem.label = item.tagName;
+        tagItem.value = item.tagName;
+        return tagItem;
+      })
+      filterBar[2].options = tagList;
+      this.setState({filterBar});
+    })
+  }
+
+  changeIsRented = (flag) => {
+    this.setState({ isRented: flag})
   }
 
   confirm(e, type, record) {
@@ -553,7 +459,7 @@ export default class index extends Component {
       case 'showEditTwoTone':
         setTimeout(() => {
           this.setState({ newHouseObject: record });
-          this.showNewHouseBoard(true);
+          this.showNewHouseBoard(true, false);
         }, 100);
         
         
@@ -581,7 +487,34 @@ export default class index extends Component {
   closeChartVisible() {
     this.setState({ chartVisible: false });
   }
+  handleSubmit = () => {
+    let {isNewButton} = this.state;
+    let {key, actionImg, ...houseObj} = this.newHouse.current.state.formData;
+    let { hosueFacility } = this.newHouse.current.state
+    houseObj.tag = houseObj.tag.join('、');
+    houseObj.uid = parseInt(sessionStorage.getItem('uid'));
+    houseObj.landlordName = sessionStorage.getItem('realName');
+    houseObj.landlordPhone = sessionStorage.getItem('phone');
+    console.log(houseObj);
+    if(isNewButton === true) {
+      //  调用新建房屋接口
+      let hid = 0;
+      houseApi.newHouse(houseObj).then(res => {
+        console.log(res);
+        hid = res.data.hid;
+      }).then(res2 => {
+        console.log(hid);
+        hosueFacility.houseId = hid;
+        hosueFacilityApi.newHouseFacility(hosueFacility).then(res => {
+          console.log(res);
+        })
+      })
+    } else {
+      // 调用更新房屋接口
+    }
+  }
   showNewHouseBoard(flag, isNewButton) {
+    this.setState({ isNewButton })
     if(isNewButton === true) {
       this.setState({newHouseObject: {}})
     }
@@ -607,7 +540,9 @@ export default class index extends Component {
             address, 
             newHouseVisible,
             newHouseObject,
-            filterBar } = this.state;
+            filterBar,
+            isNewButton,
+            isRented } = this.state;
     
 
     const headerButtonArray =  [
@@ -644,19 +579,19 @@ export default class index extends Component {
         <Drawer
           title="Create a new house"
           width={720}
-          onClose={() => this.showNewHouseBoard(false)}
+          onClose={() => this.showNewHouseBoard(false, false)}
           visible={newHouseVisible}
           bodyStyle={{ paddingBottom: 80 }}
           extra={
             <Space>
-              <Button onClick={() => this.showNewHouseBoard(false)}>Cancel</Button>
-              <Button onClick={() => this.showNewHouseBoard(false)} type="primary">
-                Submit
+              <Button onClick={() => this.showNewHouseBoard(false, false)}>取消</Button>
+              <Button onClick={() => this.handleSubmit()} type="primary">
+                提交
               </Button>
             </Space>
           }
         >
-          <NewHouse newHouseObject={newHouseObject}/>
+          <NewHouse changeIsRented={this.changeIsRented} isRented={isRented} isNewButton={isNewButton} ref={this.newHouse} newHouseObject={newHouseObject}/>
         </Drawer>
       </div>
     )

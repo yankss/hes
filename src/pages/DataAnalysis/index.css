@@ -1,16 +1,30 @@
 :root {
   --offset: 6px;
 }
-
-
+canvas {
+  /* width: 50vw !important;
+  height: auto !important; */
+}
+.dataAnalysisPageTitle {
+  margin-top: 20px;
+}
 h4 {
-  width: 900px;
-  font-size: 60px;
+  font-size: 40px;
   font-family: 'Concert One', cursive;
   line-height: 1.06;
   letter-spacing: -0.02em;
   color: #1d1d1f;
   text-shadow: 4px 4px 4px #c6c6c6;
+  margin: 0 .2em;
+  
+  margin-bottom: 20px;
+  padding: .15em .4em .1em;
+  background: hsla(0,0%,58.8%,.06);
+  border: solid hsla(0,0%,39.2%,.2);
+  border-width: 1px 1px 2px;
+  border-radius: 13px;
+  width: 98%;
+
 }
 
 .mask {
@@ -24,7 +38,7 @@ h4 {
   display: block;
   box-sizing: border-box;
   position: absolute;
-  top: 140px;
+  top: 115px;
   padding-bottom: var(--offset);
 
   background-size: 100% 100%;
@@ -47,14 +61,19 @@ h4 {
 
 
 .mask span:nth-child(1) {
-  background-image: linear-gradient(45deg, #0ecffe 50%, #07a6f1);
+  background-image: linear-gradient(45deg, #333131 50%, #333131);
 }
 .mask span:nth-child(2) {
-  background-image: linear-gradient(45deg, #18e198 50%, #0ec15d);
+  background-image: linear-gradient(45deg, #333131 50%, #333131);
 }
 .mask span:nth-child(3) {
-  background-image: linear-gradient(45deg, #8a7cfb 50%, #633e9c);
+  background-image: linear-gradient(45deg, #333131 50%, #333131);
 }
 .mask span:nth-child(4) {
-  background-image: linear-gradient(45deg, #fa7671 50%, #f45f7f);
+  background-image: linear-gradient(45deg, #333131 50%, #444041);
+}
+.analysisBar {
+  display: flex;
+  justify-content: space-around;
+  margin: 30px;
 }

@@ -238,6 +238,12 @@ export default class index extends Component {
     console.log(userObject);
     this.setState({ formData: userObject})
   }
+
+  componentDidUpdate() {
+    if(sessionStorage.getItem("token") === null) {
+      this.props.history.push('/login')
+    }
+  }
   
   render() {
     const { descriptionItems, userObject, modalVisible, confirmLoading, psFormItems } = this.state;

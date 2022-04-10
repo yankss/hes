@@ -20,6 +20,12 @@ export default class index extends Component {
     console.log(e);
     this.setState({ tabKey: key })
   }
+
+  componentDidUpdate() {
+    if(sessionStorage.getItem("token") === null) {
+      this.props.history.push('/login')
+    }
+  }
   
   render() {
     const { tabKey } = this.state;

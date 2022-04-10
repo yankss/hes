@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import * as echarts from 'echarts';
+import { Typography } from 'antd';
 import './index.css'
 
 var setTimeInterval;
+const { Text, Link } = Typography;
 
 export default class index extends Component {
 
@@ -12,22 +14,97 @@ export default class index extends Component {
 
     }
     this.renderMainChart = this.renderMainChart.bind(this);
-    this.renderTitleChart = this.renderTitleChart.bind(this);
+    this.renderDynamicChart = this.renderDynamicChart.bind(this);
+    this.renderTopicTagChart = this.renderTopicTagChart.bind(this);
     this.titleInterval = this.titleInterval.bind(this);
   }
 
 
   componentDidMount() {
     this.renderMainChart()
-    this.renderTitleChart();
+    this.renderDynamicChart();
     this.titleInterval();
+    this.renderTopicTagChart();
     
   }
   componentWillUnmount() {
     clearInterval(setTimeInterval);
   }
 
+  componentDidUpdate() {
+    if(sessionStorage.getItem("token") === null) {
+      this.props.history.push('/login')
+    }
+  }
+
  
+
+  renderTopicTagChart() {
+    let chartDom = document.getElementById('topicTag');
+    let myChart = echarts.init(chartDom);
+    let option;
+
+    option = {
+      title: {
+        text: '房屋标签分析图',
+        left: 'center',
+        top: 0,
+        textStyle: {
+          color: '#ccc'
+        }
+      },
+      xAxis: {
+        type: 'category',
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun','Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          data: [
+            120,
+            {
+              value: 200,
+              itemStyle: {
+                color: '#a90000'
+              }
+            },
+            150,
+            80,
+            70,
+            110,
+            130,
+            120,
+            {
+              value: 200,
+              itemStyle: {
+                color: '#a90000'
+              }
+            },
+            150,
+            80,
+            70,
+            110,
+            130
+          ],
+          type: 'bar'
+        }
+      ],
+      grid: {
+        left: "0%",
+        top: '10px',
+        right: '0%',
+        bottom: '4%',
+        containLabel: true
+      }
+    };
+
+    option && myChart.setOption(option);
+    window.addEventListener("resize", () => {
+      myChart.resize();
+    })
+  }
 
   renderMainChart() {
     let chartDom = document.getElementById('main');
@@ -97,11 +174,13 @@ export default class index extends Component {
     };
 
     option && myChart.setOption(option);
+    window.addEventListener("resize", () => {
+      myChart.resize();
+    })
   }
 
-  renderTitleChart() {
+  renderDynamicChart() {
     let app = {};
-
     let chartDom = document.getElementById('Dynamic');
     let myChart = echarts.init(chartDom);
     let option;
@@ -245,6 +324,9 @@ export default class index extends Component {
     }, 2100);
 
     option && myChart.setOption(option);
+    window.addEventListener("resize", () => {
+      myChart.resize();
+    })
   }
   titleInterval() {
     setTimeInterval = setInterval(() => {
@@ -271,8 +353,8 @@ export default class index extends Component {
     return (
       <div>
         <div>
-          <h4 >
-            在这里，你可以观察的
+          <h4 className='dataAnalysisPageTitle'>
+            数据分析模块，你可以观察的
             <div className='mask'>
               <span className='titleSpan' data-show>热门房屋种类</span>
               <span className='titleSpan'>其他房屋的租金曲线</span>
@@ -281,8 +363,11 @@ export default class index extends Component {
             </div>
           </h4>
         </div>
-        <div id='Dynamic' style={{width: '100%', height: "60vh"}}></div>
-        <div id='main' style={{width: '100%', height: '600px'}}></div>
+        <div id='Dynamic' style={{width: '100%', height: "400px"}}></div>
+        <div className='analysisBar'>
+          <div id='main' style={{width: '45%', height: '400px'}}></div>
+          <div id="topicTag" style={{width: '45%', height: '400px'}}></div>
+        </div>
       </div>
     )
   }

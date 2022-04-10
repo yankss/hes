@@ -4,6 +4,7 @@ import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import MessageDetail from './component/MessageDetail'
 import NewTopic from './component/NewTopic';
+import * as topicApi from '../../api/topicApi';
 import './index.css'
 
 
@@ -28,6 +29,7 @@ export default class index extends Component {
       searchObject: {},
       commentContainer: ''
     };
+    this.newTopic = React.createRef();
     this.comment = this.comment.bind(this);
     this.tagChange = this.tagChange.bind(this);
     this.publisherChange = this.publisherChange.bind(this);
@@ -47,7 +49,6 @@ export default class index extends Component {
   }
 
   comment(co) {
-    console.log('co', co);
     this.setState({ commitObject: co})
   }
   tagChange(value, option) {
@@ -81,13 +82,10 @@ export default class index extends Component {
   }
   searchHandle() {
     let {date, ...searchObject} = this.state.searchObject
-    console.log(searchObject);
   }
   resetHandle() {
     let searchObject = {};
-    this.setState({searchObject}, () => {
-      console.log(this.state.searchObject);
-    })
+    this.setState({searchObject})
   }
   sentComment = () => {
     let { commentContainer } = this.state;
@@ -98,6 +96,20 @@ export default class index extends Component {
   }
   resetCommentContainer = () => {
     this.setState({sureCommentContainer: undefined})
+  }
+  sumbitHandle = () => {
+    let formData = this.newTopic.current.state.formData
+    console.log(sessionStorage.getItem('uid'), sessionStorage.getItem('username'));
+    formData.tag = formData.tag.join('、')
+    formData.uid = sessionStorage.getItem('uid');
+    formData.username = sessionStorage.getItem('username');
+    formData.CreatedUser = sessionStorage.getItem('username');
+    topicApi.newTopic(formData).then(res => {
+        if(res.state === 200) {
+            console.log(res);
+        }
+    })
+
   }
 
   componentDidMount() {
@@ -334,13 +346,13 @@ export default class index extends Component {
           extra={
             <Space>
               <Button onClick={() => this.showNewTopicBoard(false)}>取消</Button>
-              <Button onClick={() => this.showNewTopicBoard(false)} type="primary">
+              <Button onClick={() => this.sumbitHandle()} type="primary">
                 提交
               </Button>
             </Space>
           }
         >
-          <NewTopic/>
+          <NewTopic ref={this.newTopic}/>
         </Drawer>
       </div>
     )

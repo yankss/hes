@@ -6,14 +6,14 @@ const Service = axios.create({
   timeout: 5000,
   baseURL: configBaseUrl,
 })
-
+console.log(Service.interceptors.request);
 // 请求拦截器
 Service.interceptors.request.use(config => {
   let { headers } = config;
   headers = {...headers, 
-            // 'X-Requested-With': 'XMLHttpRequest',
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+            'Access-Control-Allow-Origin': '*',
+            'token': sessionStorage.getItem('token')
           }
   config.headers = headers;
   return config;

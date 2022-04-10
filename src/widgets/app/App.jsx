@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { HashRouter as Router, Link,Switch, Route,  } from 'react-router-dom'
 import { Layout, Menu, Badge } from 'antd';
+import { inject, observer } from 'mobx-react';
 import menuList from '../../config/menu'
 import './app.css'
 import Home from '../../pages/Home';
@@ -16,12 +17,15 @@ import personalCenter from '../../pages/PersonalCenter/PersonalSetting';
 import Favorites from '../../pages/PersonalCenter/Favorites';
 import receiptManagement from '../../pages/ReceiptManagement';
 import Login from '../../pages/Login';
+import VRhouse from '../../pages/VRhouse'
 
 const { Header, Content } = Layout;
 const { SubMenu } = Menu;
 const MenuItem = Menu.Item;
 
-export default class App extends Component {
+@inject('homeStore')
+@observer
+class App extends Component {
 
   constructor(props) {
     super(props);
@@ -36,21 +40,31 @@ export default class App extends Component {
     this.setState({current: e.key})
   }
 
+  componentDidMount() {
+  }
+
   componentDidUpdate() {
-    console.log(document.location.href);
-    console.log(window.location);
+    
+    
   }
 
 
 
   render() {
     let { current, count } = this.state;
+    let { isShowHeader } = this.props.homeStore;
     return (
       <Layout className="main-container">
         <Router>
+        <Switch>
+            <Route exact path="/login" component={Login}></Route>
+            <Route exact path="/vr-house" component={VRhouse}></Route>
+          </Switch>
+        </Router>
+        <Router>
           <Layout className="site-layout">
             {
-              document.location.href === 'http://localhost:3000/#/login' ? null :
+              isShowHeader === false  ? null :
               (
                 <Header className="site-layout-background" style={{ padding: 0 }}>
                   <Menu 
@@ -131,7 +145,8 @@ export default class App extends Component {
                 <Route exact path="/receipt-management" component={receiptManagement}></Route>
                 <Route exact path="/personalSetting" component={personalCenter}></Route>
                 <Route exact path="/receipt_management" component={receiptManagement}></Route>
-                <Route exact path="/login" component={Login}></Route>
+                {/* <Route exact path="/login" component={Login}></Route>
+                <Route exact path="/vr-house" component={VRhouse}></Route> */}
               </Switch>
             </Content>
           </Layout>
@@ -140,3 +155,5 @@ export default class App extends Component {
     );
   }
 }
+
+export default App;

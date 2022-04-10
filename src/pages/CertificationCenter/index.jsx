@@ -187,6 +187,11 @@ export default class index extends Component {
     this.changeNoPassReason = this.changeNoPassReason.bind(this);
   }
 
+  componentDidUpdate() {
+    if(sessionStorage.getItem("token") === null) {
+      this.props.history.push('/login')
+    }
+  }
 
   handleAction(row, type) {
     let { data } = this.state;
@@ -274,17 +279,13 @@ export default class index extends Component {
       }
       return item;
     })
-    this.setState({ data }, () => {
-      console.log(this.state);
-    })
+    this.setState({ data })
   }
 
   searchHandle() {
     let { searchData } = this.certificationCenterList.current.state
-    console.log(searchData);
   }
   resetHandle() {
-    console.log(this.certificationCenterList.current);
     this.certificationCenterList.current.resetHandle();
   }
 

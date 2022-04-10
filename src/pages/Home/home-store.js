@@ -7,8 +7,14 @@ class HomeStore {
 
   progress = 1;
 
+  isShowHeader = true;
+
   constructor() {
     makeAutoObservable(this);
+  }
+
+  @action setIsShowHeader(flag) {
+    this.isShowHeader = flag;
   }
 
   @action setRows(rows) {

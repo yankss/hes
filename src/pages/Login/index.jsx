@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { Input, Tooltip, Button, Form, message } from 'antd';
+import { inject, observer } from 'mobx-react';
 import { EyeInvisibleOutlined, EyeTwoTone, InfoCircleOutlined, UserOutlined, LockOutlined } from '@ant-design/icons';
 import './index.css';
 import * as userApi from '../../api/user';
+import homeStore from '../Home/home-store';
 
+@inject('homeStore')
+@observer
 class index extends Component {
 
   constructor(props) {
@@ -80,6 +84,7 @@ class index extends Component {
 
 
   componentDidMount() {
+    homeStore.setIsShowHeader(false);
     // userApi.getListData().then(res => {
     //   console.log(res);
     // })
@@ -88,11 +93,25 @@ class index extends Component {
   handleLogin() {
     let { userObj } = this.state;
     userApi.login(userObj).then(res => {
-    console.log(res); 
-    console.log(this.props);
-    let { history } = this.props;
-    history.push('/renter-management')
-    console.log(window.location);
+      if(res.state === 200) {
+        sessionStorage.setItem('uid', res.data.uid);
+        sessionStorage.setItem('username', res.data.username);
+        sessionStorage.setItem('realName', res.data.realName);
+        sessionStorage.setItem('phone', res.data.phone);
+        sessionStorage.setItem('token', res.data.token);
+        let { history } = this.props;
+        history.push('/')
+      }else {
+        console.log(res);
+        message.error({
+          content: `${res.message}`,
+          className: 'custom-class',
+          style: {
+            marginTop: '10vh',
+          },
+        });
+      }
+      
     }).then(err => {
       if(err !== undefined) {
         console.log(err);
@@ -150,7 +169,6 @@ class index extends Component {
     let { surePassword, ...userObj} = userObject;
     userObj.gender === '男' ? userObj.gender = 1 : userObj.gender = 2
     userApi.registered(userObj).then(res => {
-      console.log(res); 
       message.success({
         content: 'This is a prompt message with custom className and style',
         className: 'custom-class',
@@ -168,7 +186,6 @@ class index extends Component {
       }, 1000);
       }).then(err => {
         if(err !== undefined) {
-          console.log(err);
           message.error({
             content: `${err}`,
             className: 'custom-class',
@@ -184,7 +201,6 @@ class index extends Component {
     let { id, value } = e.target;
     userObject[`${id}`] = value;
     userObject = Object.assign(this.state.userObject, userObject);
-    console.log(userObject);
     this.setState({ userObject})
   }
 

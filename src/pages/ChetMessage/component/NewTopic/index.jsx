@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Input, Select, Row, Col, Form, Tag, Avatar, List, Upload, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import * as uploadApi from '../../../../api/upload.js'
 
 const { Option } = Select;
 function getBase64(file) {
@@ -19,6 +20,7 @@ export default class NewTopic extends Component {
       previewVisible: false,
       previewImage: '',
       previewTitle: '图片上传',
+      formData: {},
       listData: [],
       tagChildren: [
         { value: 'gold' },
@@ -57,12 +59,66 @@ export default class NewTopic extends Component {
     });
   };
 
-  handleChange = ({ fileList }) => this.setState({ fileList });
+  handleChange = ({ file, fileList, event }) => {
+    let listLength = this.state.fileList.length;
+    let { illustrations } = this.state.formData;
+    if(file.response) {
+      let formDataObj = {}
+      if(listLength > 1) {
+        formDataObj.illustrations = illustrations + `、${file.response.data}`;
+      }else {
+        formDataObj.illustrations = file.response.data;
+      }
+      formDataObj = Object.assign(this.state.formData, formDataObj);
+      this.setState({ formData: formDataObj }, () => {
+        console.log(this.state.formData);
+      });
+    }
+    this.setState({ fileList });
+    
+  }
 
   handleCancel = () => this.setState({ previewVisible: false });
 
+  uploadHandle = () => {
+    let {fileList} = this.state;
+    console.log(fileList);
+    let file = fileList[0];
+    console.log(file);
+    uploadApi.upload(file).then(res => {
+      console.log(res);
+    })
+    
+  }
+
+  onChangeFormData = (e) => {
+    console.log(e);
+    let formDataObj = {};
+    const { id, value } = e.target;
+    formDataObj[`${id}`] = value;
+    formDataObj = Object.assign(this.state.formData, formDataObj);
+    this.setState({ formData: formDataObj}, () => {
+      console.log(this.state.formData);
+    })
+  }
+
+  selectOnChange = (selection) => {
+    console.log('selection', selection);
+    let formDataObj = {};
+    if(selection instanceof Array) {
+      formDataObj.tag = selection;
+    }else {
+      formDataObj.leaseState = selection;
+    }
+    formDataObj = Object.assign(this.state.formData, formDataObj)
+    this.setState({ formData: formDataObj}, () => {
+      console.log(this.state.formData);
+    })
+  }
+
+
   render() {
-    const { listData, tagChildren, fileList, previewVisible, previewTitle, previewImage } = this.state;
+    const { formData,listData, tagChildren, fileList, previewVisible, previewTitle, previewImage } = this.state;
 
     const uploadButton = (
       <div>
@@ -124,48 +180,59 @@ export default class NewTopic extends Component {
                 label="话题标题"
                 rules={[{ required: true, message: 'Please enter topicTitle' }]}
               >
-                <Input placeholder="Please enter topicTitle" allowClear />
+                <Input 
+                  placeholder="Please enter topicTitle" 
+                  allowClear 
+                  value={formData.topicTitle}
+                  onChange={(e)=> this.onChangeFormData(e)}
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                name="tagTypes"
+                name="tag"
                 label="标签类型"
-                rules={[{ required: true, message: 'Please select tags' }]}
+                rules={[{ required: true, message: 'Please select tag' }]}
               >
                 <Select
                   mode="multiple"
                   showArrow
                   style={{float:  'left', marginRight: '20px', width: '100%'}}
                   allowClear={true}
-                  placeholder="Please select tags ："
+                  placeholder="Please select tag ："
                   tagRender={tagRender}
-                  onChange={this.tagChange}
+                  value={formData.tag}
+                  onChange={(selection)=> this.selectOnChange(selection)}
                   options={tagChildren}
                 >
                 </Select>
               </Form.Item>
             </Col>
           </Row>
-          <Row gutter={16}>
+          {/* <Row gutter={16}>
             <Col span={12}>
               <Form.Item
                 name="canComment"
                 label="能否评论"
                 rules={[{ required: true, message: 'Please choose the CanComment' }]}
               >
-                <Select placeholder="Please choose the CanComment" allowClear>
+                <Select 
+                  placeholder="Please choose the CanComment" 
+                  allowClear
+                  value={formData.canComment} 
+                  onChange={(selection)=> this.selectOnChange(selection)}
+                >
                   <Option value="1">Yes</Option>
                   <Option value="2">No</Option>
                 </Select>
               </Form.Item>
             </Col>
-          </Row>
+          </Row> */}
           <Row gutter={16}>
             <Col span={24}>
               <Form.Item
-                name="description"
-                label="话题描述"
+                name="mainContent"
+                label="话题内容"
                 rules={[
                   {
                     required: true,
@@ -173,7 +240,13 @@ export default class NewTopic extends Component {
                   },
                 ]}
               >
-                <Input.TextArea rows={4} placeholder="please enter url description" allowClear/>
+                <Input.TextArea 
+                  rows={4} 
+                  placeholder="please enter url description" 
+                  allowClear
+                  value={formData.topicTitle}
+                  onChange={(e)=> this.onChangeFormData(e)}
+                />
               </Form.Item>
             </Col>
           </Row>
@@ -199,7 +272,8 @@ export default class NewTopic extends Component {
                   ]}
                 >
                   <Upload
-                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                    action="http://localhost:8181/file/upload"
+                    // action=""
                     listType="picture-card"
                     fileList={fileList}
                     onPreview={this.handlePreview}

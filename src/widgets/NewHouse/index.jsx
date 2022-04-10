@@ -1,14 +1,10 @@
 import React, { Component } from 'react'
-import { Input, Select, Row, Col, Form, Tag, Upload, Modal, message  } from 'antd';
-import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
+import { Input, Select, Row, Col, Form, Tag, Upload, Modal, Transfer } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import * as tagApi from '../../api/tagApi';
 import './index.css';
 
 const { Option } = Select;
-function getBase64ForAvatar(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
-}
 function getBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -23,64 +19,96 @@ export default class NewTopic extends Component {
     super(props);
     this.state = {
       rent: 0,
-      imageUrl: '',
       formData: {},
-      loading: false,
-      previewVisible: false,
-      previewImage: '',
-      previewTitle: '图片上传',
-      tagChildren: [
-        { label: '热血', color: 'gold', value: 1 },
-        { label: '搞笑', color: 'lime', value: 2 },
-        { label: '无聊', color: 'green', value: 3 }, 
-        { label: '美食', color: 'cyan', value: 4 },
-        { label: '运动', color: 'blue', value: 5 }
+      vrPreviewVisible: false,
+      carouselPreviewVisible: false,
+      vrPreviewImage: '',
+      carouselPreviewImage: '',
+      vrPreviewTitle: '图片上传',
+      carouselPreviewTitle: '图片上传',
+      tagChildren: [],
+      vrFileList: [],
+      carouselFileList: [],
+      dataSource: [
+        {
+          key: 'haveRefrigerator',
+          title: "冰箱",
+        },
+        {
+          key: 'haveWashingMachine',
+          title: "洗衣机",
+        },
+        {
+          key: 'haveWaterHeater',
+          title: "热水器",
+        },
+        {
+          key: 'haveAirConditioner',
+          title: "空调",
+        },
+        {
+          key: 'haveSofa',
+          title: "沙发",
+        },
+        {
+          key: 'haveLampblackMachine',
+          title: "油烟机",
+        },
+        {
+          key: 'haveKitchenBurningGas',
+          title: "燃气灶",
+        },
+        {
+          key: 'haveCookMeal',
+          title: "可做饭",
+        },
+        {
+          key: 'haveTv',
+          title: "电视",
+        },
+        {
+          key: 'haveNetwork',
+          title: "宽带",
+        },
+        {
+          key: 'haveWardrobe',
+          title: "衣柜",
+        },
+        {
+          key: 'haveBed',
+          title: "床",
+        },
+        {
+          key: 'haveToilet',
+          title: "卫生间",
+        },
+        {
+          key: 'haveSmartLock',
+          title: "智能门锁",
+        },
+        {
+          key: 'haveBalcony',
+          title: "阳台",
+        },
       ],
-      fileList: [
-      ],
+      targetKeys: [],
+      hosueFacility: {}
     };
     this.formRef = React.createRef();
     this.onChangeFormData = this.onChangeFormData.bind(this);
     this.selectOnChange = this.selectOnChange.bind(this);
   }
 
-  handleAvatarChange = info => {
-    if (info.file.status === 'uploading') {
-      this.setState({ loading: true });
-      return;
-    }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64ForAvatar(info.file.originFileObj, imageUrl =>
-        this.setState({
-          imageUrl,
-          loading: false,
-        }),
-      );
-    }
-  };
-
   normFile = (e) => {  //如果是typescript, 那么参数写成 e: any
     console.log('Upload event:', e);
     if (Array.isArray(e)) {
       return e;
     }
-    return e && e.fileList;
+    return e && e.vrFileList;
   };
 
-  beforeUpload(file) {
-    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-    if (!isJpgOrPng) {
-      message.error('You can only upload JPG/PNG file!');
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error('Image must smaller than 2MB!');
-    }
-    return isJpgOrPng && isLt2M;
-  }
-
   componentDidMount() {
+    this.getTag();
     let { newHouseObject } = this.props;
     this.setState({ formData: newHouseObject})
     this.formRef.current.setFieldsValue(newHouseObject) 
@@ -90,16 +118,42 @@ export default class NewTopic extends Component {
   }
 
   componentDidUpdate() {
-    if (JSON.stringify(this.state.formData) === JSON.stringify(this.props.newHouseObject)) { return false }
     let { newHouseObject } = this.props;
+    let { formData } = this.state;
+    if (JSON.stringify(formData) === JSON.stringify(newHouseObject)) { return false }
     this.setState({ formData: newHouseObject})
     this.formRef.current.setFieldsValue(newHouseObject) 
-    console.log(newHouseObject);
-    if(newHouseObject === {}) {
-      this.formRef.current.resetFields({});
-    }
+    // if(JSON.stringify(newHouseObject) !== '{}') {
+    //   this.formRef.current.setFieldsValue(newHouseObject) 
+    // }else if(JSON.stringify(newHouseObject) === '{}') {
+    //   this.formRef.current.resetFields();
+    // }
   }
 
+  getTag = () => {
+    tagApi.getAllTag().then(res => {
+      let tagList = [];
+      tagList = res.data.map(item => {
+        let tagItem = {};
+        tagItem.value = item.tagName
+        tagItem.label = item.tagName
+        return tagItem;
+      })
+      this.setState({ tagChildren: tagList })
+    })
+  }
+
+  handlecPreview = async file => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+
+    this.setState({
+      carouselPreviewImage: file.url || file.preview,
+      carouselPreviewVisible: true,
+      carouselPreviewTitle: file.name || file.url.substring(file.url.lastIndexOf('/') + 1),
+    });
+  };
 
   handlePreview = async file => {
     if (!file.url && !file.preview) {
@@ -107,29 +161,44 @@ export default class NewTopic extends Component {
     }
 
     this.setState({
-      previewImage: file.url || file.preview,
-      previewVisible: true,
-      previewTitle: file.name || file.url.substring(file.url.lastIndexOf('/') + 1),
+      vrPreviewImage: file.url || file.preview,
+      vrPreviewVisible: true,
+      vrPreviewTitle: file.name || file.url.substring(file.url.lastIndexOf('/') + 1),
     });
   };
 
-  handleChange = ({ fileList }) => this.setState({ fileList });
+  vrImgHandleChange = ({ fileList }) => {
+    this.setState({ vrFileList: fileList })
+  };
 
-  handleCancel = () => this.setState({ previewVisible: false });
+  handleVrCancel = () => this.setState({ vrPreviewVisible: false });
+
+  carouselImgHandleChange = ({ fileList }) => this.setState({ carouselFileList: fileList });
+
+  handleCarouselCancel = () => this.setState({ carouselPreviewVisible: false });
+  
   onChangeFormData(e) {
-    console.log(e.target);
     let formDataObj = {};
-    const { id, value } = e.target;
+    let { id, value, type } = e.target;
+    if(type === 'number') {
+      value = parseFloat(value);
+    }
     formDataObj[`${id}`] = value;
     formDataObj = Object.assign(this.state.formData, formDataObj);
-    this.setState({ formData: formDataObj})
+    this.setState({ formData: formDataObj}, () => {
+      console.log(this.state.formData);
+    })
   }
   selectOnChange(selection) {
-    console.log('selection', selection);
     let formDataObj = {};
     if(selection instanceof Array) {
-      formDataObj.tags = selection;
+      formDataObj.tag = selection;
     }else {
+      if(selection === 1) {
+        this.props.changeIsRented(false);
+      }else {
+        this.props.changeIsRented(true);
+      }
       formDataObj.leaseState = selection;
     }
     formDataObj = Object.assign(this.state.formData, formDataObj)
@@ -138,15 +207,40 @@ export default class NewTopic extends Component {
     })
   }
 
+  filterOption = (inputValue, option) => option.title.indexOf(inputValue) > -1;
+
+  handleChange = targetKeys => {
+    console.log(targetKeys);
+    this.setState({ targetKeys });
+    let hosueFacility = {};
+    targetKeys.forEach(item => {
+      hosueFacility[`${item}`] = 1
+    })
+    this.setState({ hosueFacility });
+  };
+
+  handleSearch = (dir, value) => {
+    console.log('search:', dir, value);
+  };
+
+
+
+
   render() {
     const { tagChildren, 
-            fileList, 
-            previewVisible, 
-            previewTitle, 
-            previewImage, 
-            imageUrl, 
-            loading,
-            formData } = this.state;
+            vrFileList, 
+            vrPreviewVisible, 
+            vrPreviewImage, 
+            vrPreviewTitle, 
+            carouselPreviewVisible,
+            carouselPreviewImage,
+            carouselPreviewTitle,
+            formData,
+            dataSource,
+            targetKeys,
+            carouselFileList } = this.state;
+
+    const { isNewButton, isRented } = this.props;
 
 
     const uploadButton = (
@@ -159,10 +253,10 @@ export default class NewTopic extends Component {
     function tagRender(props) {
       const { value, closable, onClose, label } = props;
       let color = 
-      value === 1 ? 'gold'
-      : value === 2 ? 'lime'
-      : value === 3 ? 'green'
-      : value === 4 ? 'cyan'
+      value === '热血' ? 'gold'
+      : value === '搞笑' ? 'lime'
+      : value === '无聊' ? 'green'
+      : value === '美食' ? 'cyan'
       : 'blue'
       const onPreventMouseDown = event => {
         event.preventDefault();
@@ -181,14 +275,6 @@ export default class NewTopic extends Component {
       );
     }
 
-    const uploadAvatarButton = (
-      <div>
-        {loading ? <LoadingOutlined /> : <PlusOutlined />}
-        <div style={{ marginTop: 8 }}>Upload</div>
-      </div>
-    );
-
-
     return (
       <div>
         <Form 
@@ -200,50 +286,45 @@ export default class NewTopic extends Component {
           <Row gutter={16}>
             <Col span={24}>
               <Form.Item
-                name="avatar"
-                valuePropName="fileList" 
-                getValueFromEvent={this.normFile} 
-                label="头像 :"
-                rules={[{ required: true, message: 'Please enter avatar' }]}
+                name="houseTitle"
+                label="房屋标题 :"
+                rules={[{ required: true, message: '请输入房屋标题...' }]}
               >
-                <Upload
-                  name="avatar"
-                  listType="picture-card"
-                  className="avatar-uploader"
-                  showUploadList={false}
-                  value={formData.avatar}
-                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                  beforeUpload={this.beforeUpload}
-                  onChange={this.handleAvatarChange}
-                >
-                  {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%', borderRadius: '50%' }} /> : uploadAvatarButton}
-                </Upload>
+                <Input 
+                  style={{height: '40px'}}
+                  value={formData.address} 
+                  placeholder="请输入房屋标题..." allowClear 
+                  onChange={(e)=> this.onChangeFormData(e)}
+                />
               </Form.Item>
             </Col>
             <Col span={24}>
               <Form.Item
                 name="address"
                 label="房屋地址 :"
-                rules={[{ required: true, message: 'Please enter Address' }]}
+                rules={[{ required: true, message: '请输入房屋地址...' }]}
               >
                 <Input 
+                  style={{height: '40px'}}
                   value={formData.address} 
-                  placeholder="Please enter Address" allowClear 
+                  placeholder="请输入房屋地址..." allowClear 
                   onChange={(e)=> this.onChangeFormData(e)}
                 />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                name="rent"
+                name="monthlyRent"
                 label="月租 :"
-                rules={[{ required: true, message: 'Please enter Rent' }]}
+                rules={[{ required: true, message: '请输入月租金...' }]}
               >
                 <Input 
+                  type={'number'}
+                  style={{height: '40px'}}
                   value={formData.rent} 
                   onChange={(e)=> this.onChangeFormData(e)}
                   addonAfter="RMB/Month" 
-                  placeholder="Please enter Rent" 
+                  placeholder="请输入月租金..." 
                   allowClear />
               </Form.Item>
             </Col>
@@ -251,12 +332,12 @@ export default class NewTopic extends Component {
               <Form.Item
                 name="leaseState"
                 label="是否已出租 :"
-                rules={[{ required: true, message: 'Please choose the IsLease' }]}
+                rules={[{ required: true, message: '请输入房屋租赁状态' }]}
               >
                 <Select 
                   value={formData.leaseState} 
                   onChange={(selection)=> this.selectOnChange(selection)}
-                  placeholder="Please choose the IsLease :" 
+                  placeholder="请选择房屋租赁状态:" 
                   allowClear>
                   <Option value={1}>Yes</Option>
                   <Option value={0}>No</Option>
@@ -267,12 +348,14 @@ export default class NewTopic extends Component {
               <Form.Item
                 name="waterRate"
                 label="水费单价 :"
-                rules={[{ required: true, message: 'Please enter WaterRate' }]}
+                rules={[{ required: true, message: '请输入水费单价...' }]}
               >
                 <Input 
+                type={'number'}
+                style={{height: '40px'}}
                 value={formData.waterRate} 
                 onChange={(e)=> this.onChangeFormData(e)}
-                addonAfter="RMB/Litre" placeholder="Please enter WaterRate" allowClear />
+                addonAfter="RMB/Litre" placeholder="请输入水费单价..." allowClear />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -282,72 +365,152 @@ export default class NewTopic extends Component {
                 rules={[{ required: true, message: 'Please enter ElectricityRate' }]}
               >
                 <Input 
+                  type={'number'}
+                  style={{height: '40px'}}
                   value={formData.electricityRate} 
                   onChange={(e)=> this.onChangeFormData(e)}
-                  addonAfter="RMB/Kilowatt" placeholder="Please enter ElectricityRate" allowClear />
+                  addonAfter="RMB/Kilowatt" placeholder="请输入电费单价..." allowClear />
               </Form.Item>
             </Col>
+            {
+              isRented ? null : 
+              (
+                <Col span={12}>
+                  <Form.Item
+                    name="renterName"
+                    label="租客名字 :"
+                    rules={[{ required: true, message: 'Please enter RenterName' }]}
+                  >
+                    <Input 
+                      style={{height: '40px'}}
+                      value={formData.renterName} 
+                      onChange={(e)=> this.onChangeFormData(e)}
+                      placeholder="请输入租客名字..." allowClear />
+                  </Form.Item>
+                </Col>
+              )
+            }
+            {
+              isRented ? null : 
+              (
+                <Col span={12}>
+                  <Form.Item
+                    name="renterPhone"
+                    label="租客电话 :"
+                    rules={[{ required: true, message: 'Please enter RenterPhone' }]}
+                  >
+                    <Input 
+                      style={{height: '40px'}}
+                      value={formData.renterPhone} 
+                      onChange={(e)=> this.onChangeFormData(e)}
+                      placeholder="请输入租客电话..." allowClear />
+                  </Form.Item>
+                </Col>
+              )
+            }
+            {
+              isRented ? null : 
+              (
+                <Col span={12}>
+                  <Form.Item
+                    name="electricityUsed"
+                    label="用电量 :"
+                    rules={[{ required: true, message: 'Please enter RenterName' }]}
+                  >
+                    <Input 
+                      type={'number'}
+                      style={{height: '40px'}}
+                      value={formData.electricityUsed} 
+                      onChange={(e)=> this.onChangeFormData(e)}
+                      placeholder="请输入用电量..." allowClear />
+                  </Form.Item>
+                </Col>
+              )
+            }
+            {
+              isRented ? null : 
+              (
+                <Col span={12}>
+                  <Form.Item
+                    name="waterUsed"
+                    label="用水量 :"
+                    rules={[{ required: true, message: 'Please enter RenterName' }]}
+                  >
+                    <Input 
+                      type={'number'}
+                      style={{height: '40px'}}
+                      value={formData.waterUsed} 
+                      onChange={(e)=> this.onChangeFormData(e)}
+                      placeholder="请输入用水量..." allowClear />
+                  </Form.Item>
+                </Col>
+              )
+            }
             <Col span={12}>
               <Form.Item
-                name="landlordName"
-                label="房东名字 :"
-                rules={[{ required: true, message: 'Please enter LandlordName' }]}
-              >
-                <Input 
-                  value={formData.landlordName} 
-                  onChange={(e)=> this.onChangeFormData(e)}
-                  placeholder="Please enter LandlordName" allowClear />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                name="landlordPhone"
-                label="房东电话 :"
-                rules={[{ required: true, message: 'Please enter LandlordPhone' }]}
-              >
-                <Input 
-                  value={formData.landlordPhone} 
-                  onChange={(e)=> this.onChangeFormData(e)}
-                  placeholder="Please enter LandlordPhone" allowClear />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                name="renterName"
-                label="租客名字 :"
-                rules={[{ required: true, message: 'Please enter RenterName' }]}
-              >
-                <Input 
-                  value={formData.renterName} 
-                  onChange={(e)=> this.onChangeFormData(e)}
-                  placeholder="Please enter RenterName" allowClear />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                name="renterPhone"
-                label="租客电话 :"
+                name="houseArea"
+                label="房屋面积 :"
                 rules={[{ required: true, message: 'Please enter RenterPhone' }]}
               >
                 <Input 
-                  value={formData.renterPhone} 
+                  style={{height: '40px'}}
+                  value={formData.houseArea} 
                   onChange={(e)=> this.onChangeFormData(e)}
-                  placeholder="Please enter RenterPhone" allowClear />
+                  placeholder="请输入房屋面积..." allowClear />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                name="tags"
+                name="floor"
+                label="房屋楼层 :"
+                rules={[{ required: true, message: 'Please enter RenterPhone' }]}
+              >
+                <Input 
+                  style={{height: '40px'}}
+                  value={formData.floor} 
+                  onChange={(e)=> this.onChangeFormData(e)}
+                  placeholder="请输入房屋楼层..." allowClear />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="houseToward"
+                label="房屋朝向 :"
+                rules={[{ required: true, message: 'Please enter RenterPhone' }]}
+              >
+                <Input 
+                  style={{height: '40px'}}
+                  value={formData.houseToward} 
+                  onChange={(e)=> this.onChangeFormData(e)}
+                  placeholder="请输入房屋朝向..." allowClear />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="houseLayout"
+                label="房屋布局 :"
+                rules={[{ required: true, message: 'Please enter RenterPhone' }]}
+              >
+                <Input 
+                  style={{height: '40px'}}
+                  value={formData.houseLayout} 
+                  onChange={(e)=> this.onChangeFormData(e)}
+                  placeholder="请输入房屋布局..." allowClear />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="tag"
                 label="房屋标签 :"
-                rules={[{ required: true, message: 'Please select tags' }]}
+                rules={[{ required: true, message: 'Please select tag' }]}
               >
                 <Select
                   mode="multiple"
-                  value={formData.tags}
+                  value={formData.tag}
                   showArrow
                   style={{float:  'left', marginRight: '20px', width: '100%'}}
                   allowClear={true}
-                  placeholder="Please select tags :"
+                  placeholder="请选择房屋标签:"
                   tagRender={tagRender}
                   onChange={(selection) => this.selectOnChange(selection)}
                   options={tagChildren}
@@ -355,24 +518,42 @@ export default class NewTopic extends Component {
                 </Select>
               </Form.Item>
             </Col>
+
+            <Col span={12}>
+              <Form.Item
+                name="houseFacility"
+                label="房屋设备列表 :"
+                rules={[{ required: true, message: 'Please select tag' }]}
+              >
+                <Transfer
+                  dataSource={dataSource}
+                  showSearch
+                  filterOption={this.filterOption}
+                  targetKeys={targetKeys}
+                  onChange={this.handleChange}
+                  onSearch={this.handleSearch}
+                  render={item => item.title}
+                />
+              </Form.Item>
+            </Col>
           </Row>
  
           <Row gutter={16}>
             <Col span={24}>
               <Form.Item
-                name="description"
+                name="houseDescription"
                 label="房屋描述 :"
                 rules={[
                   {
                     required: true,
-                    message: 'please enter url description',
+                    message: 'please enter url houseDescription',
                   },
                 ]}
               >
                 <Input.TextArea 
-                  value={formData.description}
+                  value={formData.houseDescription}
                   onChange={(e)=> this.onChangeFormData(e)}
-                  rows={4} placeholder="please enter url description" allowClear/>
+                  rows={4} placeholder="请输入房屋描述..." allowClear/>
               </Form.Item>
             </Col>
           </Row>
@@ -388,8 +569,8 @@ export default class NewTopic extends Component {
                 ]}
               >
                 <Form.Item
-                style={{margin: 0}}
-                  name="illustrations"
+                  style={{margin: 0}}
+                  name="vrImg"
                   rules={[
                     {
                       required: true,
@@ -398,23 +579,65 @@ export default class NewTopic extends Component {
                   ]}
                 >
                   <Upload
-                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                    // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                    action={''}
                     listType="picture-card"
-                    fileList={fileList}
+                    fileList={vrFileList}
                     onPreview={this.handlePreview}
-                    onChange={this.handleChange}
+                    onChange={this.vrImgHandleChange}
                   >
-                    {fileList.length >= 8 ? null : uploadButton}
+                    { vrFileList.length === 1 ? null : uploadButton }
+                  </Upload>
+                </Form.Item>
+                <Modal
+                  visible={vrPreviewVisible}
+                  title={vrPreviewTitle}
+                  footer={null}
+                  onCancel={this.handleVrCancel}
+                >
+                  <img alt="example" style={{ width: '100%' }} src={vrPreviewImage} />
+                </Modal>
+              </Form.Item>
+            </Col>
+
+            <Col span={24}>
+              <Form.Item
+                label="房屋轮播图 :"
+                rules={[
+                  {
+                    required: true,
+                    message: '请上传轮播图素材',
+                  },
+                ]}
+              >
+                <Form.Item
+                style={{margin: 0}}
+                  name="carouselImg"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'please enter url Illustrations',
+                    },
+                  ]}
+                >
+                  <Upload
+                    // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                    listType="picture-card"
+                    fileList={carouselFileList}
+                    onPreview={this.handlecPreview}
+                    onChange={this.carouselImgHandleChange}
+                  >
+                    {carouselFileList.length >= 8 ? null : uploadButton}
                   </Upload>
                 </Form.Item>
                 <span style={{ color: '#aaaaaa'}}>图片顺序为轮播图顺序，务必上传最少一张图片。</span>
                 <Modal
-                  visible={previewVisible}
-                  title={previewTitle}
+                  visible={carouselPreviewVisible}
+                  title={carouselPreviewTitle}
                   footer={null}
-                  onCancel={this.handleCancel}
+                  onCancel={this.handleCarouselCancel}
                 >
-                  <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                  <img alt="example" style={{ width: '100%' }} src={carouselPreviewImage} />
                 </Modal>
               </Form.Item>
             </Col>

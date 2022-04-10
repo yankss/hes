@@ -9,12 +9,13 @@ import errorPage from  "./error"
 import personalCenter from "./personal-center";
 import receiptManagement from "./receipt-management";
 import login from './login'
+import vrHouse from './vr-house'
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [
   {
     path: '/',
-    exact: true,
+    // exact: true,
     component: React.lazy(() => import('../pages/Home/index'))
   },
   ...contractManagement,
@@ -26,5 +27,6 @@ export default [
   ...errorPage,
   ...personalCenter,
   ...receiptManagement,
-  ...login
+  ...login,
+  ...vrHouse
 ]
