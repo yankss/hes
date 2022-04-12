@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
-import { Input, Select, Row, Col, Form, Tag, Upload, Modal, Transfer } from 'antd';
+import { Input, Select, Row, Col, Form, Tag, Upload, Modal, Transfer, AutoComplete } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import * as tagApi from '../../api/tagApi';
+import axios from 'axios'
+// import { debounce } from '../../utils/index';
 import './index.css';
 
 const { Option } = Select;
@@ -223,6 +225,38 @@ export default class NewTopic extends Component {
     console.log('search:', dir, value);
   };
 
+  selectAddressHandle = (v, o) => {
+    console.log(v);
+    console.log(o);
+  }
+
+  searchAddressHandle = (v) => {
+    this.debounce(() => {
+      console.log(v);
+      console.log(11111111111111);
+    })
+    // axios({
+    //   // 请求方式默认为get,如果需要改变请求方式的话,则需要使用如下方法
+    //   methods:'post',
+    //   url: `https://apis.map.qq.com/ws/place/v1/search?keyword=${v}&boundary=nearby(39.908491,116.374328,1000)&key=O7FBZ-KNOCP-7GYD6-LDGLF-7IMT7-DSBL4`,
+    // }).then(res =>{
+    //   console.log(res);
+    // })
+  }
+
+  debounce = (fn) => {
+    let timer = null;
+     return function() {
+       if(timer) {
+         clearTimeout(timer);
+       }
+       timer = setTimeout(() => {
+         fn.apply(this, arguments)
+         timer = null;
+       }, 2000);
+     }
+  }
+
 
 
 
@@ -238,7 +272,8 @@ export default class NewTopic extends Component {
             formData,
             dataSource,
             targetKeys,
-            carouselFileList } = this.state;
+            carouselFileList,
+            options } = this.state;
 
     const { isNewButton, isRented } = this.props;
 
@@ -304,12 +339,23 @@ export default class NewTopic extends Component {
                 label="房屋地址 :"
                 rules={[{ required: true, message: '请输入房屋地址...' }]}
               >
-                <Input 
+                <AutoComplete
+                  value={formData.address}
+                  options={options}
+                  placeholder="请输入房屋地址..." 
+                  allowClear 
+                  style={{
+                    height: '40px',
+                  }}
+                  onSelect={this.selectAddressHandle}
+                  onSearch={this.searchAddressHandle}
+                />
+                {/* <Input 
                   style={{height: '40px'}}
                   value={formData.address} 
                   placeholder="请输入房屋地址..." allowClear 
                   onChange={(e)=> this.onChangeFormData(e)}
-                />
+                /> */}
               </Form.Item>
             </Col>
             <Col span={12}>

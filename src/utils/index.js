@@ -6,3 +6,17 @@ export function serialize(obj) {
   urlStr = urlStr.slice(0, -1)
   return urlStr;
 }
+
+export function debounce(fn, delay) {
+  console.log(11111111111);
+  let timeout = null;
+  return function() {
+    if(timeout != null) {
+      clearTimeout(timeout);
+    }
+    timeout = setTimeout(() => {
+      fn()
+      timeout = null;
+    }, delay);
+  }
+}
